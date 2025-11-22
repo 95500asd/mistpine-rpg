@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <title>霧柏村 & 霧柏樹海 · 強化版</title>
+    <title>霧柏村 & 霧柏樹海 · APP 測試版</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       :root {
@@ -20,196 +20,288 @@
         --button-bg: #25293c;
         --button-bg-hover: #333955;
       }
-      *{box-sizing:border-box;}
-      body{
-        margin:0;
-        background:radial-gradient(circle at top,#1a2340 0,#05060a 60%);
-        color:var(--text-main);
-        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-        display:flex;
-        justify-content:center;
-        align-items:stretch;
-        min-height:100vh;
-        padding:10px;
+
+      * {
+        box-sizing: border-box;
       }
-      #app{
-        width:100%;
-        max-width:480px;
-        display:flex;
-        flex-direction:column;
-        gap:10px;
+
+      body {
+        margin: 0;
+        background: radial-gradient(circle at top, #1a2340 0, #05060a 60%);
+        color: var(--text-main);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        min-height: 100vh;
+        padding: 10px;
       }
-      .panel{
-        background:radial-gradient(circle at top left,var(--bg-card) 0,#080912 70%);
-        border-radius:16px;
-        border:1px solid var(--border-soft);
-        box-shadow:0 16px 32px rgba(0,0,0,.6);
-        padding:12px 14px 14px;
+
+      #app {
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
       }
-      .panel-header{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-bottom:8px;
+
+      .panel {
+        background: radial-gradient(circle at top left, var(--bg-card) 0, #080912 70%);
+        border-radius: 16px;
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+        padding: 12px 14px 14px;
       }
-      .panel-title{
-        font-size:14px;
-        text-transform:uppercase;
-        letter-spacing:.08em;
-        color:var(--text-sub);
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
       }
-      .panel-badge{
-        font-size:11px;
-        padding:2px 8px;
-        border-radius:999px;
-        background:rgba(91,213,255,.12);
-        border:1px solid rgba(91,213,255,.4);
-        color:var(--accent);
+
+      .panel-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-sub);
       }
-      h1{
-        font-size:20px;
-        margin:0 0 4px;
-        display:flex;
-        align-items:baseline;
-        gap:6px;
+
+      .panel-badge {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(91, 213, 255, 0.12);
+        border: 1px solid rgba(91, 213, 255, 0.4);
+        color: var(--accent);
       }
-      h1 span.subtitle{
-        font-size:11px;
-        color:var(--text-sub);
-        letter-spacing:.1em;
-        text-transform:uppercase;
+
+      h1 {
+        font-size: 20px;
+        margin: 0 0 4px;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
       }
-      #info{
-        font-size:15px;
-        color:var(--text-sub);
-        margin-bottom:8px;
+
+      h1 span.subtitle {
+        font-size: 11px;
+        color: var(--text-sub);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
       }
-      .stats-row{
-        display:flex;
-        flex-direction:column;
-        gap:6px;
-        margin-bottom:8px;
+
+      #info {
+        font-size: 13px;
+        color: var(--text-sub);
+        margin-bottom: 8px;
       }
-      .stats-block{
-        background:linear-gradient(135deg,#181b2b,#121422);
-        border-radius:12px;
-        padding:8px 9px;
-        border:1px solid rgba(255,255,255,.03);
+
+      .stats-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 8px;
       }
-      .stats-label{
-        font-size:11px;
-        color:var(--text-sub);
-        margin-bottom:4px;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
+
+      .stats-block {
+        background: linear-gradient(135deg, #181b2b, #121422);
+        border-radius: 12px;
+        padding: 8px 9px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
       }
-      .tag{
-        font-size:11px;
-        padding:1px 6px;
-        border-radius:999px;
-        border:1px solid rgba(255,255,255,.16);
-        background:rgba(0,0,0,.2);
+
+      .stats-label {
+        font-size: 11px;
+        color: var(--text-sub);
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      .hp-bar-wrapper,.mp-bar-wrapper,.ht-bar-wrapper{
-        position:relative;
-        height:9px;
-        border-radius:999px;
-        overflow:hidden;
-        background:#151727;
-        margin-top:2px;
+
+      .tag {
+        font-size: 11px;
+        padding: 1px 6px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.2);
       }
-      .bar{
-        position:absolute;
-        inset:0;
-        transform-origin:left center;
+
+      .hp-bar-wrapper,
+      .mp-bar-wrapper,
+      .ht-bar-wrapper {
+        position: relative;
+        height: 9px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: #151727;
+        margin-top: 2px;
       }
-      .bar-hp{background:linear-gradient(90deg,#ff6b6b,#feca57);}
-      .bar-mp{background:linear-gradient(90deg,#7f7bff,#a994ff);}
-      .bar-hunger{background:linear-gradient(90deg,#f6c453,#ff9f43);}
-      .bar-thirst{background:linear-gradient(90deg,#54b6ff,#2e86de);}
-      .hp-text,.mp-text,.ht-text{
-        font-size:11px;
-        color:var(--text-sub);
-        display:flex;
-        justify-content:space-between;
-        margin-top:2px;
+
+      .bar {
+        position: absolute;
+        inset: 0;
+        transform-origin: left center;
       }
-      .ht-group{display:flex;gap:4px;margin-top:2px;}
-      .ht-group>div{flex:1;}
-      .log{
-        border-radius:10px;
-        padding:6px;
-        height:130px;
-        overflow-y:auto;
-        font-size:15px;
-        background:radial-gradient(circle at top left,#111222 0,#05060f 65%);
-        border:1px solid rgba(255,255,255,.05);
-        margin-top:6px;
+
+      .bar-hp {
+        background: linear-gradient(90deg, #ff6b6b, #feca57);
       }
-      .log div{margin-bottom:3px;}
-      .log::-webkit-scrollbar{width:6px;}
-      .log::-webkit-scrollbar-thumb{background:#30344e;border-radius:999px;}
-      .section-label{
-        font-size:11px;
-        color:var(--text-sub);
-        margin-top:4px;
-        letter-spacing:.12em;
-        text-transform:uppercase;
+
+      .bar-mp {
+        background: linear-gradient(90deg, #7f7bff, #a994ff);
       }
-      .monster-name{font-weight:600;color:var(--accent);}
-      #roomInfo{font-size:11px;color:var(--text-sub);}
-      .actions-panel{padding-top:10px;}
-      .actions-grid{
-        display:grid;
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:6px;
-        margin-top:2px;
+
+      .bar-hunger {
+        background: linear-gradient(90deg, #f6c453, #ff9f43);
       }
-      @media (max-width:360px){
-        .actions-grid{grid-template-columns:1fr;}
+
+      .bar-thirst {
+        background: linear-gradient(90deg, #54b6ff, #2e86de);
       }
-      button{
-        padding:9px 10px;
-        border-radius:10px;
-        border:1px solid transparent;
-        background:var(--button-bg);
-        color:var(--text-main);
-        font-size:15px;
-        cursor:pointer;
-        text-align:center;
-        white-space:nowrap;
-        text-overflow:ellipsis;
-        overflow:hidden;
-        transition:background .12s ease,transform .06s ease,border-color .12s ease,box-shadow .12s ease;
+
+      .hp-text,
+      .mp-text,
+      .ht-text {
+        font-size: 11px;
+        color: var(--text-sub);
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2px;
       }
-      button:hover:not(:disabled){
-        background:var(--button-bg-hover);
-        border-color:rgba(255,255,255,.12);
-        box-shadow:0 0 0 1px rgba(255,255,255,.04);
+
+      .ht-group {
+        display: flex;
+        gap: 4px;
+        margin-top: 2px;
       }
-      button:active:not(:disabled){
-        transform:translateY(1px) scale(.99);
-        box-shadow:none;
+
+      .ht-group > div {
+        flex: 1;
       }
-      button:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}
-      button.primary{
-        background:linear-gradient(135deg,#5b8bff,#7aa7ff);
-        border-color:rgba(0,0,0,.4);
-        box-shadow:0 0 0 1px rgba(123,162,255,.4),0 10px 20px rgba(0,0,0,.6);
+
+      .log {
+        border-radius: 10px;
+        padding: 6px;
+        height: 130px;
+        overflow-y: auto;
+        font-size: 11px;
+        background: radial-gradient(circle at top left, #111222 0, #05060f 65%);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 6px;
       }
-      button.danger{background:linear-gradient(135deg,#ff6b6b,#ff8787);}
-      button.ghost{background:transparent;border-color:rgba(255,255,255,.16);}
-      .money-text{
-        font-size:11px;
-        color:var(--text-sub);
-        margin-top:2px;
-        text-align:right;
+
+      .log div {
+        margin-bottom: 3px;
       }
-      .status-line{
-        font-size:11px;
-        color:var(--text-sub);
-        margin-top:4px;
+
+      .log::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .log::-webkit-scrollbar-thumb {
+        background: #30344e;
+        border-radius: 999px;
+      }
+
+      .section-label {
+        font-size: 11px;
+        color: var(--text-sub);
+        margin-top: 4px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .monster-name {
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      #roomInfo {
+        font-size: 11px;
+        color: var(--text-sub);
+      }
+
+      .actions-panel {
+        padding-top: 10px;
+      }
+
+      .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 2px;
+      }
+
+      @media (max-width: 360px) {
+        .actions-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      button {
+        padding: 9px 10px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        background: var(--button-bg);
+        color: var(--text-main);
+        font-size: 13px;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        transition: background 0.12s ease, transform 0.06s ease,
+          border-color 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      button:hover:not(:disabled) {
+        background: var(--button-bg-hover);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+      }
+
+      button:active:not(:disabled) {
+        transform: translateY(1px) scale(0.99);
+        box-shadow: none;
+      }
+
+      button:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+        box-shadow: none;
+      }
+
+      button.primary {
+        background: linear-gradient(135deg, #5b8bff, #7aa7ff);
+        border-color: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 0 1px rgba(123, 162, 255, 0.4),
+          0 10px 20px rgba(0, 0, 0, 0.6);
+      }
+
+      button.danger {
+        background: linear-gradient(135deg, #ff6b6b, #ff8787);
+      }
+
+      button.ghost {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .money-text {
+        font-size: 11px;
+        color: var(--text-sub);
+        margin-top: 2px;
+        text-align: right;
+      }
+
+      .status-line {
+        font-size: 11px;
+        color: var(--text-sub);
+        margin-top: 4px;
       }
     </style>
   </head>
@@ -223,11 +315,12 @@
               <span class="subtitle">MISTPINE FRONTIER</span>
             </h1>
           </div>
-          <div class="panel-badge">v0.96 強化版</div>
+          <div class="panel-badge">Field Prototype v0.92</div>
         </div>
         <div id="info"></div>
 
         <div class="stats-row">
+          <!-- 玩家狀態 -->
           <div class="stats-block">
             <div class="stats-label">
               <span id="playerNameLabel">Lv.1 冒險者</span>
@@ -240,6 +333,7 @@
               <span id="playerHpText">HP 60 / 60</span>
               <span id="playerDefText">Def 3</span>
             </div>
+
             <div class="mp-bar-wrapper">
               <div id="playerMpBar" class="bar bar-mp" style="transform:scaleX(1)"></div>
             </div>
@@ -247,6 +341,7 @@
               <span id="playerMpText">MP 30 / 30</span>
               <span id="playerAtkText">Atk 10</span>
             </div>
+
             <div class="ht-group">
               <div>
                 <div class="ht-bar-wrapper">
@@ -268,9 +363,10 @@
               </div>
             </div>
             <div class="status-line" id="statusLine">狀態：正常</div>
-            <div class="money-text" id="playerMoneyText">0銅</div>
+            <div class="money-text" id="playerMoneyText">金 0 · 銀 0 · 銅 0</div>
           </div>
 
+          <!-- 怪物 / 距離 -->
           <div class="stats-block">
             <div class="stats-label">
               <span>外界狀況</span>
@@ -300,1442 +396,3232 @@
     </div>
 
     <script>
-      function rand(){return Math.random();}
-      function clamp01(v){return Math.max(0,Math.min(1,v));}
-      function formatMoneyShort(c){
-        if(c<=0)return "0銅";
-        const g=Math.floor(c/10000);c%=10000;
-        const s=Math.floor(c/100);c%=100;
-        const b=c;
-        let out=[];
-        if(g>0)out.push(g+"金");
-        if(s>0)out.push(s+"銀");
-        if(b>0)out.push(b+"銅");
-        return out.join("");
+      // ===== 小工具 =====
+      function rand() {
+        return Math.random();
       }
 
-      const WEAPON_TYPES={BLUNT:"打",PIERCE:"刺",SLASH:"砍"};
+      function clamp01(v) {
+        return Math.max(0, Math.min(1, v));
+      }
 
-      const UsableItems={
-        "small-potion":{type:"heal",amount:25,name:"小型治療藥水",desc:"回復25HP。"},
-        "medium-potion":{type:"heal",amount:45,name:"中型治療藥水",desc:"回復45HP。"},
-        "return-scroll":{type:"return",name:"回程卷軸",desc:"立刻回霧柏村，不消耗時間、飢餓與口渴。"},
-        "water-flask":{type:"thirst",amount:35,name:"水壺（清水）",desc:"可飲用3次，每次回復35點口渴，喝完變成空水壺。"},
-        "wild-meat":{type:"hungerRaw",amount:30,name:"野獸肉",desc:"生吃可以暫時填飽肚子，但有機率中毒。"},
-        "grilled-meat":{type:"hunger",amount:45,name:"烤肉",desc:"安全又好吃的大塊烤肉，大幅回復飽食度。"},
-        "bread":{type:"hungerFull",amount:100,name:"麵包",desc:"扎實的麵包，一整個吃完可以直接填滿肚子。"}
+      function formatMoney(copper) {
+        if (copper < 0) copper = 0;
+        const gold = Math.floor(copper / 10000);
+        let rest = copper % 10000;
+        const silver = Math.floor(rest / 100);
+        const bronze = rest % 100;
+        return `金 ${gold} · 銀 ${silver} · 銅 ${bronze}`;
+      }
+
+      function formatMoneyShort(copper) {
+        if (copper <= 0) return "0銅";
+        let parts = [];
+        let c = copper;
+        const gold = Math.floor(c / 10000); c %= 10000;
+        const silver = Math.floor(c / 100); c %= 100;
+        const bronze = c;
+        if (gold > 0) parts.push(`${gold}金`);
+        if (silver > 0) parts.push(`${silver}銀`);
+        if (bronze > 0) parts.push(`${bronze}銅`);
+        return parts.join("");
+      }
+
+      const RARITY = {
+        COMMON: "common",
+        UNCOMMON: "uncommon",
+        RARE: "rare",
+        EPIC: "epic",
+        LEGENDARY: "legendary"
       };
 
-      const LootList=[
-        {id:"wolf-fur",name:"狼毛"},
-        {id:"firewood",name:"柴薪"},
-        {id:"herb",name:"藥草"},
-        {id:"slime-fluid",name:"史萊姆黏液"},
-        {id:"goblin-tag",name:"哥布林標記"}
+      const WEAPON_TYPES = {
+        BLUNT: "打",
+        PIERCE: "刺",
+        SLASH: "砍"
+      };
+
+      const LootList = [
+        { id: "wolf-fur", name: "狼毛", rarity: RARITY.COMMON },
+        { id: "wolf-fang", name: "狼牙", rarity: RARITY.UNCOMMON },
+        { id: "wolf-pelt", name: "狼皮", rarity: RARITY.UNCOMMON },
+        { id: "moonbone", name: "月嚎骨片", rarity: RARITY.RARE },
+        { id: "moonfang", name: "月影犬牙", rarity: RARITY.RARE },
+
+        { id: "slime-fluid", name: "史萊姆黏液", rarity: RARITY.COMMON },
+        { id: "slime-gel", name: "半凝膠", rarity: RARITY.UNCOMMON },
+        { id: "slime-core", name: "凝縮黏核", rarity: RARITY.RARE },
+        { id: "toxic-fluid", name: "毒性黏液", rarity: RARITY.COMMON },
+        { id: "acid-core", name: "酸核", rarity: RARITY.RARE },
+
+        { id: "sap-droplet", name: "樹液滴", rarity: RARITY.COMMON },
+        { id: "tiny-branch", name: "小樹枝", rarity: RARITY.COMMON },
+        { id: "bark-chip", name: "樹皮碎片", rarity: RARITY.UNCOMMON },
+        { id: "heartwood-chip", name: "心木碎片", rarity: RARITY.RARE },
+        { id: "ancient-seed", name: "古種子", rarity: RARITY.RARE },
+
+        { id: "bug-shell", name: "甲殼片", rarity: RARITY.COMMON },
+        { id: "venom-stinger", name: "毒針", rarity: RARITY.UNCOMMON },
+        { id: "insect-wing", name: "透明翅膀", rarity: RARITY.UNCOMMON },
+        { id: "hard-shell", name: "堅硬甲殼", rarity: RARITY.RARE },
+
+        { id: "goblin-cloth", name: "哥布林破布", rarity: RARITY.COMMON },
+        { id: "metal-scrap", name: "金屬零件", rarity: RARITY.UNCOMMON },
+        { id: "totem-frag", name: "圖騰碎片", rarity: RARITY.UNCOMMON },
+        { id: "war-tag", name: "戰鬥標記", rarity: RARITY.RARE },
+        { id: "goblin-charm", name: "哥布林護符", rarity: RARITY.RARE },
+
+        { id: "herb", name: "藥草", rarity: RARITY.COMMON },
+        { id: "water-flask", name: "水壺（清水）", rarity: RARITY.UNCOMMON },
+        { id: "wild-meat", name: "野獸肉", rarity: RARITY.UNCOMMON },
+        { id: "firewood", name: "柴薪", rarity: RARITY.COMMON },
+        { id: "empty-flask", name: "水壺（空）", rarity: RARITY.COMMON },
+        { id: "grilled-meat", name: "烤肉", rarity: RARITY.UNCOMMON }
       ];
-      function getLootName(id){
-        const l=LootList.find(x=>x.id===id);
-        if(l)return l.name;
-        if(UsableItems[id])return UsableItems[id].name;
-        if(id==="empty-flask")return "水壺（空）";
-        if(id==="camp-kit")return "露營工具";
-        return id;
+
+      function getLootById(id) {
+        return LootList.find(l => l.id === id);
       }
 
-      const Monsters=[
+      const JobSkills = {
+        warrior: [
+          {
+            id: "warriorPowerSlash",
+            name: "裂地斬",
+            type: "active",
+            desc: "消耗MP，揮出強力斬擊，傷害高於普通攻擊。等級越高，傷害與命中越穩定。"
+          },
+          {
+            id: "warriorGuard",
+            name: "堅守姿態",
+            type: "active",
+            desc: "本回合大幅減少受到的傷害，並提升防禦成功率。等級越高減傷越多。"
+          },
+          {
+            id: "warriorToughness",
+            name: "鋼鐵體魄",
+            type: "passive",
+            desc: "被動技能，每級永久提升最大HP，使你更耐打。"
+          }
+        ],
+        mage: [
+          {
+            id: "mageFireball",
+            name: "火球術",
+            type: "active",
+            desc: "消耗MP的遠程火焰攻擊，幾乎不受防禦影響。等級越高傷害提升，並解鎖野外生火的能力。"
+          },
+          {
+            id: "mageFrostBind",
+            name: "冰霜束縛",
+            type: "active",
+            desc: "造成冰霜傷害並削弱敵人數回合的攻擊，等級越高削弱效果越強。"
+          },
+          {
+            id: "mageMeditation",
+            name: "冥想",
+            type: "passive",
+            desc: "被動技能，每級永久提升最大MP，使你能施展更多魔法。"
+          }
+        ],
+        archer: [
+          {
+            id: "archerSnipe",
+            name: "精準狙擊",
+            type: "active",
+            desc: "專注瞄準後射出一箭，命中與傷害優於普通攻擊。需要消耗箭矢與MP。"
+          },
+          {
+            id: "archerRapidShot",
+            name: "連射",
+            type: "active",
+            desc: "快速射出兩箭，各自獨立命中判定。需要消耗較多箭矢與MP。"
+          },
+          {
+            id: "archerAgility",
+            name: "敏捷身法",
+            type: "passive",
+            desc: "被動技能，每級提升防禦，使你更靈活難以擊中。"
+          }
+        ]
+      };
+
+      const ItemShopFixed = [
+        { itemId: "small-potion", basePrice: 40 },
+        { itemId: "medium-potion", basePrice: 90 },
+        { itemId: "return-scroll", basePrice: 100 },
+        { itemId: "flint", basePrice: 60 },
+        { itemId: "firewood", basePrice: 15 },
+        { itemId: "camp-kit", basePrice: 180 }
+      ];
+
+      const ItemShopRandomPool = [
+        { itemId: "herb", basePrice: 14 },
+        { itemId: "wild-meat", basePrice: 30 },
+        { itemId: "water-flask", basePrice: 45 },
+        { itemId: "bread", basePrice: 36 }
+      ];
+
+      const WeaponShopFixed = [
+        { itemId: "arrow", basePrice: 4 },
+        { itemId: "throw-knife", basePrice: 12 }
+      ];
+
+      const WeaponShopRandomPool = [
+        { itemId: "club", basePrice: 60, name: "粗製棍棒", type: WEAPON_TYPES.BLUNT, atkBonus: 3, desc: "打擊武器 · 攻擊+3" },
+        { itemId: "short-sword", basePrice: 80, name: "短劍", type: WEAPON_TYPES.SLASH, atkBonus: 3, desc: "斬擊武器 · 攻擊+3" },
+        { itemId: "hand-axe", basePrice: 90, name: "手斧", type: WEAPON_TYPES.SLASH, atkBonus: 4, desc: "斬擊武器 · 攻擊+4" },
+        { itemId: "spear", basePrice: 90, name: "木矛", type: WEAPON_TYPES.PIERCE, atkBonus: 4, desc: "刺擊武器 · 攻擊+4" },
+        { itemId: "short-bow", basePrice: 110, name: "短弓", type: WEAPON_TYPES.PIERCE, atkBonus: 3, ranged: true, desc: "遠程武器 · 需消耗箭矢 · 攻擊+3" }
+      ];
+
+      const ArmorShopFixed = [
+        { itemId: "leather-armor", basePrice: 120, name: "皮甲上衣", slot: "body", defBonus: 2, desc: "結實的皮甲 · 防禦+2" },
+        { itemId: "leather-pants", basePrice: 90, name: "皮褲", slot: "legs", defBonus: 2, desc: "耐用的皮褲 · 防禦+2" },
+        { itemId: "leather-boots", basePrice: 70, name: "皮靴", slot: "boots", defBonus: 1, desc: "柔軟的皮靴 · 防禦+1" }
+      ];
+
+      const ArmorShopRandomPool = [
+        { itemId: "hunter-coat", basePrice: 150, name: "獵人外套", slot: "body", defBonus: 3, desc: "為樹海準備的外套 · 防禦+3" },
+        { itemId: "soft-leather-boots", basePrice: 110, name: "軟皮長靴", slot: "boots", defBonus: 2, desc: "方便行走的靴子 · 防禦+2" }
+      ];
+
+      // 用於讓裝備進背包可以販售／切換
+      const ArmorDefs = {
+        "villager-shirt": { id: "villager-shirt", name: "村民服", slot: "body", defBonus: 1, sellPrice: 15 },
+        "villager-pants": { id: "villager-pants", name: "村民褲", slot: "legs", defBonus: 1, sellPrice: 15 },
+        "villager-shoes": { id: "villager-shoes", name: "村民鞋", slot: "boots", defBonus: 1, sellPrice: 10 },
+        "leather-armor": { id: "leather-armor", name: "皮甲上衣", slot: "body", defBonus: 2, sellPrice: 60 },
+        "leather-pants": { id: "leather-pants", name: "皮褲", slot: "legs", defBonus: 2, sellPrice: 45 },
+        "leather-boots": { id: "leather-boots", name: "皮靴", slot: "boots", defBonus: 1, sellPrice: 35 },
+        "hunter-coat": { id: "hunter-coat", name: "獵人外套", slot: "body", defBonus: 3, sellPrice: 75 },
+        "soft-leather-boots": { id: "soft-leather-boots", name: "軟皮長靴", slot: "boots", defBonus: 2, sellPrice: 55 }
+      };
+
+      const GuildBuyCandidates = [
+        "wolf-fur",
+        "wolf-fang",
+        "slime-fluid",
+        "slime-gel",
+        "slime-core",
+        "herb",
+        "tiny-branch",
+        "firewood",
+        "goblin-cloth",
+        "metal-scrap",
+        "insect-wing",
+        "bug-shell"
+      ];
+
+      const UsableItems = {
+        "small-potion": { type: "heal", amount: 25, name: "小型治療藥水", desc: "回復 25 點 HP。" },
+        "medium-potion": { type: "heal", amount: 45, name: "中型治療藥水", desc: "回復 45 點 HP。" },
+        "return-scroll": { type: "return", name: "回程卷軸", desc: "立即返回霧柏村，不消耗時間與飽食／口渴。" },
+        "water-flask": { type: "thirst", amount: 35, name: "水壺（清水）", desc: "可飲用 3 次，每次回復 35 點口渴值，用完變成水壺（空）。" },
+        "wild-meat": { type: "hunger", amount: 30, name: "野獸肉", desc: "生吃可以暫時填飽肚子，但有機率中毒。" },
+        "grilled-meat": { type: "hunger", amount: 45, name: "烤肉", desc: "香噴噴的烤肉，大幅回復飽食度，安全又好吃。" },
+        "throw-knife": { type: "throwKnife", name: "投擲小刀", desc: "戰鬥中可投擲攻擊。未學【投擲術】時命中率較低。" },
+        "bread": { type: "hungerFull", name: "麵包", desc: "簡單但扎實的麵包，一整個吃下去可以把肚子填滿。" }
+      };
+
+      const CraftRecipesVillage = [
         {
-          id:"green-slime",name:"綠史萊姆",level:1,maxHp:28,atk:6,def:1,
-          weakTo:WEAPON_TYPES.BLUNT,
-          loot:[
-            {id:"slime-fluid",rate:.8},
-            {id:"herb",rate:.3}
-          ],
-          humanoid:false,xp:10,coin:[0,3]
+          id: "small-potion-from-herb",
+          name: "調製小型治療藥水",
+          desc: "藥草x2 → 小型治療藥水x1",
+          inputs: { herb: 2 },
+          outputId: "small-potion",
+          outputCount: 1
         },
         {
-          id:"forest-wolf",name:"森林狼",level:2,maxHp:40,atk:8,def:2,
-          weakTo:WEAPON_TYPES.BLUNT,
-          loot:[
-            {id:"wolf-fur",rate:.8},
-            {id:"wild-meat",rate:.4}
-          ],
-          humanoid:false,xp:14,coin:[0,5]
+          id: "medium-potion-upgrade",
+          name: "調製中型治療藥水",
+          desc: "小型治療藥水x2 + 藥草x2 → 中型治療藥水x1",
+          inputs: { "small-potion": 2, herb: 2 },
+          outputId: "medium-potion",
+          outputCount: 1
         },
         {
-          id:"goblin-warrior",name:"哥布林戰士",level:3,maxHp:45,atk:10,def:3,
-          weakTo:WEAPON_TYPES.SLASH,
-          loot:[
-            {id:"goblin-tag",rate:.5},
-            {id:"firewood",rate:.3}
-          ],
-          humanoid:true,xp:18,coin:[5,20]
+          id: "grilled-meat",
+          name: "烤肉",
+          desc: "野獸肉x1 + 柴薪x1 → 烤肉x1",
+          inputs: { "wild-meat": 1, firewood: 1 },
+          outputId: "grilled-meat",
+          outputCount: 1
+        },
+        {
+          id: "camp-kit-craft",
+          name: "簡易露營工具",
+          desc: "哥布林破布x2 + 小樹枝x2 → 露營工具x1",
+          inputs: { "goblin-cloth": 2, "tiny-branch": 2 },
+          outputId: "camp-kit",
+          outputCount: 1
         }
       ];
 
-      const GuildTemplates=[
+      const CraftRecipesField = [
         {
-          id:"hunt-wolf",
-          type:"hunt",
-          targetId:"forest-wolf",
-          name:"【★☆☆】討伐：森林狼",
-          countRequired:3,
-          rewardMoney:90,
-          rewardXp:40,
-          recommendedLevel:2
-        },
-        {
-          id:"hunt-goblin",
-          type:"hunt",
-          targetId:"goblin-warrior",
-          name:"【★★☆】討伐：哥布林戰士",
-          countRequired:3,
-          rewardMoney:140,
-          rewardXp:65,
-          recommendedLevel:3
-        },
-        {
-          id:"hunt-slime",
-          type:"hunt",
-          targetId:"green-slime",
-          name:"【★☆☆】討伐：綠史萊姆",
-          countRequired:5,
-          rewardMoney:70,
-          rewardXp:30,
-          recommendedLevel:1
-        },
-        {
-          id:"hunt-mixed",
-          type:"hunt",
-          targetId:"forest-wolf",
-          name:"【★★☆】討伐：狼與史萊姆混成群",
-          countRequired:5,
-          rewardMoney:130,
-          rewardXp:55,
-          recommendedLevel:2
-        },
-        {
-          id:"collect-slime",
-          type:"collect",
-          targetId:"slime-fluid",
-          name:"【★☆☆】收集：史萊姆黏液",
-          countRequired:5,
-          rewardMoney:80,
-          rewardXp:35,
-          recommendedLevel:1
-        },
-        {
-          id:"collect-wolf-fur",
-          type:"collect",
-          targetId:"wolf-fur",
-          name:"【★☆☆】收集：狼毛",
-          countRequired:4,
-          rewardMoney:85,
-          rewardXp:40,
-          recommendedLevel:2
-        },
-        {
-          id:"collect-herb",
-          type:"collect",
-          targetId:"herb",
-          name:"【★☆☆】收集：藥草",
-          countRequired:6,
-          rewardMoney:75,
-          rewardXp:32,
-          recommendedLevel:1
-        },
-        {
-          id:"collect-firewood",
-          type:"collect",
-          targetId:"firewood",
-          name:"【★☆☆】收集：柴薪",
-          countRequired:8,
-          rewardMoney:60,
-          rewardXp:25,
-          recommendedLevel:1
-        },
-        {
-          id:"collect-goblin-tag",
-          type:"collect",
-          targetId:"goblin-tag",
-          name:"【★★☆】收集：哥布林標記",
-          countRequired:4,
-          rewardMoney:150,
-          rewardXp:70,
-          recommendedLevel:3
+          id: "small-potion-from-herb-field",
+          name: "簡易小型治療藥水",
+          desc: "藥草x2 → 小型治療藥水x1",
+          inputs: { herb: 2 },
+          outputId: "small-potion",
+          outputCount: 1
         }
       ];
 
-      class Game{
-        constructor(){
-          this.logEl=document.getElementById("log");
-          this.infoEl=document.getElementById("info");
-          this.actionsEl=document.getElementById("actions");
-          this.playerHpBar=document.getElementById("playerHpBar");
-          this.playerMpBar=document.getElementById("playerMpBar");
-          this.playerHungerBar=document.getElementById("playerHungerBar");
-          this.playerThirstBar=document.getElementById("playerThirstBar");
-          this.playerHpText=document.getElementById("playerHpText");
-          this.playerMpText=document.getElementById("playerMpText");
-          this.playerAtkText=document.getElementById("playerAtkText");
-          this.playerDefText=document.getElementById("playerDefText");
-          this.playerHungerText=document.getElementById("playerHungerText");
-          this.playerThirstText=document.getElementById("playerThirstText");
-          this.playerMoneyText=document.getElementById("playerMoneyText");
-          this.statusLineEl=document.getElementById("statusLine");
-          this.monsterHpBar=document.getElementById("monsterHpBar");
-          this.monsterStatsEl=document.getElementById("monsterStats");
-          this.roomInfoEl=document.getElementById("roomInfo");
-          this.locationLabel=document.getElementById("locationLabel");
-          this.distanceLabel=document.getElementById("distanceLabel");
-          this.playerNameLabel=document.getElementById("playerNameLabel");
-          this.actionModeLabel=document.getElementById("actionModeLabel");
+      const CraftRecipesCamp = [
+        {
+          id: "camp-grilled-meat",
+          name: "營火烤肉",
+          desc: "野獸肉x1 + 柴薪x1（需打火石或火系技能） → 烤肉x1",
+          inputs: { "wild-meat": 1, firewood: 1 },
+          outputId: "grilled-meat",
+          outputCount: 1,
+          needFire: true
+        }
+      ];
 
-          this.mode="village";
-          this.player={
-            name:"流浪者",
-            job:null,
-            level:1,
-            xp:0,
-            xpToNext:30,
-            skillPoints:0,
-            maxHp:60,
-            hp:60,
-            maxMp:30,
-            mp:30,
-            baseAtk:8,
-            baseDef:1,
-            hunger:100,
-            thirst:100,
-            distance:0,
-            money:300,
-            inventory:{
-              "water-flask":1,
-              "bread":5
+      const Monsters = [
+        {
+          id: "green-slime",
+          name: "綠史萊姆",
+          level: 1,
+          maxHp: 28,
+          atk: 6,
+          def: 1,
+          weakTo: WEAPON_TYPES.BLUNT,
+          lootTable: [
+            { itemId: "slime-fluid", rate: 0.8 },
+            { itemId: "slime-gel", rate: 0.4 },
+            { itemId: "slime-core", rate: 0.12 },
+            { itemId: "herb", rate: 0.3 },
+            { itemId: "tiny-branch", rate: 0.3 }
+          ],
+          humanoid: false,
+          xpReward: 10
+        },
+        {
+          id: "toxic-slime",
+          name: "毒史萊姆",
+          level: 3,
+          maxHp: 32,
+          atk: 7,
+          def: 1,
+          weakTo: WEAPON_TYPES.BLUNT,
+          lootTable: [
+            { itemId: "toxic-fluid", rate: 0.7 },
+            { itemId: "slime-gel", rate: 0.4 },
+            { itemId: "acid-core", rate: 0.18 },
+            { itemId: "herb", rate: 0.25 },
+            { itemId: "tiny-branch", rate: 0.25 }
+          ],
+          humanoid: false,
+          xpReward: 13
+        },
+        {
+          id: "forest-wolf",
+          name: "森林狼",
+          level: 2,
+          maxHp: 40,
+          atk: 8,
+          def: 2,
+          weakTo: WEAPON_TYPES.BLUNT,
+          lootTable: [
+            { itemId: "wolf-fur", rate: 0.8 },
+            { itemId: "wolf-fang", rate: 0.6 },
+            { itemId: "wolf-pelt", rate: 0.45 },
+            { itemId: "moonbone", rate: 0.15 },
+            { itemId: "wild-meat", rate: 0.35 }
+          ],
+          humanoid: false,
+          xpReward: 14
+        },
+        {
+          id: "sproutling",
+          name: "小樹精",
+          level: 2,
+          maxHp: 35,
+          atk: 7,
+          def: 3,
+          weakTo: WEAPON_TYPES.SLASH,
+          lootTable: [
+            { itemId: "sap-droplet", rate: 0.8 },
+            { itemId: "tiny-branch", rate: 0.6 },
+            { itemId: "bark-chip", rate: 0.45 },
+            { itemId: "heartwood-chip", rate: 0.18 },
+            { itemId: "firewood", rate: 0.4 }
+          ],
+          humanoid: false,
+          xpReward: 12
+        },
+        {
+          id: "bug-soldier",
+          name: "甲殼蟲兵",
+          level: 3,
+          maxHp: 36,
+          atk: 7,
+          def: 4,
+          weakTo: WEAPON_TYPES.BLUNT,
+          lootTable: [
+            { itemId: "bug-shell", rate: 0.75 },
+            { itemId: "insect-wing", rate: 0.4 },
+            { itemId: "hard-shell", rate: 0.25 },
+            { itemId: "venom-stinger", rate: 0.2 },
+            { itemId: "herb", rate: 0.25 }
+          ],
+          humanoid: false,
+          xpReward: 15
+        },
+        {
+          id: "goblin-warrior",
+          name: "哥布林戰士",
+          level: 4,
+          maxHp: 48,
+          atk: 10,
+          def: 3,
+          weakTo: WEAPON_TYPES.SLASH,
+          lootTable: [
+            { itemId: "goblin-cloth", rate: 0.7 },
+            { itemId: "metal-scrap", rate: 0.5 },
+            { itemId: "totem-frag", rate: 0.3 },
+            { itemId: "war-tag", rate: 0.2 },
+            { itemId: "goblin-charm", rate: 0.1 }
+          ],
+          humanoid: true,
+          xpReward: 18
+        },
+        {
+          id: "goblin-rogue",
+          name: "哥布林盜賊",
+          level: 4,
+          maxHp: 42,
+          atk: 9,
+          def: 2,
+          weakTo: WEAPON_TYPES.BLUNT,
+          lootTable: [
+            { itemId: "goblin-cloth", rate: 0.7 },
+            { itemId: "metal-scrap", rate: 0.4 },
+            { itemId: "totem-frag", rate: 0.35 },
+            { itemId: "goblin-charm", rate: 0.18 },
+            { itemId: "herb", rate: 0.25 }
+          ],
+          humanoid: true,
+          xpReward: 18
+        }
+      ];
+
+      class Game {
+        constructor() {
+          this.mode = "village";
+          this.logEl = document.getElementById("log");
+          this.infoEl = document.getElementById("info");
+          this.actionsEl = document.getElementById("actions");
+
+          this.playerHpBar = document.getElementById("playerHpBar");
+          this.playerMpBar = document.getElementById("playerMpBar");
+          this.playerHungerBar = document.getElementById("playerHungerBar");
+          this.playerThirstBar = document.getElementById("playerThirstBar");
+
+          this.playerHpText = document.getElementById("playerHpText");
+          this.playerMpText = document.getElementById("playerMpText");
+          this.playerAtkText = document.getElementById("playerAtkText");
+          this.playerDefText = document.getElementById("playerDefText");
+          this.playerHungerText = document.getElementById("playerHungerText");
+          this.playerThirstText = document.getElementById("playerThirstText");
+          this.playerMoneyText = document.getElementById("playerMoneyText");
+
+          this.statusLineEl = document.getElementById("statusLine");
+
+          this.monsterHpBar = document.getElementById("monsterHpBar");
+          this.monsterStatsEl = document.getElementById("monsterStats");
+          this.roomInfoEl = document.getElementById("roomInfo");
+          this.locationLabel = document.getElementById("locationLabel");
+          this.distanceLabel = document.getElementById("distanceLabel");
+          this.playerNameLabel = document.getElementById("playerNameLabel");
+          this.actionModeLabel = document.getElementById("actionModeLabel");
+
+          this.logEl.innerHTML = "";
+
+          this.player = {
+            name: "流浪者",
+            level: 1,
+            xp: 0,
+            xpToNext: 30,
+            skillPoints: 0,
+            job: null,
+            maxHp: 60,
+            hp: 60,
+            maxMp: 30,
+            mp: 30,
+            abilities: {
+              STR: 14,
+              DEX: 12,
+              CON: 13,
+              INT: 10,
+              WIS: 12,
+              CHA: 8
             },
-            waterFlaskUses:3,
-            status:{poison:0},
-            weapon:{id:"wood-club",name:"木棒",atkBonus:2,type:WEAPON_TYPES.BLUNT},
-            armor:{body:1,legs:1,boots:1},
-            skills:{
-              emergencyHeal:true,
-              powerStrike:true
+            baseAtk: 8,
+            baseDef: 1,
+            hunger: 100,
+            thirst: 100,
+            distance: 0,
+            money: 300,
+            inventory: {
+              "water-flask": 1,
+              bread: 5
             },
-            questKills:{}
-          this.usedEmergencyHealOnce=false;
+            waterFlaskUses: 3, // 每壺 3 次
+            weapon: null,
+            weaponsOwned: [],
+            armorBody: { id: "villager-shirt", name: "村民服", defBonus: 1 },
+            armorLegs: { id: "villager-pants", name: "村民褲", defBonus: 1 },
+            armorBoots: { id: "villager-shoes", name: "村民鞋", defBonus: 1 },
+            rings: [null, null],
+            necklace: null,
+            hasCampingKit: false,
+            hasFireSkill: false,
+            hasThrowSkill: false,
+            skills: {
+              warriorPowerSlash: 0,
+              warriorGuard: 0,
+              warriorToughness: 0,
+              mageFireball: 0,
+              mageFrostBind: 0,
+              mageMeditation: 0,
+              archerSnipe: 0,
+              archerRapidShot: 0,
+              archerAgility: 0
+            },
+            status: {
+              poison: 0
+            }
           };
-          this.battle=null;
-          this.guild={
-            quests:[],
-            jobQuest:null
+
+          const starterWeapon = {
+            id: "wood-club",
+            name: "木棒",
+            atkBonus: 2,
+            type: WEAPON_TYPES.BLUNT,
+            desc: "簡陋的打擊武器 · 攻擊+2。"
           };
+          this.player.weapon = starterWeapon;
+          this.player.weaponsOwned.push(starterWeapon);
+
+          this.battle = null;
+          this.shop = {
+            itemStock: [],
+            weaponStock: [],
+            armorStock: []
+          };
+          this.guild = {
+            buyList: [],
+            jobQuest: null,
+            quests: []
+          };
+
+          this.lastPowerStrikeUsed = false;
+
+          this.rollShops();
+          this.rollGuild();
           this.rollGuildQuests();
-          this.logEl.innerHTML="";
-          this.log("你帶著一壺水與幾片麵包，來到邊境小村——霧柏村。");
+
+          this.log("你帶著一壺水和幾片麵包，來到邊境小村——霧柏村。遠處的霧柏樹海靜靜地矗立著。");
           this.enterVillage();
         }
 
-        log(msg){
-          const d=document.createElement("div");
-          d.textContent=msg;
-          this.logEl.appendChild(d);
-          this.logEl.scrollTop=this.logEl.scrollHeight;
-        }
-        clearActions(){this.actionsEl.innerHTML="";}
-        addButton(label,onClick,opts={}){
-          const b=document.createElement("button");
-          b.textContent=label;
-          if(opts.variant==="primary")b.classList.add("primary");
-          if(opts.variant==="danger")b.classList.add("danger");
-          if(opts.variant==="ghost")b.classList.add("ghost");
-          if(opts.disabled)b.disabled=true;
-          b.onclick=()=>{if(this.mode==="gameover"&&!opts.allowGameover)return;onClick();};
-          this.actionsEl.appendChild(b);
+        // ===== D20 & 能力值 =====
+        rollD20() {
+          return 1 + Math.floor(Math.random() * 20);
         }
 
-        rollD20(){return 1+Math.floor(Math.random()*20);}
-
-        getAttackValue(){
-          const atk=this.player.baseAtk+(this.player.weapon?this.player.weapon.atkBonus:0);
-          let factor=1;
-          if(this.player.hunger<60||this.player.thirst<60)factor*=0.95;
-          if(this.player.hunger<30||this.player.thirst<30)factor*=0.85;
-          return Math.round(atk*factor);
-        }
-        getDefenseValue(){
-          const def=this.player.baseDef+this.player.armor.body+this.player.armor.legs+this.player.armor.boots;
-          let factor=1;
-          if(this.player.hunger<60||this.player.thirst<60)factor*=0.95;
-          if(this.player.hunger<30||this.player.thirst<30)factor*=0.85;
-          return Math.round(def*factor);
+        abilityMod(score) {
+          return Math.floor((score - 10) / 2);
         }
 
-        updateUI(){
-          const atk=this.getAttackValue();
-          const def=this.getDefenseValue();
-          this.playerHpBar.style.transform=`scaleX(${clamp01(this.player.hp/this.player.maxHp)})`;
-          this.playerMpBar.style.transform=`scaleX(${clamp01(this.player.mp/this.player.maxMp)})`;
-          this.playerHungerBar.style.transform=`scaleX(${clamp01(this.player.hunger/100)})`;
-          this.playerThirstBar.style.transform=`scaleX(${clamp01(this.player.thirst/100)})`;
-          this.playerHpText.textContent=`HP ${this.player.hp} / ${this.player.maxHp}`;
-          this.playerMpText.textContent=`MP ${this.player.mp} / ${this.player.maxMp}`;
-          this.playerAtkText.textContent=`Atk ${atk}`;
-          this.playerDefText.textContent=`Def ${def}`;
-          this.playerHungerText.textContent=this.player.hunger;
-          this.playerThirstText.textContent=this.player.thirst;
-          this.playerMoneyText.textContent=formatMoneyShort(this.player.money);
-
-          const jobName=this.player.job==="warrior"?"戰士":this.player.job==="mage"?"法師":this.player.job==="archer"?"弓手":"冒險者";
-          this.playerNameLabel.textContent=`Lv.${this.player.level} ${jobName}`;
-          if(this.player.status.poison>0){
-            this.statusLineEl.textContent=`狀態：中毒（剩 ${this.player.status.poison} 回合）`;
-          }else{
-            this.statusLineEl.textContent="狀態：正常";
-          }
-          if(this.battle){
-            const m=this.battle.monster;
-            const r=clamp01(this.battle.hp/m.maxHp);
-            this.monsterHpBar.style.transform=`scaleX(${r})`;
-            this.monsterHpBar.style.opacity=r>0?"1":".3";
-            this.monsterStatsEl.textContent=`Lv.${m.level} ${m.name} HP ${this.battle.hp}/${m.maxHp}`;
-            this.roomInfoEl.textContent=`弱點：${m.weakTo||"未知"}`;
-          }else{
-            this.monsterHpBar.style.transform="scaleX(0)";
-            this.monsterHpBar.style.opacity=".3";
-            this.monsterStatsEl.textContent="";
-            this.roomInfoEl.textContent=this.mode==="field"?"你在霧柏樹海·外環徘徊。":(this.mode==="camp"?"你在簡易營地休息。":"");
-          }
-          if(this.mode==="village"){
-            this.locationLabel.textContent="霧柏村";
-            this.actionModeLabel.textContent="村莊";
-            this.infoEl.textContent="你正待在起始之村「霧柏村」。";
-          }else if(this.mode==="field"){
-            this.locationLabel.textContent="霧柏樹海·外環";
-            this.actionModeLabel.textContent="野外";
-            this.infoEl.textContent="你走在霧柏樹海的外圍。";
-          }else if(this.mode==="battle"){
-            this.locationLabel.textContent="霧柏樹海·外環";
-            this.actionModeLabel.textContent="戰鬥";
-          }else if(this.mode==="camp"){
-            this.locationLabel.textContent="霧柏樹海·外環";
-            this.actionModeLabel.textContent="營地";
-          }else if(this.mode==="gameover"){
-            this.actionModeLabel.textContent="結束";
-          }
-          this.distanceLabel.textContent=`距離 ${this.player.distance}`;
+        getStrMod() {
+          return this.abilityMod(this.player.abilities.STR);
+        }
+        getDexMod() {
+          return this.abilityMod(this.player.abilities.DEX);
+        }
+        getConMod() {
+          return this.abilityMod(this.player.abilities.CON);
+        }
+        getWisMod() {
+          return this.abilityMod(this.player.abilities.WIS);
+        }
+        getIntMod() {
+          return this.abilityMod(this.player.abilities.INT);
         }
 
-        loseHungerThirst(h,t){
-          this.player.hunger=Math.max(0,this.player.hunger-h);
-          this.player.thirst=Math.max(0,this.player.thirst-t);
-          if(this.player.hunger===0||this.player.thirst===0){
-            this.player.hp-=2;
-            this.log("在飢餓 / 脫水的狀態下，你感到一陣虛弱，HP-2。");
-            if(this.player.hp<=0){
-              this.player.hp=0;
-              this.gameOver("你因為飢餓與脫水倒下了……");
+        // ===== 通用 =====
+        log(msg) {
+          const line = document.createElement("div");
+          line.textContent = msg;
+          this.logEl.appendChild(line);
+          this.logEl.scrollTop = this.logEl.scrollHeight;
+        }
+
+        clearActions() {
+          this.actionsEl.innerHTML = "";
+        }
+
+        addButton(label, onClick, opts = {}) {
+          const btn = document.createElement("button");
+          btn.textContent = label;
+          if (opts.variant === "primary") btn.classList.add("primary");
+          if (opts.variant === "danger") btn.classList.add("danger");
+          if (opts.variant === "ghost") btn.classList.add("ghost");
+          btn.onclick = () => {
+            if (this.mode === "gameover" && !opts.allowGameover) return;
+            onClick();
+          };
+          this.actionsEl.appendChild(btn);
+          return btn;
+        }
+
+        getAttackFactor() {
+          const h = this.player.hunger;
+          const t = this.player.thirst;
+          let factor = 1;
+          if (h < 60 || t < 60) factor = 0.95;
+          if (h < 30 || t < 30) factor = 0.85;
+          if (h < 10 || t < 10) factor = 0.75;
+          return factor;
+        }
+
+        getDefenseFactor() {
+          const h = this.player.hunger;
+          const t = this.player.thirst;
+          let factor = 1;
+          if (h < 60 || t < 60) factor = 0.95;
+          if (h < 30 || t < 30) factor = 0.85;
+          if (h < 10 || t < 10) factor = 0.75;
+          return factor;
+        }
+
+        applyTravelCost() {
+          this.player.hunger = Math.max(0, this.player.hunger - 1);
+          this.player.thirst = Math.max(0, this.player.thirst - 1);
+          this.checkHungerThirstDamage("長途行走");
+          this.applyPoisonDamage("行動消耗");
+        }
+
+        applyBattleCost() {
+          this.player.hunger = Math.max(0, this.player.hunger - 1);
+          this.player.thirst = Math.max(0, this.player.thirst - 2);
+          this.checkHungerThirstDamage("戰鬥消耗");
+          this.applyPoisonDamage("戰鬥的消耗");
+        }
+
+        checkHungerThirstDamage(reason) {
+          if (this.player.hunger < 10 || this.player.thirst < 10) {
+            const dmg = 2;
+            this.player.hp -= dmg;
+            if (this.player.hp < 0) this.player.hp = 0;
+            this.log(`因為${reason}，在飢餓 / 脫水狀態下，你額外損失了 ${dmg} 點生命。`);
+            if (this.player.hp <= 0) {
+              this.gameOver("你因為飢餓與脫水倒在了樹海邊緣……");
             }
           }
         }
 
-        applyPoisonTick(context){
-          if(this.player.status.poison>0){
-            this.player.status.poison--;
-            this.player.hp-=3;
-            this.log(`毒素在體內翻攪（${context}），HP-3。`);
-            if(this.player.hp<=0){
-              this.player.hp=0;
+        applyPoisonDamage(reason) {
+          if (this.player.status.poison && this.player.status.poison > 0) {
+            const dmg = 3;
+            this.player.status.poison -= 1;
+            this.player.hp -= dmg;
+            if (this.player.hp < 0) this.player.hp = 0;
+            this.log(`毒素在體內翻攪，你因為${reason}損失了 ${dmg} 點HP。`);
+            if (this.player.hp <= 0) {
               this.gameOver("你在劇烈的毒痛中失去了意識……");
             }
           }
         }
 
-        gainXp(n){
-          if(n<=0)return;
-          this.player.xp+=n;
-          this.log(`你獲得了 ${n} 點經驗值。（${this.player.xp}/${this.player.xpToNext}）`);
-          while(this.player.xp>=this.player.xpToNext){
-            this.player.xp-=this.player.xpToNext;
-            this.player.level++;
-            this.player.maxHp+=6;
-            this.player.maxMp+=3;
-            this.player.hp=this.player.maxHp;
-            this.player.mp=this.player.maxMp;
-            this.player.skillPoints++;
-            this.player.xpToNext=Math.floor(this.player.xpToNext*1.3);
+        gainXp(amount) {
+          if (amount <= 0) return;
+          this.player.xp += amount;
+          this.log(`你獲得了 ${amount} 點經驗值。（目前 ${this.player.xp} / ${this.player.xpToNext}）`);
+          while (this.player.xp >= this.player.xpToNext) {
+            this.player.xp -= this.player.xpToNext;
+            this.player.level += 1;
+            this.player.skillPoints += 1;
+            this.player.maxHp += 6;
+            this.player.maxMp += 3;
+            this.player.hp = this.player.maxHp;
+            this.player.mp = this.player.maxMp;
+            this.player.xpToNext = Math.floor(this.player.xpToNext * 1.3);
             this.log(`你升到了 Lv.${this.player.level}，獲得 1 點技能點！`);
           }
         }
 
-        // === 村莊 ===
-        enterVillage(){
-          this.mode="village";
-          this.battle=null;
-          this.player.distance=0;
+        updateUI() {
+          const atk =
+            this.player.baseAtk +
+            (this.player.weapon ? this.player.weapon.atkBonus : 0);
+          const def =
+            this.player.baseDef +
+            (this.player.armorBody ? this.player.armorBody.defBonus : 0) +
+            (this.player.armorLegs ? this.player.armorLegs.defBonus : 0) +
+            (this.player.armorBoots ? this.player.armorBoots.defBonus : 0);
+
+          const hpRatio = clamp01(this.player.hp / this.player.maxHp);
+          const mpRatio = clamp01(this.player.mp / this.player.maxMp);
+          const hungerRatio = clamp01(this.player.hunger / 100);
+          const thirstRatio = clamp01(this.player.thirst / 100);
+
+          this.playerHpBar.style.transform = `scaleX(${hpRatio})`;
+          this.playerMpBar.style.transform = `scaleX(${mpRatio})`;
+          this.playerHungerBar.style.transform = `scaleX(${hungerRatio})`;
+          this.playerThirstBar.style.transform = `scaleX(${thirstRatio})`;
+
+          this.playerHpText.textContent = `HP ${this.player.hp} / ${this.player.maxHp}`;
+          this.playerMpText.textContent = `MP ${this.player.mp} / ${this.player.maxMp}`;
+          this.playerAtkText.textContent = `Atk ${atk}`;
+          this.playerDefText.textContent = `Def ${def}`;
+          this.playerHungerText.textContent = `${this.player.hunger}`;
+          this.playerThirstText.textContent = `${this.player.thirst}`;
+          this.playerMoneyText.textContent = formatMoney(this.player.money);
+
+          let statusText = "狀態：正常";
+          if (this.player.status.poison && this.player.status.poison > 0) {
+            statusText = `狀態：中毒（剩 ${this.player.status.poison} 回合）`;
+          }
+          this.statusLineEl.textContent = statusText;
+
+          const jobName =
+            this.player.job === "warrior"
+              ? "戰士"
+              : this.player.job === "mage"
+              ? "法師"
+              : this.player.job === "archer"
+              ? "弓手"
+              : "冒險者";
+
+          this.playerNameLabel.textContent = `Lv.${this.player.level} ${jobName}`;
+
+          this.locationLabel.textContent =
+            this.mode === "field" || this.mode === "battle" || this.mode === "camp"
+              ? "霧柏樹海·外環"
+              : "霧柏村";
+          this.distanceLabel.textContent = `距離 ${this.player.distance}`;
+
+          if (this.battle) {
+            const m = this.battle.monster;
+            const ratio = clamp01(this.battle.monsterHp / m.maxHp);
+            this.monsterHpBar.style.transform = `scaleX(${ratio})`;
+            this.monsterHpBar.style.opacity = ratio > 0 ? "1" : "0.3";
+            this.monsterStatsEl.textContent = `Lv.${m.level || 1} ${m.name} HP ${this.battle.monsterHp}/${m.maxHp}`;
+            this.roomInfoEl.textContent = `弱點：${m.weakTo || "未知"}`;
+          } else {
+            this.monsterHpBar.style.transform = "scaleX(0)";
+            this.monsterHpBar.style.opacity = "0.3";
+            this.monsterStatsEl.textContent = "";
+            this.roomInfoEl.textContent =
+              this.mode === "field"
+                ? "待在樹海外環中。"
+                : this.mode === "village"
+                ? "目前身處霧柏村。"
+                : this.mode === "camp"
+                ? "你在樹海中紮營休息。"
+                : "";
+          }
+
+          if (this.mode === "village") {
+            this.actionModeLabel.textContent = "村莊";
+            this.infoEl.innerHTML = "你正待在起始之村 <strong>霧柏村</strong>。";
+          } else if (this.mode === "field") {
+            this.actionModeLabel.textContent = "野外";
+            this.infoEl.textContent = "你正在霧柏樹海·外環徘徊。";
+          } else if (this.mode === "camp") {
+            this.actionModeLabel.textContent = "營地";
+            this.infoEl.textContent = "你在樹海中搭起簡易營地，暫時遠離怪物的威脅。";
+          } else if (this.mode === "battle") {
+            this.actionModeLabel.textContent = "戰鬥";
+            if (this.battle && this.battle.monster) {
+              this.infoEl.innerHTML =
+                '<span class="monster-name">' +
+                this.battle.monster.name +
+                "</span> 向你襲來！";
+            }
+          } else if (this.mode === "gameover") {
+            this.actionModeLabel.textContent = "結束";
+            this.infoEl.textContent = "遊戲結束。";
+          }
+        }
+
+        // ===== 村莊 & 公會 =====
+        rollShops() {
+          this.shop.itemStock = [...ItemShopFixed];
+          const pool = [...ItemShopRandomPool];
+          for (let i = 0; i < 2 && pool.length > 0; i++) {
+            const idx = Math.floor(rand() * pool.length);
+            this.shop.itemStock.push(pool.splice(idx, 1)[0]);
+          }
+
+          this.shop.weaponStock = [...WeaponShopFixed];
+          const wpool = [...WeaponShopRandomPool];
+          for (let i = 0; i < 2 && wpool.length > 0; i++) {
+            const idx = Math.floor(rand() * wpool.length);
+            this.shop.weaponStock.push(wpool.splice(idx, 1)[0]);
+          }
+
+          this.shop.armorStock = [...ArmorShopFixed];
+          const apool = [...ArmorShopRandomPool];
+          for (let i = 0; i < 2 && apool.length > 0; i++) {
+            const idx = Math.floor(rand() * apool.length);
+            this.shop.armorStock.push(apool.splice(idx, 1)[0]);
+          }
+        }
+
+        rollGuild() {
+          const candidates = [...GuildBuyCandidates];
+          const buyList = [];
+          const count = 2 + Math.floor(rand() * 2);
+          for (let i = 0; i < count && candidates.length > 0; i++) {
+            const idx = Math.floor(rand() * candidates.length);
+            const id = candidates.splice(idx, 1)[0];
+            const base = this.getBaseSellPrice(id);
+            const price = Math.max(1, Math.round(base * 1.4));
+            const maxCount = 3 + Math.floor(rand() * 4);
+            buyList.push({
+              itemId: id,
+              remaining: maxCount,
+              price
+            });
+          }
+          this.guild.buyList = buyList;
+        }
+
+        rollGuildQuests() {
+          const quests = [];
+
+          const huntMonster = Monsters[Math.floor(rand() * Monsters.length)];
+          const huntCount = 3 + Math.floor(rand() * 3);
+          const rewardMoney = 80 + Math.floor(rand() * 80);
+          const rewardXp = 20 + (huntMonster.level || 1) * 2;
+          quests.push({
+            id: "hunt-" + huntMonster.id,
+            type: "hunt",
+            targetId: huntMonster.id,
+            name: `討伐：擊倒 ${huntCount} 隻 ${huntMonster.name}`,
+            countRequired: huntCount,
+            progress: 0,
+            rewardMoney,
+            rewardXp,
+            completed: false
+          });
+
+          const itemId = GuildBuyCandidates[Math.floor(rand() * GuildBuyCandidates.length)];
+          const collectCount = 3 + Math.floor(rand() * 4);
+          const rewardMoney2 = 60 + Math.floor(rand() * 80);
+          const rewardXp2 = 15 + collectCount * 2;
+          quests.push({
+            id: "collect-" + itemId,
+            type: "collect",
+            targetId: itemId,
+            name: `收集：提交 ${collectCount} 個 ${this.getItemName(itemId)}`,
+            countRequired: collectCount,
+            rewardMoney: rewardMoney2,
+            rewardXp: rewardXp2,
+            completed: false
+          });
+
+          this.guild.quests = quests;
+        }
+
+        enterVillage() {
+          this.mode = "village";
+          this.battle = null;
+          this.player.distance = 0;
+          this.rollShops();
+          this.rollGuild();
+          this.rollGuildQuests();
           this.updateUI();
           this.renderVillageActions();
         }
-        renderVillageActions(){
+
+        renderVillageActions() {
           this.clearActions();
-          this.addButton("前往霧柏樹海·外環",()=>this.enterField(),{variant:"primary"});
-          this.addButton("在旅館休息（30銅）",()=>this.restInn());
-          this.addButton("村內設施",()=>this.renderVillageFacilities());
-          this.addButton("角色 / 背包 / 技能",()=>this.openCharacterMenu("village"));
+          this.addButton(
+            "前往霧柏樹海·外環",
+            () => {
+              this.enterField();
+            },
+            { variant: "primary" }
+          );
+          this.addButton(
+            "在旅館休息（30銅，HP/MP 全滿）",
+            () => {
+              const cost = 30;
+              if (this.player.money < cost) {
+                this.log("你摸了摸口袋，發現錢不太夠今晚住旅館。");
+                return;
+              }
+              this.player.money -= cost;
+              this.player.hp = this.player.maxHp;
+              this.player.mp = this.player.maxMp;
+              this.player.hunger = 100;
+              this.player.thirst = 100;
+              this.player.status.poison = 0;
+              this.log("你在村莊旅館好好睡了一晚，精神飽滿地醒來。");
+              this.updateUI();
+            }
+          );
+          this.addButton("村內設施", () => this.renderVillageFacilitiesMenu());
+          this.addButton("查看背包", () => this.showInventory());
+          this.addButton("使用道具", () => this.useItemMenuInVillage());
+          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
+          this.addButton("製作物品", () => this.openCraftingMenu("village"));
+          this.addButton("狀態／裝備", () => this.showStatusMenu());
+          this.addButton("查看任務", () => this.viewQuestsAnywhere());
+          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+          this.addButton(
+            "與村長交談（提示）",
+            () => this.talkToElder(),
+            { variant: "ghost" }
+          );
         }
-        restInn(){
-          const cost=30;
-          if(this.player.money<cost){
-            this.log("你的錢不太夠今晚住旅館。");
+
+        renderVillageFacilitiesMenu() {
+          this.clearActions();
+          this.log("你走到村莊中央，周圍是幾間簡單的店鋪與一口水井。");
+          this.addButton("道具店", () => this.openItemShop());
+          this.addButton("武器店", () => this.openWeaponShop());
+          this.addButton("防具店", () => this.openArmorShop());
+          this.addButton("冒險者公會", () => this.openGuildMenu());
+          this.addButton("村莊水井（回滿口渴）", () => this.useVillageWell());
+          this.addButton(
+            "返回村莊廣場",
+            () => this.renderVillageActions(),
+            { variant: "ghost" }
+          );
+        }
+
+        useVillageWell() {
+          const before = this.player.thirst;
+          if (this.player.thirst >= 100) {
+            this.log("你從水井旁經過，現在並不覺得口渴。");
             return;
           }
-          this.player.money-=cost;
-          this.player.hp=this.player.maxHp;
-          this.player.mp=this.player.maxMp;
-          this.player.hunger=100;
-          this.player.thirst=100;
-          this.player.status.poison=0;
-          this.log("你在旅館睡了一晚，精神飽滿地醒來。");
-          this.updateUI();
-        }
-        renderVillageFacilities(){
-          this.clearActions();
-          this.log("你來到村莊中央，周圍有水井與簡單的店鋪、公會。");
-          this.addButton("道具店",()=>this.openItemShop());
-          this.addButton("武器店",()=>this.openWeaponShop());
-          this.addButton("防具店",()=>this.openArmorShop());
-          this.addButton("冒險者公會",()=>this.openGuildMenu());
-          this.addButton("村莊水井",()=>this.useVillageWell());
-          this.addButton("返回村莊廣場",()=>this.renderVillageActions(),{variant:"ghost"});
-        }
-        useVillageWell(){
-          let msg=[];
-          if(this.player.thirst<100){
-            const before=this.player.thirst;
-            this.player.thirst=100;
-            msg.push(`你痛快地喝了幾口井水，口渴+${100-before}。`);
-          }else{
-            msg.push("你在水井邊洗了把臉，現在並不特別口渴。");
-          }
-          const empty=this.player.inventory["empty-flask"]||0;
-          if(empty>0){
-            this.player.inventory["empty-flask"]-=empty;
-            if(this.player.inventory["empty-flask"]<=0)delete this.player.inventory["empty-flask"];
-            this.player.inventory["water-flask"]=(this.player.inventory["water-flask"]||0)+empty;
-            if(this.player.waterFlaskUses<=0)this.player.waterFlaskUses=3;
-            msg.push(`你順便把 ${empty} 個空水壺都裝滿了井水。`);
-          }
-          this.log(msg.join(" "));
+          this.player.thirst = 100;
+          const gain = this.player.thirst - before;
+          this.log(`你在水井邊痛快地喝了幾口冷水，口渴值回復了 ${gain}。`);
           this.updateUI();
         }
 
-        // === 商店 ===
-        openItemShop(){
+        showStatusMenu() {
+          this.log("【角色狀態】");
+          const A = this.player.abilities;
+          const modText = m => (m >= 0 ? `+${m}` : `${m}`);
+          this.log(`STR 力量：${A.STR}（修正 ${modText(this.getStrMod())}）`);
+          this.log(`DEX 敏捷：${A.DEX}（修正 ${modText(this.getDexMod())}）`);
+          this.log(`CON 體質：${A.CON}（修正 ${modText(this.getConMod())}）`);
+          this.log(`WIS 感知：${A.WIS}（修正 ${modText(this.getWisMod())}）`);
+          this.log(`INT 智力：${A.INT} / CHA 魅力：${A.CHA}`);
+          this.log(`經驗值：${this.player.xp} / ${this.player.xpToNext}，可用技能點：${this.player.skillPoints}`);
+
+          const w = this.player.weapon;
+          const body = this.player.armorBody;
+          const legs = this.player.armorLegs;
+          const boots = this.player.armorBoots;
+
+          this.log("【裝備】");
+          this.log(`武器：${w ? `${w.name}（類型：${w.type} · 攻擊+${w.atkBonus}）` : "無"}`);
+          this.log(`身體：${body ? `${body.name}（防禦+${body.defBonus}）` : "—"}`);
+          this.log(`下裝：${legs ? `${legs.name}（防禦+${legs.defBonus}）` : "—"}`);
+          this.log(`鞋子：${boots ? `${boots.name}（防禦+${boots.defBonus}）` : "—"}`);
+          this.log(`戒指：${this.player.rings.map(r => (r ? r.name : "空")).join(" / ")}`);
+          this.log(`項鍊：${this.player.necklace ? this.player.necklace.name : "空"}`);
+
           this.clearActions();
-          this.log("你走進了村裡的道具店。");
-          const fixed=[
-            {id:"small-potion",price:40},
-            {id:"medium-potion",price:90},
-            {id:"return-scroll",price:100},
-            {id:"water-flask",price:45},
-            {id:"wild-meat",price:30},
-            {id:"bread",price:36}
-          ];
-          fixed.forEach(it=>{
-            const name=getLootName(it.id);
-            this.addButton(name,()=>{
-              this.showItemShopDetail(it.id,it.price);
+          this.addButton("切換武器", () => this.showWeaponEquipMenu());
+          this.addButton("切換防具", () => this.showArmorMenu());
+          this.addButton(
+            "返回",
+            () => {
+              if (this.mode === "village") this.renderVillageActions();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+              else if (this.mode === "battle") this.renderBattleActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        showWeaponEquipMenu() {
+          const list = this.player.weaponsOwned;
+          if (!list || list.length <= 1) {
+            this.log("目前沒有其他可以切換的武器。");
+            return;
+          }
+          this.clearActions();
+          this.log("選擇要裝備的武器：");
+          list.forEach(w => {
+            const isCurrent = this.player.weapon === w;
+            const label = `${w.name}（${w.type} · Atk+${w.atkBonus}）${isCurrent ? "【已裝備】" : ""}`;
+            this.addButton(label, () => {
+              this.player.weapon = w;
+              this.log(`你裝備了：${w.name}`);
+              this.updateUI();
+              this.showWeaponEquipMenu();
             });
           });
-          this.addButton("出售物品",()=>this.openSellMenu());
-          this.addButton("離開道具店",()=>this.renderVillageFacilities(),{variant:"ghost"});
+          this.addButton(
+            "返回狀態頁",
+            () => this.showStatusMenu(),
+            { variant: "ghost" }
+          );
         }
 
-        showItemShopDetail(id,price){
-          const data=UsableItems[id];
-          const name=getLootName(id);
+        showArmorMenu() {
           this.clearActions();
-          this.log(`【${name}】`);
-          if(data&&data.desc)this.log(data.desc);
-          if(data){
-            if(data.type==="heal")this.log(`效果：回復約 ${data.amount} 點HP。`);
-            else if(data.type==="thirst")this.log(`效果：每次使用回復約 ${data.amount} 點口渴，可使用多次。`);
-            else if(data.type==="hunger")this.log(`效果：回復約 ${data.amount} 點飽食。`);
-            else if(data.type==="hungerFull")this.log("效果：直接將飽食度填滿。");
-            else if(data.type==="hungerRaw")this.log("效果：回復飽食，但有機率中毒。");
-            else if(data.type==="return")this.log("效果：立刻返回霧柏村，不消耗飢餓與口渴。");
-          }
-          this.log(`價格：${formatMoneyShort(price)}`);
-          this.addButton("購買",()=>this.buyItem(id,price),{variant:"primary"});
-          this.addButton("返回道具列表",()=>this.openItemShop(),{variant:"ghost"});
+          this.log("選擇要更換的裝備部位：");
+          this.addButton("上衣", () => this.showArmorSlotMenu("body"));
+          this.addButton("下裝", () => this.showArmorSlotMenu("legs"));
+          this.addButton("鞋子", () => this.showArmorSlotMenu("boots"));
+          this.addButton(
+            "返回狀態頁",
+            () => this.showStatusMenu(),
+            { variant: "ghost" }
+          );
         }
-        buyItem(id,price){
-          if(this.player.money<price){
+
+        showArmorSlotMenu(slot) {
+          this.clearActions();
+          const slotName = slot === "body" ? "上衣" : slot === "legs" ? "下裝" : "鞋子";
+          this.log(`更換【${slotName}】：`);
+
+          const equipped = slot === "body" ? this.player.armorBody : slot === "legs" ? this.player.armorLegs : this.player.armorBoots;
+
+          const ownedIds = new Set();
+          if (equipped && ArmorDefs[equipped.id]) ownedIds.add(equipped.id);
+          for (const id of Object.keys(this.player.inventory)) {
+            if (ArmorDefs[id] && ArmorDefs[id].slot === slot) {
+              ownedIds.add(id);
+            }
+          }
+
+          if (ownedIds.size === 0) {
+            this.log("你目前沒有其他可用的裝備。");
+          } else {
+            ownedIds.forEach(id => {
+              const def = ArmorDefs[id];
+              const isCurrent = equipped && equipped.id === id;
+              const count = this.player.inventory[id] || 0;
+              const extra = isCurrent ? "【已裝備】" : count > 0 ? `（背包中x${count}）` : "";
+              const label = `${def.name}（Def+${def.defBonus}）${extra}`;
+              this.addButton(label, () => {
+                if (isCurrent) {
+                  this.log(`${def.name} 已經穿在身上了。`);
+                  return;
+                }
+                if (!this.player.inventory[id] || this.player.inventory[id] <= 0) {
+                  this.log("你現在沒有備用的這件裝備。");
+                  return;
+                }
+                this.player.inventory[id] -= 1;
+                if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+
+                if (equipped && ArmorDefs[equipped.id]) {
+                  this.player.inventory[equipped.id] =
+                    (this.player.inventory[equipped.id] || 0) + 1;
+                }
+
+                const newArmor = { id: def.id, name: def.name, defBonus: def.defBonus };
+                if (slot === "body") this.player.armorBody = newArmor;
+                else if (slot === "legs") this.player.armorLegs = newArmor;
+                else this.player.armorBoots = newArmor;
+
+                this.log(`你換上了【${def.name}】。`);
+                this.updateUI();
+                this.showArmorSlotMenu(slot);
+              });
+            });
+          }
+
+          this.addButton(
+            "返回裝備部位選單",
+            () => this.showArmorMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        talkToElder() {
+          this.log("村長：『樹海裡的怪物不會帶著錢走路，但身上的東西都能賣。』");
+          this.log("村長：『人型怪物像哥布林，有時候會帶著錢袋，打倒時說不定會掉出來。』");
+          this.log("村長：『回程卷軸雖然貴，但能省一條命。水壺喝完也別丟，之後在河邊可以再裝滿。』");
+          this.log("村長：『想轉職的話，記得去公會登記，公告板上的討伐跟收集任務也別忘了看。』");
+        }
+
+        describeShopItem(itemId) {
+          let name;
+          let desc = "";
+          const usable = UsableItems[itemId];
+          const loot = getLootById(itemId);
+
+          if (usable) {
+            name = usable.name;
+            desc = usable.desc || "";
+          } else if (loot) {
+            name = loot.name;
+            if (itemId === "herb") {
+              desc = "常見的藥草，經過處理可以製成簡易治療藥水。";
+            } else if (itemId === "wild-meat") {
+              desc = "從野獸身上取得的肉，烤熟之後會好吃得多。";
+            } else if (itemId === "firewood") {
+              desc = "乾燥的柴薪，是維持營火的基本燃料。";
+            } else if (itemId === "slime-fluid") {
+              desc = "帶有黏性的史萊姆體液，是某些藥劑與膠水的材料。";
+            } else if (itemId === "wolf-fur") {
+              desc = "柔軟的狼毛，可以做成保暖衣物或填充物。";
+            }
+          } else if (itemId === "flint") {
+            name = "打火石";
+            desc = "可在營地點火，搭配柴薪與食材可以烹飪。";
+          } else if (itemId === "firewood") {
+            name = "柴薪";
+            desc = "營火燃料，配合打火石或火系技能可生火。";
+          } else if (itemId === "return-scroll") {
+            name = "回程卷軸";
+            desc = "瞬間回到霧柏村，不消耗時間與飽食／口渴，是保命用的奢侈品。";
+          } else if (itemId === "camp-kit") {
+            name = "露營工具";
+            desc = "帳棚與地墊等簡易裝備，可在樹海中紮營，進入安全的營地模式。";
+          } else if (itemId === "bread") {
+            name = "麵包";
+            desc = "粗糙但扎實的麵包，一整個吃下去可以把飽食度補滿。";
+          } else {
+            name = itemId;
+          }
+          return { name, desc };
+        }
+
+        // ===== 商店 =====
+        openItemShop(isCaravan = false) {
+          this.clearActions();
+          this.log(
+            isCaravan
+              ? "你與商人車隊做起了交易。"
+              : "你走進了村裡的道具店。"
+          );
+
+          const priceFactor = isCaravan ? 1.3 : 1;
+          const sellFactor = isCaravan ? 0.7 : 0.9;
+
+          this.shop.itemStock.forEach(entry => {
+            const info = this.describeShopItem(entry.itemId);
+            const price = Math.round(entry.basePrice * priceFactor);
+            const priceText = formatMoneyShort(price);
+            const label = `${info.name}（${priceText}）`;
+            this.addButton(label, () => {
+              this.showItemShopDetail({
+                itemId: entry.itemId,
+                name: info.name,
+                desc: info.desc,
+                price,
+                isCaravan
+              });
+            });
+          });
+
+          this.addButton("出售素材／裝備", () => this.openSellMenu(sellFactor));
+          this.addButton(
+            isCaravan ? "離開商人車隊" : "離開道具店",
+            () => {
+              if (this.mode === "village") this.renderVillageFacilitiesMenu();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        showItemShopDetail(info) {
+          this.clearActions();
+          this.log(`【${info.name}】`);
+          if (info.desc) this.log(info.desc);
+          this.log(`價格：${formatMoneyShort(info.price)}`);
+
+          this.addButton(
+            `購買 1 個（${formatMoneyShort(info.price)}）`,
+            () => {
+              this.buyItem(info.itemId, info.price);
+            },
+            { variant: "primary" }
+          );
+
+          const backLabel =
+            info.isCaravan ? "返回商人車隊" : "返回道具店";
+
+          this.addButton(
+            backLabel,
+            () => {
+              this.openItemShop(info.isCaravan);
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        openWeaponShop(isCaravan = false) {
+          this.clearActions();
+          this.log(
+            isCaravan
+              ? "你走到車隊後方，簡易的武器架上擺著幾件兵器。"
+              : "你走進了村裡的武器店。"
+          );
+          const priceFactor = isCaravan ? 1.3 : 1;
+
+          this.shop.weaponStock.forEach(entry => {
+            if (entry.itemId === "arrow") {
+              const price = Math.round(entry.basePrice * priceFactor);
+              const priceText = formatMoneyShort(price);
+              this.addButton(
+                `箭矢x5（${priceText}）`,
+                () => this.buyArrowPack(price)
+              );
+            } else if (entry.itemId === "throw-knife") {
+              const price = Math.round(entry.basePrice * priceFactor);
+              const priceText = formatMoneyShort(price);
+              const u = UsableItems["throw-knife"];
+              this.addButton(
+                `投擲小刀（${priceText}）`,
+                () =>
+                  this.showItemShopDetail({
+                    itemId: "throw-knife",
+                    name: u.name,
+                    desc: u.desc,
+                    price,
+                    isCaravan
+                  })
+              );
+            } else {
+              const price = Math.round(entry.basePrice * priceFactor);
+              const label = `${entry.name}（${formatMoneyShort(price)}）`;
+              this.addButton(label, () =>
+                this.showWeaponShopDetail({
+                  entry,
+                  price,
+                  isCaravan
+                })
+              );
+            }
+          });
+
+          this.addButton(
+            isCaravan ? "離開商人車隊" : "離開武器店",
+            () => {
+              if (this.mode === "village") this.renderVillageFacilitiesMenu();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        showWeaponShopDetail(payload) {
+          const entry = payload.entry;
+          this.clearActions();
+          const rangedText = entry.ranged ? "（遠程，需要箭矢）" : "";
+          this.log(`【${entry.name}】`);
+          this.log(entry.desc || "");
+          this.log(`類型：${entry.type} · 攻擊+${entry.atkBonus}${rangedText}`);
+          this.log(`價格：${formatMoneyShort(payload.price)}`);
+
+          this.addButton(
+            `購買並裝備（${formatMoneyShort(payload.price)}）`,
+            () => {
+              this.buyWeapon(entry, payload.price);
+            },
+            { variant: "primary" }
+          );
+          this.addButton(
+            payload.isCaravan ? "返回商人車隊武器列表" : "返回武器店",
+            () => this.openWeaponShop(payload.isCaravan),
+            { variant: "ghost" }
+          );
+        }
+
+        openArmorShop() {
+          this.clearActions();
+          this.log("你推開防具店的厚重木門，牆上掛滿了各式護具。");
+          this.shop.armorStock.forEach(entry => {
+            const label = `${entry.name}（${formatMoneyShort(entry.basePrice)}）`;
+            this.addButton(label, () =>
+              this.showArmorShopDetail({
+                entry,
+                price: entry.basePrice
+              })
+            );
+          });
+          this.addButton(
+            "離開防具店",
+            () => this.renderVillageFacilitiesMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        showArmorShopDetail(payload) {
+          const entry = payload.entry;
+          this.clearActions();
+          this.log(`【${entry.name}】`);
+          this.log(entry.desc || "");
+          const slotText =
+            entry.slot === "body"
+              ? "身體"
+              : entry.slot === "legs"
+              ? "下裝"
+              : "鞋子";
+          this.log(`部位：${slotText} · 防禦+${entry.defBonus}`);
+          this.log(`價格：${formatMoneyShort(payload.price)}`);
+
+          this.addButton(
+            `購買並穿上（${formatMoneyShort(payload.price)}）`,
+            () => {
+              this.buyArmor(entry);
+            },
+            { variant: "primary" }
+          );
+          this.addButton(
+            "返回防具店",
+            () => this.openArmorShop(),
+            { variant: "ghost" }
+          );
+        }
+
+        openGuildMenu() {
+          this.clearActions();
+          this.log("你走進霧柏村的冒險者公會，裡面聚集了各種打工冒險者。");
+          this.addButton("今日收購素材", () => this.openGuildBuyMenu(), { variant: "primary" });
+          this.addButton("委託公告板（討伐／收集）", () => this.openGuildQuestMenu());
+          this.addButton("職業 / 轉職 / 技能", () => this.openJobAndSkillMenu());
+          this.addButton(
+            "離開公會",
+            () => this.renderVillageFacilitiesMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        openGuildBuyMenu() {
+          this.clearActions();
+          const list = this.guild.buyList || [];
+          if (!list.length) {
+            this.log("今天公會似乎沒有特別需要的素材。");
+          } else {
+            this.log("公會今天張貼的素材收購告示：");
+            list.forEach((entry, idx) => {
+              const name = this.getItemName(entry.itemId);
+              const priceText = formatMoneyShort(entry.price);
+              const remaining = entry.remaining;
+              const have = this.player.inventory[entry.itemId] || 0;
+              const canSell = remaining > 0 && have > 0;
+              const label = `${idx + 1}. ${name}（需求剩 ${remaining}，單價 ${priceText}，你持有 ${have}）`;
+              const btn = this.addButton(
+                label,
+                () => this.showGuildBuyDetail(entry)
+              );
+              if (!canSell) btn.disabled = true;
+            });
+          }
+          this.addButton(
+            "返回公會大廳",
+            () => this.openGuildMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        showGuildBuyDetail(entry) {
+          this.clearActions();
+          const name = this.getItemName(entry.itemId);
+          const have = this.player.inventory[entry.itemId] || 0;
+          this.log(`【公會收購：${name}】`);
+          this.log(`需求剩餘數量：${entry.remaining}`);
+          this.log(`單價：${formatMoneyShort(entry.price)}（只收購指定數量）`);
+          this.log(`你目前持有：${have}`);
+
+          const canSell = entry.remaining > 0 && have > 0;
+
+          this.addButton(
+            "出售 1 個",
+            () => this.sellToGuild(entry),
+            { variant: "primary", disabled: !canSell }
+          ).disabled = !canSell;
+
+          this.addButton(
+            "返回收購列表",
+            () => this.openGuildBuyMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        openGuildQuestMenu() {
+          this.clearActions();
+          const quests = this.guild.quests || [];
+          if (!quests.length) {
+            this.log("今天的公告板上沒有特別的委託。");
+          } else {
+            this.log("你查看公會的委託公告板：");
+            quests.forEach((q, idx) => {
+              const status = q.completed ? "【已完成】" : "";
+              let progressText = "";
+              if (q.type === "hunt") {
+                progressText = `進度：${q.progress}/${q.countRequired}`;
+              } else {
+                const have = this.player.inventory[q.targetId] || 0;
+                progressText = `持有：${have}/${q.countRequired}`;
+              }
+              const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
+              const label = `${idx + 1}. ${q.name}${status}`;
+              this.addButton(
+                `${label}`,
+                () => this.showQuestDetail(q, true)
+              );
+              this.log(`${label}（${progressText}，報酬：${rewardText}）${status}`);
+            });
+          }
+          this.addButton(
+            "返回公會大廳",
+            () => this.openGuildMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        showQuestDetail(q, canTurnIn) {
+          this.clearActions();
+          this.log(`【${q.name}】`);
+          const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
+          if (q.type === "hunt") {
+            this.log(`類型：討伐任務`);
+            this.log(`目標：${q.countRequired} 隻 ${this.getMonsterName(q.targetId)}`);
+            this.log(`進度：${q.progress}/${q.countRequired}`);
+          } else {
+            const have = this.player.inventory[q.targetId] || 0;
+            this.log(`類型：收集任務`);
+            this.log(`目標：${this.getItemName(q.targetId)} x${q.countRequired}`);
+            this.log(`持有：${have}/${q.countRequired}`);
+          }
+          this.log(`報酬：${rewardText}`);
+          if (q.completed) {
+            this.log("狀態：已完成並領取報酬。");
+          } else {
+            this.log("狀態：尚未完成。");
+          }
+
+          if (canTurnIn) {
+            this.addButton("嘗試交付任務", () => this.handleQuestTurnIn(q), {
+              variant: "primary"
+            });
+          }
+
+          this.addButton(
+            "返回公告板",
+            () => this.openGuildQuestMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        viewQuestsAnywhere() {
+          this.clearActions();
+          const quests = this.guild.quests || [];
+          if (!quests.length) {
+            this.log("你現在沒有任何公會委託。");
+          } else {
+            this.log("目前進行中的公會任務：");
+            quests.forEach((q, idx) => {
+              const status = q.completed ? "【已完成】" : "";
+              let progressText = "";
+              if (q.type === "hunt") {
+                progressText = `進度：${q.progress}/${q.countRequired}`;
+              } else {
+                const have = this.player.inventory[q.targetId] || 0;
+                progressText = `持有：${have}/${q.countRequired}`;
+              }
+              const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
+              this.log(`${idx + 1}. ${q.name}${status}（${progressText}，報酬：${rewardText}）`);
+            });
+          }
+          this.addButton(
+            "關閉任務列表",
+            () => {
+              if (this.mode === "village") this.renderVillageActions();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+              else if (this.mode === "battle") this.renderBattleActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        handleQuestTurnIn(q) {
+          if (q.completed) {
+            this.log("這個委託你已經領過報酬了。");
+            return;
+          }
+          if (q.type === "hunt") {
+            if (q.progress < q.countRequired) {
+              this.log(`討伐任務尚未完成。（目前 ${q.progress}/${q.countRequired}）`);
+              return;
+            }
+          } else if (q.type === "collect") {
+            const have = this.player.inventory[q.targetId] || 0;
+            if (have < q.countRequired) {
+              this.log(`你交出背包一看，素材還不夠。（${have}/${q.countRequired}）`);
+              return;
+            }
+            this.player.inventory[q.targetId] = have - q.countRequired;
+            if (this.player.inventory[q.targetId] <= 0) delete this.player.inventory[q.targetId];
+          }
+          q.completed = true;
+          this.player.money += q.rewardMoney;
+          this.log(`你完成了委託【${q.name}】，獲得 ${formatMoneyShort(q.rewardMoney)} 以及 ${q.rewardXp} 點經驗值。`);
+          this.gainXp(q.rewardXp);
+          this.updateUI();
+        }
+
+        onMonsterKilled(monster) {
+          const quests = this.guild.quests || [];
+          if (!quests.length) return;
+          quests.forEach(q => {
+            if (q.type === "hunt" && !q.completed && q.targetId === monster.id) {
+              q.progress = (q.progress || 0) + 1;
+              if (q.progress >= q.countRequired) {
+                this.log(`【委託達成】你已經完成了討伐任務：${q.name}，回村後記得回公會領取報酬。`);
+              } else {
+                this.log(`討伐任務進度：${q.progress}/${q.countRequired}`);
+              }
+            }
+          });
+        }
+
+        openJobAndSkillMenu() {
+          this.clearActions();
+          const jobDisplay =
+            this.player.job === "warrior"
+              ? "戰士"
+              : this.player.job === "mage"
+              ? "法師"
+              : this.player.job === "archer"
+              ? "弓手"
+              : "無職（見習冒險者）";
+          this.log(`目前職業：${jobDisplay}，等級 Lv.${this.player.level}，可用技能點：${this.player.skillPoints}`);
+
+          if (!this.player.job) {
+            if (this.player.level < 3) {
+              this.log("公會職員：『至少要 Lv.3 才能申請正式職業喔。』");
+            } else if (!this.guild.jobQuest) {
+              this.log("公會職員：『你已經符合條件，可以選擇一種職業試煉。』");
+              this.addButton("申請【戰士】轉職任務", () => this.acceptJobQuest("warrior"));
+              this.addButton("申請【法師】轉職任務", () => this.acceptJobQuest("mage"));
+              this.addButton("申請【弓手】轉職任務", () => this.acceptJobQuest("archer"));
+            } else {
+              const q = this.guild.jobQuest;
+              this.log(`目前進行中的轉職任務：${q.name}`);
+              const reqText = Object.entries(q.requirements)
+                .map(([id, n]) => `${this.getItemName(id)}x${n}`)
+                .join("、");
+              this.log(`需求素材：${reqText}`);
+              this.addButton("提交轉職任務素材", () => this.submitJobQuest());
+            }
+          }
+
+          this.addButton("查看技能／升級", () => this.openSkillUpgradeMenu(), {
+            variant: "primary"
+          });
+          this.addButton(
+            "返回公會大廳",
+            () => this.openGuildMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        acceptJobQuest(job) {
+          if (this.guild.jobQuest) {
+            this.log("你已經有正在進行的轉職任務了。");
+            return;
+          }
+          let quest;
+          if (job === "warrior") {
+            quest = {
+              job: "warrior",
+              name: "戰士轉職試煉：狼與木之試煉",
+              requirements: {
+                "wolf-fang": 3,
+                "firewood": 2
+              }
+            };
+          } else if (job === "mage") {
+            quest = {
+              job: "mage",
+              name: "法師轉職試煉：魔力與草本",
+              requirements: {
+                "slime-core": 2,
+                "herb": 3
+              }
+            };
+          } else if (job === "archer") {
+            quest = {
+              job: "archer",
+              name: "弓手轉職試煉：羽翼與毛皮",
+              requirements: {
+                "insect-wing": 3,
+                "wolf-fur": 2
+              }
+            };
+          } else return;
+          this.guild.jobQuest = quest;
+          this.log(`你接受了【${quest.name}】。`);
+          this.openJobAndSkillMenu();
+        }
+
+        hasQuestMaterials(requirements) {
+          for (const [id, need] of Object.entries(requirements)) {
+            if ((this.player.inventory[id] || 0) < need) return false;
+          }
+          return true;
+        }
+
+        consumeQuestMaterials(requirements) {
+          for (const [id, need] of Object.entries(requirements)) {
+            this.player.inventory[id] = (this.player.inventory[id] || 0) - need;
+            if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          }
+        }
+
+        submitJobQuest() {
+          const q = this.guild.jobQuest;
+          if (!q) {
+            this.log("你目前沒有轉職任務。");
+            return;
+          }
+          if (!this.hasQuestMaterials(q.requirements)) {
+            this.log("你的素材還不足以完成這項試煉。");
+            return;
+          }
+          this.consumeQuestMaterials(q.requirements);
+          this.player.job = q.job;
+          if (q.job === "warrior") {
+            this.player.skills.warriorToughness = 1;
+            this.player.maxHp += 4;
+            this.player.hp += 4;
+            this.log("你通過了戰士試煉，成為了【戰士】！並獲得被動技能【鋼鐵體魄Lv.1】。");
+          } else if (q.job === "mage") {
+            this.player.skills.mageMeditation = 1;
+            this.player.maxMp += 4;
+            this.player.mp += 4;
+            this.player.hasFireSkill = true;
+            this.log("你通過了法師試煉，成為了【法師】！並獲得被動技能【冥想Lv.1】。");
+          } else if (q.job === "archer") {
+            this.player.skills.archerAgility = 1;
+            this.player.baseDef += 1;
+            this.log("你通過了弓手試煉，成為了【弓手】！並獲得被動技能【敏捷身法Lv.1】。");
+          }
+          this.guild.jobQuest = null;
+          this.updateUI();
+          this.openJobAndSkillMenu();
+        }
+
+        openSkillUpgradeMenu() {
+          const job = this.player.job;
+          if (!job) {
+            this.log("你還沒有正式職業，目前只有通用技能【蠻力一擊】與【緊急治療】。");
+          }
+          const skillsDef = job ? JobSkills[job] : null;
+          this.clearActions();
+          this.log(`可用技能點：${this.player.skillPoints}`);
+          if (skillsDef) {
+            skillsDef.forEach(def => {
+              const lv = this.player.skills[def.id] || 0;
+              const typeText = def.type === "passive" ? "被動" : "主動";
+              const label = `${def.name}（${typeText}，Lv.${lv}/5）`;
+              this.addButton(label, () => this.showSkillDetail(def));
+            });
+          } else {
+            this.log("尚未轉職，暫無職業技能可以升級。");
+          }
+          this.addButton(
+            "返回",
+            () => {
+              if (this.mode === "village") this.renderVillageActions();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+              else if (this.mode === "battle") this.renderBattleActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        showSkillDetail(def) {
+          this.clearActions();
+          const lv = this.player.skills[def.id] || 0;
+          const typeText = def.type === "passive" ? "被動技能" : "主動技能";
+          this.log(`【${def.name}】`);
+          this.log(`類型：${typeText}，目前等級 Lv.${lv}/5`);
+          this.log(def.desc);
+          this.log("升級需要 1 點技能點，最高 Lv.5。");
+
+          const canLevel = this.player.skillPoints > 0 && lv < 5;
+          const btn = this.addButton(
+            "升級此技能",
+            () => this.upgradeSkill(def),
+            { variant: "primary" }
+          );
+          if (!canLevel) btn.disabled = true;
+
+          this.addButton(
+            "返回技能列表",
+            () => this.openSkillUpgradeMenu(),
+            { variant: "ghost" }
+          );
+        }
+
+        upgradeSkill(def) {
+          const id = def.id;
+          const curr = this.player.skills[id] || 0;
+          if (curr >= 5) {
+            this.log(`${def.name} 已經達到等級上限。`);
+            return;
+          }
+          if (this.player.skillPoints <= 0) {
+            this.log("沒有多餘的技能點可以分配。");
+            return;
+          }
+          this.player.skills[id] = curr + 1;
+          this.player.skillPoints -= 1;
+          if (id === "warriorToughness") {
+            this.player.maxHp += 4;
+            this.player.hp += 4;
+          } else if (id === "mageMeditation") {
+            this.player.maxMp += 4;
+            this.player.mp += 4;
+          } else if (id === "archerAgility") {
+            this.player.baseDef += 1;
+          } else if (id === "mageFireball") {
+            this.player.hasFireSkill = true;
+          }
+          this.log(`【${def.name}】升級為 Lv.${this.player.skills[id]}。`);
+          this.updateUI();
+          this.openSkillUpgradeMenu();
+        }
+
+        buyArrowPack(price) {
+          if (this.player.money < price) {
             this.log("你的錢不夠。");
             return;
           }
-          this.player.money-=price;
-          this.player.inventory[id]=(this.player.inventory[id]||0)+1;
-          if(id==="water-flask"&&this.player.waterFlaskUses<=0)this.player.waterFlaskUses=3;
-          if(id==="camp-kit")this.player.hasCampKit=true;
-          this.log(`你購買了 1 個 ${getLootName(id)}。`);
+          this.player.money -= price;
+          this.player.inventory["arrow"] = (this.player.inventory["arrow"] || 0) + 5;
+          this.log(`你購買了 5 支箭矢（花費 ${formatMoneyShort(price)}）。`);
           this.updateUI();
         }
-        getSellBase(id){
-          if(id==="small-potion")return 20;
-          if(id==="medium-potion")return 45;
-          if(id==="return-scroll")return 50;
-          if(id==="water-flask")return 30;
-          if(id==="empty-flask")return 5;
-          if(id==="wild-meat")return 20;
-          if(id==="grilled-meat")return 25;
-          if(id==="bread")return 25;
-          if(id==="wolf-fur")return 15;
-          if(id==="firewood")return 5;
-          if(id==="herb")return 8;
-          if(id==="slime-fluid")return 6;
-          if(id==="goblin-tag")return 18;
-          return 5;
+
+        buyItem(itemId, price) {
+          if (this.player.money < price) {
+            this.log("你的錢不夠。");
+            return;
+          }
+          this.player.money -= price;
+          this.player.inventory[itemId] =
+            (this.player.inventory[itemId] || 0) + 1;
+          this.log(`你購買了 1 個 ${this.getItemName(itemId)}（花費 ${formatMoneyShort(price)}）。`);
+
+          if (itemId === "camp-kit") {
+            this.player.hasCampingKit = true;
+          }
+          if (itemId === "water-flask" && this.player.waterFlaskUses <= 0) {
+            this.player.waterFlaskUses = 3;
+          }
+
+          this.updateUI();
         }
-        openSellMenu(){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0);
-          if(!entries.length){
+
+        buyWeapon(entry, finalPrice) {
+          const price = finalPrice != null ? finalPrice : entry.basePrice;
+          if (this.player.money < price) {
+            this.log("你的錢不夠。");
+            return;
+          }
+          this.player.money -= price;
+          const weapon = {
+            id: entry.itemId,
+            name: entry.name,
+            atkBonus: entry.atkBonus,
+            type: entry.type,
+            ranged: !!entry.ranged,
+            desc: entry.desc || ""
+          };
+          this.player.weaponsOwned.push(weapon);
+          this.player.weapon = weapon;
+          this.log(`你購買並裝備了新的武器：${weapon.name}（${weapon.type} · Atk+${weapon.atkBonus}），花費 ${formatMoneyShort(price)}。`);
+          if (weapon.ranged) {
+            this.log("這是遠程武器，需要消耗箭矢才可以攻擊。");
+          }
+          this.updateUI();
+        }
+
+        buyArmor(entry) {
+          const price = entry.basePrice;
+          if (this.player.money < price) {
+            this.log("你的錢不夠。");
+            return;
+          }
+          this.player.money -= price;
+
+          const def = ArmorDefs[entry.itemId];
+          const newArmor = { id: def.id, name: def.name, defBonus: def.defBonus };
+
+          let old;
+          if (entry.slot === "body") {
+            old = this.player.armorBody;
+            this.player.armorBody = newArmor;
+          } else if (entry.slot === "legs") {
+            old = this.player.armorLegs;
+            this.player.armorLegs = newArmor;
+          } else if (entry.slot === "boots") {
+            old = this.player.armorBoots;
+            this.player.armorBoots = newArmor;
+          }
+
+          if (old && ArmorDefs[old.id]) {
+            this.player.inventory[old.id] =
+              (this.player.inventory[old.id] || 0) + 1;
+          }
+
+          this.log(`你購買並換上了【${entry.name}】，舊裝備被你收進背包裡。`);
+          this.updateUI();
+        }
+
+        openSellMenu(sellFactor = 1) {
+          const entries = Object.entries(this.player.inventory);
+          if (entries.length === 0) {
             this.log("你沒有任何可以出售的東西。");
             return;
           }
           this.clearActions();
-          this.log("你將物品攤在桌上，開始估價……");
-          entries.forEach(([id,count])=>{
-            const price=this.getSellBase(id);
-            const name=getLootName(id);
-            this.addButton(`${name} x${count}（賣出一個 ${formatMoneyShort(price)}）`,()=>{
-              this.sellOne(id,price);
-            });
-          });
-          this.addButton("結束出售",()=>this.openItemShop(),{variant:"ghost"});
-        }
-        sellOne(id,price){
-          if((this.player.inventory[id]||0)<=0){
-            this.log("你已經沒有這個物品了。");
-            return;
-          }
-          this.player.inventory[id]--;
-          if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-          this.player.money+=price;
-          this.log(`你賣出了 1 個 ${getLootName(id)}，得到 ${formatMoneyShort(price)}。`);
-          this.updateUI();
-          this.openSellMenu();
-        }
+          this.log("你把東西攤在桌上，對方開始估價……");
 
-        openWeaponShop(){
-          this.clearActions();
-          this.log("武器店老闆把幾把簡單的武器擺在你面前。");
-          const list=[
-            {id:"wood-club",name:"粗製棍棒",type:WEAPON_TYPES.BLUNT,atk:3,price:60,desc:"粗糙但好揮動的木棒，適合敲打軟質目標。"},
-            {id:"short-sword",name:"短劍",type:WEAPON_TYPES.SLASH,atk:3,price:80,desc:"利落的短劍，適合面對人型與輕裝敵人。"}
-          ];
-          list.forEach(w=>{
-            this.addButton(w.name,()=>{
-              this.showWeaponDetail(w);
-            });
-          });
-          this.addButton("離開武器店",()=>this.renderVillageFacilities(),{variant:"ghost"});
-        }
+          for (const [id, count] of entries) {
+            if (count <= 0) continue;
+            const loot = getLootById(id);
+            const usable = UsableItems[id];
+            const armorDef = ArmorDefs[id];
+            if (
+              !loot &&
+              !usable &&
+              !armorDef &&
+              id !== "firewood" &&
+              id !== "arrow" &&
+              id !== "flint" &&
+              id !== "empty-flask" &&
+              id !== "camp-kit" &&
+              id !== "bread"
+            )
+              continue;
 
-        openArmorShop(){
-          this.clearActions();
-          this.log("防具店的牆上掛著幾件簡單的皮製裝備。");
-          const list=[
-            {slot:"body",id:"leather-armor",name:"皮甲上衣",def:2,price:70,desc:"基本的皮製上衣，能稍微減輕身體受到的打擊。"},
-            {slot:"legs",id:"leather-legs",name:"皮甲長褲",def:2,price:60,desc:"結實的皮褲，讓你的腿部不再那麼脆弱。"},
-            {slot:"boots",id:"leather-boots",name:"皮靴",def:1,price:50,desc:"穿起來比舊鞋好上一些，防禦力也略有提升。"}
-          ];
-          list.forEach(a=>{
-            this.addButton(a.name,()=>{
-              this.showArmorDetail(a);
-            });
-          });
-          this.addButton("離開防具店",()=>this.renderVillageFacilities(),{variant:"ghost"});
-        }
-        showWeaponDetail(w){
-          this.clearActions();
-          this.log(`【${w.name}】`);
-          this.log(`類型：${w.type} / 攻擊力加成：+${w.atk}`);
-          if(w.desc)this.log(w.desc);
-          this.log(`價格：${formatMoneyShort(w.price)}`);
-          this.addButton("購買並裝備",()=>this.buyWeapon(w),{variant:"primary"});
-          this.addButton("返回武器列表",()=>this.openWeaponShop(),{variant:"ghost"});
-        }
-        showArmorDetail(a){
-          this.clearActions();
-          this.log(`【${a.name}】`);
-          this.log(`部位：${a.slot==="body"?"上衣":a.slot==="legs"?"腿部":"鞋子"} / 防禦力：+${a.def}`);
-          if(a.desc)this.log(a.desc);
-          this.log(`價格：${formatMoneyShort(a.price)}`);
-          this.addButton("購買並裝備",()=>this.buyArmor(a),{variant:"primary"});
-          this.addButton("返回防具列表",()=>this.openArmorShop(),{variant:"ghost"});
-        }
-        buyArmor(a){
-          if(this.player.money<a.price){
-            this.log("你的錢不夠。");
-            return;
-          }
-          this.player.money-=a.price;
-          const cur=this.player.armor[a.slot]||0;
-          if(a.def>cur){
-            this.player.armor[a.slot]=a.def;
-            this.log(`你購買並換上了【${a.name}】，${a.slot==="body"?"身體":a.slot==="legs"?"腿部":"腳部"}的防禦力提高了。`);
-          }else{
-            this.log(`你購買了【${a.name}】，但似乎沒有比現在穿的更好。`);
-          }
-          this.updateUI();
-        }
-        buyWeapon(w){
-          if(this.player.money<w.price){
-            this.log("你的錢不夠。");
-            return;
-          }
-          this.player.money-=w.price;
-          const old=this.player.weapon;
-          if(old){
-            const key="weap-"+old.id;
-            this.player.inventory[key]=(this.player.inventory[key]||0)+1;
-          }
-          this.player.weapon={id:w.id,name:w.name,atkBonus:w.atk,type:w.type};
-          this.log(`你購買並裝備了【${w.name}】。`);
-          this.updateUI();
-        }
-
-        // === 角色選單 ===
-        openCharacterMenu(ctx){
-          this.clearActions();
-          this.log("你停下腳步，檢查自己的狀態與行囊。");
-          this.addButton("查看裝備",()=>this.showEquipment());
-          this.addButton("裝備 / 換裝",()=>this.openEquipMenu(ctx));
-          this.addButton("查看背包",()=>this.showInventory());
-          this.addButton("使用道具",()=>{
-            this.openUseItemMenu(ctx);
-          });
-          this.addButton("技能 / 緊急治療",()=>this.openSkillMenu(ctx),{variant:"primary"});
-          this.addButton("查看任務",()=>this.viewQuestsAnywhere());
-          this.addButton("返回",()=>{
-            if(ctx==="village")this.renderVillageActions();
-            else if(ctx==="field")this.renderFieldActions();
-            else if(ctx==="camp")this.renderCampActions();
-          },{variant:"ghost"});
-        }
-        showInventory(){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0);
-          if(!entries.length){
-            this.log("你的背包空空如也。");
-          }else{
-            this.log("【背包】");
-            entries.forEach(([id,c])=>{
-              this.log(`· ${getLootName(id)} x${c}`);
-            });
+            const basePrice = this.getBaseSellPrice(id);
+            const price = Math.round(basePrice * sellFactor);
+            const priceText = formatMoneyShort(price);
+            const name = this.getItemName(id);
+            this.addButton(
+              `${name} x${count}（賣出一個 ${priceText}）`,
+              () => this.sellOneItem(id, price, sellFactor)
+            );
           }
 
-        showEquipment(){
-          const jobName=this.player.job==="warrior"?"戰士":this.player.job==="mage"?"法師":this.player.job==="archer"?"弓手":"冒險者";
-          const weapon=this.player.weapon?`${this.player.weapon.name}（Atk+${this.player.weapon.atkBonus}，${this.player.weapon.type}）`:"徒手";
-          const body=this.player.armor.body||0;
-          const legs=this.player.armor.legs||0;
-          const boots=this.player.armor.boots||0;
-          this.log(`【裝備狀態】職業：${jobName}`);
-          this.log(`武器：${weapon}`);
-          this.log(`上衣防禦：+${body}，腿部防禦：+${legs}，鞋子防禦：+${boots}`);
-        }
-        openEquipMenu(ctx){
-          this.clearActions();
-          this.log("你檢查隨身攜帶的裝備，思考是否要更換。");
-          this.addButton("更換武器",()=>this.openWeaponEquipMenu(ctx));
-          this.addButton("返回",()=>this.openCharacterMenu(ctx),{variant:"ghost"});
-        }
-        openWeaponEquipMenu(ctx){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&id.startsWith("weap-"));
-          if(!entries.length){
-            this.log("你的背包裡沒有其他可以替換的武器。");
-            this.openEquipMenu(ctx);
-            return;
-          }
-          this.clearActions();
-          this.log("可以裝備的武器如下：");
-          entries.forEach(([id,count])=>{
-            const baseId=id.replace("weap-","");
-            let w=null;
-            if(baseId==="wood-club")w={id:"wood-club",name:"粗製棍棒",type:WEAPON_TYPES.BLUNT,atkBonus:3};
-            else if(baseId==="short-sword")w={id:"short-sword",name:"短劍",type:WEAPON_TYPES.SLASH,atkBonus:3};
-            if(w){
-              this.addButton(`${w.name} x${count}`,()=>this.equipWeaponFromInventory(id,w,ctx));
-            }
-          });
-          this.addButton("返回裝備選單",()=>this.openEquipMenu(ctx),{variant:"ghost"});
-        }
-        equipWeaponFromInventory(invId,w,ctx){
-          const count=this.player.inventory[invId]||0;
-          if(count<=0){
-            this.log("你似乎已經沒有這把武器了。");
-            this.openWeaponEquipMenu(ctx);
-            return;
-          }
-          const old=this.player.weapon;
-          this.player.weapon={id:w.id,name:w.name,atkBonus:w.atkBonus,type:w.type};
-          this.player.inventory[invId]--;
-          if(this.player.inventory[invId]<=0)delete this.player.inventory[invId];
-          if(old){
-            const key="weap-"+old.id;
-            this.player.inventory[key]=(this.player.inventory[key]||0)+1;
-          }
-          this.log(`你改為裝備【${w.name}】。`);
-          this.updateUI();
-          this.openEquipMenu(ctx);
-        }
-        }
-        openUseItemMenu(ctx){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&UsableItems[id]);
-          if(!entries.length){
-            this.log("目前沒有可以使用的消耗品。");
-            return;
-          }
-          this.clearActions();
-          this.log("選擇要使用的道具：");
-          entries.forEach(([id])=>{
-            this.addButton(getLootName(id),()=>{
-              this.showUseItemDetail(ctx,id);
-            });
-          });
-          this.addButton("取消",()=>{
-            if(ctx==="village")this.renderVillageActions();
-            else if(ctx==="field")this.renderFieldActions();
-            else if(ctx==="camp")this.renderCampActions();
-          },{variant:"ghost"});
+          this.addButton(
+            "結束出售",
+            () => {
+              if (this.mode === "village") this.openItemShop();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+            },
+            { variant: "ghost" }
+          );
         }
 
-
-        showUseItemDetail(ctx,id){
-          const data=UsableItems[id];
-          const name=getLootName(id);
-          this.clearActions();
-          this.log(`【${name}】`);
-          if(data&&data.desc)this.log(data.desc);
-          if(data){
-            if(data.type==="heal")this.log(`效果：回復約 ${data.amount} 點HP。`);
-            else if(data.type==="thirst")this.log("效果：可回復口渴，且水壺可以多次使用。");
-            else if(data.type==="hunger")this.log("效果：回復少量飽食。");
-            else if(data.type==="hungerFull")this.log("效果：直接將飽食度填滿。");
-            else if(data.type==="hungerRaw")this.log("效果：回復飽食，但有機率中毒。");
-            else if(data.type==="return")this.log("效果：立刻返回霧柏村，不消耗飢餓與口渴。");
-          }
-          this.addButton("使用",()=>{
-            this.useItem(id,false);
-            if(this.mode!=="gameover"){
-              if(ctx==="village")this.renderVillageActions();
-              else if(ctx==="field")this.renderFieldActions();
-              else if(ctx==="camp")this.renderCampActions();
-            }
-          },{variant:"primary"});
-          this.addButton("取消",()=>this.openUseItemMenu(ctx),{variant:"ghost"});
-        }
-        openSkillMenu(ctx){
-          this.clearActions();
-          this.log(`【技能列表】可用技能點：${this.player.skillPoints}`);
-          this.log("· 緊急治療：戰鬥外可使用，固定回復10HP，有機率失敗。");
-          this.addButton("使用緊急治療",()=>{
-            this.emergencyHeal();
-            if(this.mode!=="gameover"){
-              this.openSkillMenu(ctx);
-            }
-          },{variant:"primary"});
-          this.addButton("返回",()=>{
-            if(ctx==="village")this.renderVillageActions();
-            else if(ctx==="field")this.renderFieldActions();
-            else if(ctx==="camp")this.renderCampActions();
-          },{variant:"ghost"});
-        }
-        emergencyHeal(){
-          if(this.mode==="battle"){
-            this.log("戰鬥中無法使用緊急治療。");
-            return;
-          }
-          if(this.player.hp<=0){
-            this.log("你現在已經無法行動。");
-            return;
-          }
-          if(this.player.hp===this.player.maxHp){
-            this.log("你的HP已經是滿的。");
-            return;
-          }
-          const roll=this.rollD20();
-          if(roll<=5){
-            if(!this.usedEmergencyHealOnce){
-              this.log("你試圖急救自己，但手一滑失敗了。");
-              this.usedEmergencyHealOnce=true;
-            }else{
-              this.log("急救失敗。");
-            }
-          }else{
-            const heal=10;
-            const before=this.player.hp;
-            this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-            if(!this.usedEmergencyHealOnce){
-              this.log(`你花了一點時間處理傷口，回復了 ${this.player.hp-before} 點HP。`);
-              this.usedEmergencyHealOnce=true;
-            }else{
-              this.log(`HP 回復 ${this.player.hp-before}。`);
+        getBaseSellPrice(id) {
+          const loot = getLootById(id);
+          if (loot) {
+            switch (loot.rarity) {
+              case RARITY.COMMON:
+                return 5;
+              case RARITY.UNCOMMON:
+                return 14;
+              case RARITY.RARE:
+                return 35;
+              case RARITY.EPIC:
+                return 80;
+              case RARITY.LEGENDARY:
+                return 200;
+              default:
+                return 3;
             }
           }
-          this.updateUI();
+          if (ArmorDefs[id]) {
+            return ArmorDefs[id].sellPrice;
+          }
+          if (id === "small-potion") return 20;
+          if (id === "medium-potion") return 45;
+          if (id === "return-scroll") return 50;
+          if (id === "water-flask") return 30;
+          if (id === "empty-flask") return 5;
+          if (id === "flint") return 30;
+          if (id === "firewood") return 5;
+          if (id === "throw-knife") return 6;
+          if (id === "arrow") return 1;
+          if (id === "grilled-meat") return 20;
+          if (id === "camp-kit") return 90;
+          if (id === "bread") return 25;
+          return 5;
         }
 
-        useItem(id,inBattle){
-          if((this.player.inventory[id]||0)<=0){
+        sellOneItem(id, price, sellFactor) {
+          const count = this.player.inventory[id] || 0;
+          if (count <= 0) {
+            this.log("你已經沒有這個東西了。");
+            return;
+          }
+          this.player.inventory[id] = count - 1;
+          if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          if (id === "camp-kit" && (this.player.inventory["camp-kit"] || 0) <= 0) {
+            this.player.hasCampingKit = false;
+          }
+          this.player.money += price;
+          this.log(`你賣出了 1 個 ${this.getItemName(id)}，獲得 ${formatMoneyShort(price)}。`);
+          this.updateUI();
+          this.openSellMenu(sellFactor);
+        }
+
+        getItemName(id) {
+          const loot = getLootById(id);
+          if (loot) return loot.name;
+          const usable = UsableItems[id];
+          if (usable) return usable.name;
+          if (id === "flint") return "打火石";
+          if (id === "firewood") return "柴薪";
+          if (id === "arrow") return "箭矢";
+          if (id === "throw-knife") return "投擲小刀";
+          if (id === "empty-flask") return "水壺（空）";
+          if (id === "camp-kit") return "露營工具";
+          if (id === "bread") return "麵包";
+          if (ArmorDefs[id]) return ArmorDefs[id].name;
+          return id;
+        }
+
+        getMonsterName(id) {
+          const m = Monsters.find(x => x.id === id);
+          return m ? m.name : id;
+        }
+
+        sellToGuild(entry) {
+          const have = this.player.inventory[entry.itemId] || 0;
+          if (entry.remaining <= 0) {
+            this.log("這項收購已經額滿。");
+            this.openGuildBuyMenu();
+            return;
+          }
+          if (have <= 0) {
+            this.log("你沒有這種素材可以賣。");
+            this.openGuildBuyMenu();
+            return;
+          }
+          this.player.inventory[entry.itemId] = have - 1;
+          if (this.player.inventory[entry.itemId] <= 0) delete this.player.inventory[entry.itemId];
+          entry.remaining -= 1;
+          this.player.money += entry.price;
+          this.log(`你向公會交出 1 個 ${this.getItemName(entry.itemId)}，獲得 ${formatMoneyShort(entry.price)}。`);
+          this.updateUI();
+          this.openGuildBuyMenu();
+        }
+
+        showInventory() {
+          const entries = Object.entries(this.player.inventory);
+          if (entries.length === 0) {
+            this.log("你的背包裡什麼都沒有。");
+            return;
+          }
+          this.log("背包內容：");
+          for (const [id, count] of entries) {
+            const name = this.getItemName(id);
+            this.log(`· ${name} x${count}`);
+          }
+        }
+
+        // ===== 道具 & 技能使用（村莊 / 野外 / 營地）=====
+        useItemMenuInVillage() {
+          const usable = Object.entries(this.player.inventory).filter(
+            ([id, count]) => count > 0 && UsableItems[id]
+          );
+          if (usable.length === 0) {
+            this.log("你沒有可以使用的消耗品。");
+            return;
+          }
+          this.clearActions();
+          this.log("你打開背包，挑選要使用的道具。");
+
+          usable.forEach(([id]) => {
+            const name = this.getItemName(id);
+            this.addButton(`${name}`, () => {
+              this.useItem(id, false);
+              this.renderVillageActions();
+            });
+          });
+
+          this.addButton(
+            "取消",
+            () => this.renderVillageActions(),
+            { variant: "ghost" }
+          );
+        }
+
+        useItemMenuInField() {
+          const usable = Object.entries(this.player.inventory).filter(
+            ([id, count]) => count > 0 && UsableItems[id]
+          );
+          if (usable.length === 0) {
+            this.log("你沒有可以使用的消耗品。");
+            return;
+          }
+          this.clearActions();
+          this.log("你停下腳步，從背包中翻找道具。");
+
+          usable.forEach(([id]) => {
+            const name = this.getItemName(id);
+            this.addButton(`${name}`, () => {
+              this.useItem(id, false);
+              this.renderFieldActions();
+            });
+          });
+
+          this.addButton(
+            "取消",
+            () => this.renderFieldActions(),
+            { variant: "ghost" }
+          );
+        }
+
+        useItemMenuInCamp() {
+          const usable = Object.entries(this.player.inventory).filter(
+            ([id, count]) => count > 0 && UsableItems[id]
+          );
+          if (usable.length === 0) {
+            this.log("你沒有可以使用的消耗品。");
+            return;
+          }
+          this.clearActions();
+          this.log("你在營地裡整理背包，挑選要使用的道具。");
+
+          usable.forEach(([id]) => {
+            const name = this.getItemName(id);
+            this.addButton(`${name}`, () => {
+              this.useItem(id, false);
+              this.renderCampActions();
+            });
+          });
+
+          this.addButton(
+            "取消",
+            () => this.renderCampActions(),
+            { variant: "ghost" }
+          );
+        }
+
+        useItem(id, inBattle) {
+          if ((this.player.inventory[id] || 0) <= 0) {
             this.log("你沒有這個道具。");
             return;
           }
-          const data=UsableItems[id];
-          if(!data){
-            this.log("這個道具目前不能直接使用。");
+          const data = UsableItems[id];
+          if (!data) {
+            this.log("這個道具現在不能直接使用。");
             return;
           }
-          if(data.type==="heal"){
-            const before=this.player.hp;
-            this.player.hp=Math.min(this.player.maxHp,this.player.hp+data.amount);
-            this.player.inventory[id]--;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-            this.log(`你使用了 ${data.name}，HP 回復 ${this.player.hp-before}。`);
-          }else if(data.type==="thirst"){
-            if(this.player.thirst>=100){
-              this.log("你現在並不口渴。");
+
+          if (data.type === "throwKnife") {
+            if (!inBattle || !this.battle) {
+              this.log("投擲小刀只有在戰鬥中才有用。");
               return;
             }
-            if(this.player.waterFlaskUses<=0){
-              this.log("這壺水似乎已經喝完了。");
+            this.useThrowKnife();
+            return;
+          }
+
+          if (data.type === "heal") {
+            const before = this.player.hp;
+            this.player.hp = Math.min(
+              this.player.maxHp,
+              this.player.hp + data.amount
+            );
+            const real = this.player.hp - before;
+            this.log(`你使用了 ${data.name}，恢復了 ${real} 點 HP。`);
+            this.player.inventory[id] -= 1;
+            if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          } else if (data.type === "thirst") {
+            // 水壺 3 次機制
+            if (this.player.waterFlaskUses <= 0) {
+              if ((this.player.inventory["water-flask"] || 0) <= 0) {
+                this.log("你沒有可以喝的水壺。");
+                return;
+              }
+              // 開一個新水壺
+              this.player.waterFlaskUses = 3;
+            }
+
+            const before = this.player.thirst;
+            this.player.thirst = Math.min(100, this.player.thirst + data.amount);
+            const real = this.player.thirst - before;
+            this.player.waterFlaskUses -= 1;
+            this.log(`你喝了一口水壺中的水，口渴值回復了 ${real}。（本壺剩餘 ${this.player.waterFlaskUses} 口）`);
+
+            if (this.player.waterFlaskUses <= 0) {
+              // 這一壺喝完
+              this.player.inventory["water-flask"] =
+                (this.player.inventory["water-flask"] || 1) - 1;
+              if (this.player.inventory["water-flask"] <= 0)
+                delete this.player.inventory["water-flask"];
+              this.player.inventory["empty-flask"] =
+                (this.player.inventory["empty-flask"] || 0) + 1;
+              this.log("這個水壺的水被你喝光了，只剩空壺。");
+            }
+          } else if (data.type === "hunger") {
+            const before = this.player.hunger;
+            this.player.hunger = Math.min(100, this.player.hunger + data.amount);
+            const real = this.player.hunger - before;
+            this.log(`你吃下了 ${data.name}，肚子覺得充實了些。（+${real} 飽食度）`);
+
+            // 生肉有機率中毒
+            if (id === "wild-meat") {
+              if (rand() < 0.35) {
+                const extra = 4 + Math.floor(rand() * 3); // 4~6 回合
+                this.player.status.poison += extra;
+                this.log("你覺得肚子一陣翻攪，頭也有些暈……好像中毒了。");
+              }
+            }
+
+            this.player.inventory[id] -= 1;
+            if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          } else if (data.type === "hungerFull") {
+            const before = this.player.hunger;
+            this.player.hunger = 100;
+            const real = this.player.hunger - before;
+            this.log(`你把 ${data.name}一整個吃完，肚子飽到打嗝。（飽食度 +${real}）`);
+            this.player.inventory[id] -= 1;
+            if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          } else if (data.type === "return") {
+            if (this.mode === "field" || this.mode === "camp") {
+              this.player.inventory[id] -= 1;
+              if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+              this.log("你撕開回程卷軸，一陣光芒將你送回霧柏村。");
+              this.enterVillage();
+              this.updateUI();
+              return;
+            } else {
+              this.log("你現在不需要使用回程卷軸。");
               return;
             }
-            const before=this.player.thirst;
-            this.player.thirst=Math.min(100,this.player.thirst+data.amount);
-            this.player.waterFlaskUses--;
-            this.log(`你喝了一口水，口渴+${this.player.thirst-before}（剩餘 ${this.player.waterFlaskUses} 口）。`);
-            if(this.player.waterFlaskUses<=0){
-              this.player.inventory[id]--;
-              if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-              this.player.inventory["empty-flask"]=(this.player.inventory["empty-flask"]||0)+1;
-              this.log("這壺水已經喝完，留下了一個空水壺。");
+          }
+
+          this.updateUI();
+
+          if (inBattle) {
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+          }
+        }
+
+        useThrowKnife() {
+          if (!this.battle) return;
+          if ((this.player.inventory["throw-knife"] || 0) <= 0) {
+            this.log("你沒有投擲小刀了。");
+            return;
+          }
+          this.player.inventory["throw-knife"] -= 1;
+          if (this.player.inventory["throw-knife"] <= 0)
+            delete this.player.inventory["throw-knife"];
+
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+
+          if (!this.player.hasThrowSkill) {
+            if (roll < 13) {
+              this.log("你丟出投擲小刀，但對方輕易閃過。");
+              this.monsterTurn();
+              if (!this.isDead()) this.renderBattleActions();
+              return;
             }
-          }else if(data.type==="hunger"){
-            const before=this.player.hunger;
-            this.player.hunger=Math.min(100,this.player.hunger+data.amount);
-            this.player.inventory[id]--;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-            this.log(`你吃下了 ${data.name}，飽食+${this.player.hunger-before}。`);
-          }else if(data.type==="hungerFull"){
-            const before=this.player.hunger;
-            this.player.hunger=100;
-            this.player.inventory[id]--;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-            this.log(`你狼吞虎嚥地吃完一整個麵包，飽食+${100-before}。`);
-          }else if(data.type==="hungerRaw"){
-            const before=this.player.hunger;
-            this.player.hunger=Math.min(100,this.player.hunger+data.amount);
-            this.player.inventory[id]--;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-            this.log(`你硬著頭皮吃下了生的 ${data.name}，飽食+${this.player.hunger-before}。`);
-            const roll=this.rollD20();
-            if(roll<=6){
-              this.player.status.poison=3;
-              this.log(`……肚子一陣翻攪，你似乎中毒了。`);
-            }else{
-              this.log(`幸好這次沒有出事。`);
+          }
+
+          let dmg = this.calcPlayerAtkDamage(false) + 2;
+          this.battle.monsterHp -= dmg;
+          this.log(`小刀精準地刺進【${m.name}】，造成 ${dmg} 點傷害！`);
+
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useSkillMenuOutside() {
+          this.clearActions();
+          this.log("你準備使用一項技能。");
+          this.addButton("緊急治療", () => {
+            this.playerEmergencyHeal(false);
+          }, { variant: "primary" });
+
+          this.addButton(
+            "返回",
+            () => {
+              if (this.mode === "village") this.renderVillageActions();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        // ===== 製作 =====
+        openCraftingMenu(mode) {
+          let recipes;
+          if (mode === "village") recipes = CraftRecipesVillage;
+          else if (mode === "field") recipes = CraftRecipesField;
+          else if (mode === "camp") recipes = CraftRecipesCamp;
+          else return;
+
+          this.clearActions();
+          if (mode === "village") {
+            this.log("你在工作台前整理素材，準備製作一些東西。");
+          } else if (mode === "field") {
+            this.log("你蹲在路邊，簡單利用隨身的工具加工素材。");
+          } else if (mode === "camp") {
+            this.log("你在營火旁整理背包，準備烤點東西。");
+          }
+
+          recipes.forEach(recipe => {
+            this.addButton(
+              `${recipe.name}`,
+              () => this.craft(recipe, mode)
+            );
+          });
+
+          this.addButton(
+            "返回",
+            () => {
+              if (mode === "village") this.renderVillageActions();
+              else if (mode === "field") this.renderFieldActions();
+              else if (mode === "camp") this.renderCampActions();
+            },
+            { variant: "ghost" }
+          );
+        }
+
+        hasMaterials(recipe) {
+          for (const [id, need] of Object.entries(recipe.inputs)) {
+            if ((this.player.inventory[id] || 0) < need) return false;
+          }
+          return true;
+        }
+
+        consumeMaterials(recipe) {
+          for (const [id, need] of Object.entries(recipe.inputs)) {
+            this.player.inventory[id] = (this.player.inventory[id] || 0) - need;
+            if (this.player.inventory[id] <= 0) delete this.player.inventory[id];
+          }
+        }
+
+        craft(recipe, mode) {
+          if (!this.hasMaterials(recipe)) {
+            this.log("手邊的素材好像不太夠。");
+            return;
+          }
+
+          if (mode === "camp" && recipe.needFire) {
+            const hasFlint = (this.player.inventory["flint"] || 0) > 0 || this.player.hasFireSkill;
+            if (!hasFlint) {
+              this.log("你沒有打火石，也不會火系魔法，無法生火烤東西。");
+              return;
             }
-          }else if(data.type==="return"){
-            this.player.inventory[id]--;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-            this.log("你撕開了回程卷軸，視線一陣扭曲後，你回到了霧柏村。");
+          }
+
+          const roll = this.rollD20();
+          const wisMod = this.getWisMod();
+          const total = roll + wisMod;
+          const dc = 7;
+
+          if (total < dc) {
+            this.log("你試著動手製作，但手感不佳，成品勉強能看，最後還是作罷，沒有浪費素材。");
+            return;
+          }
+
+          this.consumeMaterials(recipe);
+
+          if (mode === "camp" && recipe.needFire && !this.player.hasFireSkill) {
+            if ((this.player.inventory["flint"] || 0) > 0) {
+              this.player.inventory["flint"] -= 1;
+              if (this.player.inventory["flint"] <= 0) delete this.player.inventory["flint"];
+              this.log("你用掉了一個打火石點燃營火。");
+            }
+          }
+
+          this.player.inventory[recipe.outputId] =
+            (this.player.inventory[recipe.outputId] || 0) + recipe.outputCount;
+
+          const outName = this.getItemName(recipe.outputId);
+          this.log(`你順利完成了【${outName}】。`);
+
+          if (recipe.outputId === "camp-kit") {
+            this.player.hasCampingKit = true;
+          }
+
+          this.updateUI();
+
+          if (mode === "village") this.openCraftingMenu("village");
+          else if (mode === "field") this.openCraftingMenu("field");
+          else if (mode === "camp") this.openCraftingMenu("camp");
+        }
+
+        // ===== 野外 / 樹海 =====
+        enterField() {
+          this.mode = "field";
+          this.log("你離開霧柏村，踏上通往霧柏樹海·外環的小徑。");
+          this.updateUI();
+          this.renderFieldActions();
+        }
+
+        renderFieldActions() {
+          this.clearActions();
+          this.addButton(
+            "繼續前進",
+            () => this.stepForward(),
+            { variant: "primary" }
+          );
+          this.addButton(
+            "往回走",
+            () => this.stepBackward()
+          );
+          this.addButton("查看背包", () => this.showInventory());
+          this.addButton("使用道具", () => this.useItemMenuInField());
+          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
+          this.addButton("製作物品", () => this.openCraftingMenu("field"));
+          this.addButton("紮營（需要露營工具）", () => this.startCamp());
+          this.addButton("狀態／裝備", () => this.showStatusMenu());
+          this.addButton("查看任務", () => this.viewQuestsAnywhere());
+          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+        }
+
+        stepForward() {
+          this.applyTravelCost();
+          if (this.mode === "gameover") {
+            this.updateUI();
+            return;
+          }
+          this.player.distance += 1;
+          this.log(`你更深入了樹海一步。（距離：${this.player.distance}）`);
+          this.rollFieldEvent();
+          this.updateUI();
+        }
+
+        stepBackward() {
+          if (this.player.distance <= 0) {
+            this.log("你已經在樹海的邊緣，再退就回村了。");
             this.enterVillage();
             return;
           }
+          this.applyTravelCost();
+          if (this.mode === "gameover") {
+            this.updateUI();
+            return;
+          }
+          this.player.distance -= 1;
+          this.log(`你往霧柏村的方向退了一步。（距離：${this.player.distance}）`);
+          if (this.player.distance <= 0) {
+            this.log("你慢慢走回了霧柏村。");
+            this.enterVillage();
+          } else {
+            this.rollFieldEvent();
+          }
           this.updateUI();
         }
 
-        // === 野外 ===
-        enterField(){
-          this.mode="field";
-          this.updateUI();
-          this.renderFieldActions();
-        }
-        renderFieldActions(){
-          if(this.mode!=="field")return;
-          this.clearActions();
-          this.addButton("存檔",()=>this.saveGame());
-          this.addButton("讀檔",()=>this.loadGame());
-          this.addButton("在樹海遊走（可能遇敵 / 採集）",()=>this.fieldStep(),{variant:"primary"});
-          this.addButton("紮營（需要露營工具）",()=>this.tryCamp());
-          this.addButton("使用道具 / 技能 / 任務",()=>this.openCharacterMenu("field"));
-          this.addButton("使用回程卷軸返回村莊",()=>{
-            if((this.player.inventory["return-scroll"]||0)>0){
-              this.useItem("return-scroll",false);
-            }else{
-              this.log("你沒有回程卷軸。");
-            }
-          });
-          this.addButton("步行返回霧柏村",()=>this.walkBackToVillage());
-        }
-        fieldStep(){
-          this.player.distance++;
-          this.loseHungerThirst(1,2);
-          this.applyPoisonTick("在樹海中行走");
-          if(this.mode==="gameover")return;
-          const roll=Math.random();
-          if(roll<0.45){
-            this.startBattle();
-          }else if(roll<0.7){
-            this.gatherInField();
-          }else if(roll<0.85){
-            this.offerFieldRestSpot();
-            return;
-          }else{
-            this.log("你繞著樹海邊緣小心前進，暫時沒有特別的事情發生。");
+        rollFieldEvent() {
+          if (this.mode !== "field") return;
+          const r = rand();
+          let type = "nothing";
+          if (r < 0.55) type = "battle";
+          else if (r < 0.8) type = "gather";
+          else if (r < 0.93) type = "nothing";
+          else type = "special";
+
+          if (type === "battle") {
+            this.startRandomBattle();
+          } else if (type === "gather") {
+            this.gatherEvent();
+            this.renderFieldActions();
+          } else if (type === "nothing") {
+            this.log("你只聽見風聲與葉子摩擦的沙沙聲，沒有特別的事發生。");
+            this.renderFieldActions();
+          } else {
+            this.specialEvent();
           }
-          this.updateUI();
-          if(this.mode==="field")this.renderFieldActions();
         }
-        offerFieldRestSpot(){
+
+        gatherEvent() {
+          const roll = this.rollD20();
+          const wisMod = this.getWisMod();
+          const total = roll + wisMod;
+          const dc = 10;
+          if (total < dc) {
+            this.log("你在附近翻找了一圈，但沒找到什麼有用的東西。");
+            return;
+          }
+
+          const r = rand();
+          if (r < 0.4) {
+            const loot = getLootById("herb");
+            this.player.inventory[loot.id] =
+              (this.player.inventory[loot.id] || 0) + 1;
+            this.log(`你仔細搜尋地面與樹根，採集到了 ${loot.name}。`);
+          } else if (r < 0.7) {
+            this.smallRestEvent(true);
+          } else {
+            this.waterSourceEvent();
+          }
+        }
+
+        waterSourceEvent() {
+          this.log("你循著潮濕的氣味，找到了一處小溪。清水在石縫間潺潺流過。");
+          const empties = this.player.inventory["empty-flask"] || 0;
+          if (empties > 0) {
+            const refill = empties;
+            const beforeWater = this.player.inventory["water-flask"] || 0;
+            this.player.inventory["empty-flask"] -= refill;
+            if (this.player.inventory["empty-flask"] <= 0) delete this.player.inventory["empty-flask"];
+            this.player.inventory["water-flask"] = beforeWater + refill;
+            this.log(`你把 ${refill} 個空水壺都裝滿了清水。`);
+            if (beforeWater === 0 && this.player.waterFlaskUses <= 0 && refill > 0) {
+              this.player.waterFlaskUses = 3;
+            }
+          } else {
+            const beforeWater = this.player.inventory["water-flask"] || 0;
+            this.player.inventory["water-flask"] = beforeWater + 1;
+            this.log("你用隨身容器裝了一壺水，順便喝了幾口。");
+            if (beforeWater === 0 && this.player.waterFlaskUses <= 0) {
+              this.player.waterFlaskUses = 3;
+            }
+          }
+
+          if (rand() < 0.4) {
+            const loot = getLootById("herb");
+            this.player.inventory[loot.id] =
+              (this.player.inventory[loot.id] || 0) + 1;
+            this.log("在溪邊你也順手採集了一些藥草。");
+          }
+        }
+
+        smallRestEvent(fromGather) {
+          const roll = this.rollD20();
+          const conMod = this.getConMod();
+          const total = roll + conMod;
+          const dc = 8;
+          let hpHeal = 18;
+          let mpHeal = 10;
+          if (total < dc) {
+            hpHeal = 10;
+            mpHeal = 5;
+            this.log("你在樹根旁坐了一會，不過心神仍有些不寧，只恢復了一些精神。");
+          } else {
+            this.log("你調整呼吸，在樹根下好好休息了一陣子。");
+          }
+
+          const beforeHp = this.player.hp;
+          const beforeMp = this.player.mp;
+
+          this.player.hp = Math.min(this.player.maxHp, this.player.hp + hpHeal);
+          this.player.mp = Math.min(this.player.maxMp, this.player.mp + mpHeal);
+
+          const realHp = this.player.hp - beforeHp;
+          const realMp = this.player.mp - beforeMp;
+
+          if (realHp > 0) this.log(`HP 回復了 ${realHp} 點。`);
+          if (realMp > 0) this.log(`MP 回復了 ${realMp} 點。`);
+
+          this.player.hunger = Math.max(0, this.player.hunger - 2);
+          this.player.thirst = Math.max(0, this.player.thirst - 2);
+          this.checkHungerThirstDamage("在樹根旁休息");
+          this.applyPoisonDamage("靜坐時");
+
+          this.updateUI();
+          if (!fromGather) this.renderFieldActions();
+        }
+
+        merchantChance() {
+          const d = this.player.distance;
+          if (d <= 0) return 0;
+          if (d <= 5) return 0.15;
+          if (d <= 10) return 0.08;
+          return 0.03;
+        }
+
+        specialEvent() {
+          if (rand() < this.merchantChance()) {
+            this.merchantEvent();
+          } else {
+            this.smallRestEvent(false);
+          }
+        }
+
+        merchantEvent() {
+          this.log("車輪聲與鈴鐺聲從霧中傳來，一支商人車隊慢慢停在你面前。");
           this.clearActions();
-          this.log("你找到一處相對安全的空地，看起來可以稍微休息一下。");
-          this.addButton("在此處稍作休息",()=>this.fieldRestAtSpot(),{variant:"primary"});
-          this.addButton("不休息，繼續前進",()=>this.renderFieldActions(),{variant:"ghost"});
+          this.addButton(
+            "與商人交易（道具）",
+            () => this.openItemShop(true),
+            { variant: "primary" }
+          );
+          this.addButton("與武器商交易", () => this.openWeaponShop(true));
+          this.addButton(
+            "付費搭車回城",
+            () => this.rideCaravanBack(),
+            { variant: "danger" }
+          );
+          this.addButton(
+            "婉拒他們，繼續上路",
+            () => {
+              this.log("你向商人們點頭致意，繼續踏入樹海。");
+              this.renderFieldActions();
+            },
+            { variant: "ghost" }
+          );
         }
-        fieldRestAtSpot(){
-          this.loseHungerThirst(1,1);
-          this.applyPoisonTick("在安全處休息");
-          if(this.mode==="gameover")return;
-          const heal=4;
-          const before=this.player.hp;
-          this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-          this.log(`你在安全的空地上坐下休息，HP 回復 ${this.player.hp-before}。`);
-          this.updateUI();
-          this.renderFieldActions();
-        }
-        walkBackToVillage(){
-          this.loseHungerThirst(3,4);
-          this.applyPoisonTick("返回村莊的路上");
-          if(this.mode==="gameover")return;
-          this.log("你沿著原路慢慢走回了霧柏村。");
+
+        rideCaravanBack() {
+          const fee = 30;
+          if (this.player.money < fee) {
+            this.log("你身上的錢不夠支付跟車費用。");
+            this.renderFieldActions();
+            return;
+          }
+          this.player.money -= fee;
+          this.player.hunger = Math.max(0, this.player.hunger - 3);
+          this.player.thirst = Math.max(0, this.player.thirst - 3);
+          this.log(`你搭著商人車隊安全回到了霧柏村，花費 ${formatMoneyShort(fee)}。`);
           this.enterVillage();
-        }
-        gatherInField(){
-          const roll=this.rollD20();
-          if(roll<=5){
-            this.log(`你翻找了一圈，什麼有用的東西也沒找到。`);
-            return;
-          }
-          let id;
-          if(roll<=12)id="herb";
-          else if(roll<=17)id="firewood";
-          else id="wolf-fur";
-          this.player.inventory[id]=(this.player.inventory[id]||0)+1;
-          this.log(`你在樹叢裡找到了一點東西：${getLootName(id)}。`);
+          this.updateUI();
         }
 
-        tryCamp(){
-          if(!(this.player.inventory["camp-kit"]>0)){
-            this.log("你沒有露營工具，無法在這裡紮營。");
-            this.renderFieldActions();
-            return;
+        chooseMonsterByDistance() {
+          const d = this.player.distance;
+          let pool;
+          if (d <= 5) {
+            pool = Monsters.filter(m =>
+              ["green-slime", "forest-wolf", "sproutling"].includes(m.id)
+            );
+          } else if (d <= 10) {
+            pool = Monsters.filter(m =>
+              ["green-slime", "toxic-slime", "forest-wolf", "sproutling", "bug-soldier"].includes(
+                m.id
+              )
+            );
+          } else {
+            pool = Monsters;
           }
-          this.mode="camp";
-          this.log("你找了一塊相對安全的空地，搭起了簡易營地。");
-          this.updateUI();
-          this.renderCampActions();
-        }
-        renderCampActions(){
-          if(this.mode!=="camp")return;
-          this.clearActions();
-          this.addButton("存檔",()=>this.saveGame());
-          this.addButton("讀檔",()=>this.loadGame());
-          this.addButton("安穩睡一覺（消耗飽食與口渴）",()=>this.campSleep(),{variant:"primary"});
-          this.addButton("使用道具 / 技能 / 任務",()=>this.openCharacterMenu("camp"));
-          this.addButton("離開營地，返回樹海",()=>{
-            this.mode="field";
-            this.updateUI();
-            this.renderFieldActions();
-          },{variant:"ghost"});
-        }
-        campSleep(){
-          this.loseHungerThirst(4,4);
-          this.applyPoisonTick("在營地休息");
-          if(this.mode==="gameover")return;
-          const heal=this.player.maxHp;
-          const before=this.player.hp;
-          this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-          this.player.mp=this.player.maxMp;
-          this.log(`你在營地沉沉睡去，HP 回滿，MP 回滿。`);
-          this.updateUI();
-          this.renderCampActions();
+          if (pool.length === 0) pool = Monsters;
+          const idx = Math.floor(rand() * pool.length);
+          return pool[idx];
         }
 
-        // === 戰鬥 ===
-        startBattle(){
-          const pool=Monsters;
-          const m=pool[Math.floor(Math.random()*pool.length)];
-          this.battle={
-            monster:m,
-            hp:m.maxHp,
-            enemySkip:false
+        startRandomBattle() {
+          const m = this.chooseMonsterByDistance();
+          this.mode = "battle";
+          this.battle = {
+            monster: m,
+            monsterHp: m.maxHp,
+            tempGuardBonus: 0,
+            monsterWeaken: 0
           };
-          this.mode="battle";
-          this.log(`一隻 ${m.name} 從樹叢間竄出！`);
-          this.updateUI();
+          this.lastPowerStrikeUsed = false;
+          this.log(`從樹叢間竄出一隻【${m.name}】！`);
           this.renderBattleActions();
-        }
-        renderBattleActions(){
-          if(this.mode!=="battle"||!this.battle)return;
-          this.clearActions();
-          this.addButton("攻擊",()=>this.playerAttack(),{variant:"primary"});
-          this.addButton("防禦",()=>this.playerDefend());
-          this.addButton("技能",()=>this.openBattleSkillMenu());
-          this.addButton("使用道具",()=>this.battleUseItem());
-          this.addButton("嘗試逃跑",()=>this.tryEscape());
-        }
-        openBattleSkillMenu(){
-          if(this.mode!=="battle"||!this.battle){
-            this.log("現在沒有需要使用戰鬥技能的對象。");
-            return;
-          }
-          this.clearActions();
-          let has=false;
-          if(this.player.skills && this.player.skills.powerStrike){
-            has=true;
-            this.addButton("蠻力一擊",()=>this.powerStrike(),{variant:"primary"});
-          }
-          if(!has){
-            this.log("你目前沒有可以在戰鬥中使用的主動技能。");
-            this.renderBattleActions();
-            return;
-          }
-          this.addButton("取消",()=>this.renderBattleActions(),{variant:"ghost"});
-        }
-        powerStrike(){
-          if(!this.battle||this.mode!=="battle")return;
-          const m=this.battle.monster;
-          const atk=Math.round(this.getAttackValue()*1.2);
-          const roll=this.rollD20();
-          if(roll<=4){
-            this.log("你蓄力揮出蠻力一擊，但敵人敏捷地閃開了。");
-          }else{
-            let dmg=Math.max(1,atk-m.def);
-            if(this.player.weapon&&this.player.weapon.type===m.weakTo){
-              dmg=Math.round(dmg*1.1);
-              this.log("你抓準了對方的弱點，蠻力一擊的傷害更高。");
-            }
-            this.log(`你使出蠻力一擊，造成 ${dmg} 點傷害！`);
-            this.battle.hp-=dmg;
-            if(this.battle.hp<=0){
-              this.battle.hp=0;
-              this.winBattle();
-              return;
-            }
-          }
-          this.applyPoisonTick("激烈戰鬥");
-          if(this.mode!=="gameover")this.enemyTurn();
-        }
-        battleUseItem(){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&UsableItems[id]);
-          if(!entries.length){
-            this.log("你現在沒有可用的消耗品。");
-            this.renderBattleActions();
-            return;
-          }
-          this.clearActions();
-          this.log("選擇要在戰鬥中使用的道具：");
-          entries.forEach(([id])=>{
-            this.addButton(getLootName(id),()=>{
-              this.showBattleItemDetail(id);
-            });
-          });
-          this.addButton("取消",()=>this.renderBattleActions(),{variant:"ghost"});
         }
 
-        showBattleItemDetail(id){
-          const data=UsableItems[id];
-          const name=getLootName(id);
-          this.clearActions();
-          this.log(`【${name}】`);
-          if(data&&data.desc)this.log(data.desc);
-          this.addButton("在戰鬥中使用",()=>{
-            this.useItem(id,true);
-            if(this.mode==="battle"){
-              this.enemyTurn();
-              if(this.mode==="battle")this.renderBattleActions();
-            }
-          },{variant:"primary"});
-          this.addButton("取消",()=>this.battleUseItem(),{variant:"ghost"});
-        }
-        playerAttack(){
-          const atk=this.getAttackValue();
-          const m=this.battle.monster;
-          const roll=this.rollD20();
-          if(roll===1){
-            this.log(`你揮出一擊，但完全落空了！`);
-          }else{
-            let dmg=0;
-            const hit=roll+2>=m.def;
-            if(hit){
-              dmg=Math.max(1,atk-m.def);
-              if(this.player.weapon&&this.player.weapon.type===m.weakTo){
-                dmg=Math.round(dmg*1.1);
-                this.log("你抓準了對方的弱點，傷害提升！");
-              }
-              this.log(`你對 ${m.name} 造成了 ${dmg} 點傷害。`);
-              this.battle.hp-=dmg;
-              if(this.battle.hp<=0){
-                this.battle.hp=0;
-                this.winBattle();
-                return;
-              }
-            }else{
-              this.log(`你的攻擊被 ${m.name} 輕鬆躲開。`);
-            }
-          }
-          this.applyPoisonTick("激烈戰鬥");
-          if(this.mode!=="gameover")this.enemyTurn();
-        }
-        playerDefend(){
-          const roll=this.rollD20();
-          const defVal=this.getDefenseValue();
-          if(roll+defVal>=12){
-            this.log(`你穩住步伐防禦成功，這一回合 ${this.battle.monster.name} 將無法行動。`);
-            this.battle.enemySkip=true;
-          }else{
-            this.log(`你試圖架起防禦姿態，但仍然有破綻。`);
-            this.battle.enemySkip=false;
-          }
-          this.applyPoisonTick("緊張防禦");
-          if(this.mode!=="gameover")this.enemyTurn();
-        }
-        enemyTurn(){
-          const m=this.battle.monster;
-          if(this.battle.enemySkip){
-            this.log(`${m.name} 被你的防禦牽制住，這回合無法行動。`);
-            this.battle.enemySkip=false;
-            this.updateUI();
-            this.renderBattleActions();
+        // ===== 紮營 =====
+        startCamp() {
+          if (!this.player.hasCampingKit && (this.player.inventory["camp-kit"] || 0) <= 0) {
+            this.log("你沒有露營工具，就算想在這裡過夜也會睡得全身痠痛。");
             return;
           }
-          const roll=this.rollD20();
-          if(roll===1){
-            this.log(`${m.name} 試圖攻擊，但反而自己絆了一下腳。`);
-          }else{
-            const def=this.getDefenseValue();
-            if(roll+ m.atk/2 > def+5){
-              let dmg=Math.max(1,m.atk-def);
-              this.player.hp-=dmg;
-              this.log(`${m.name} 攻擊命中，你受到 ${dmg} 點傷害。`);
-              if(this.player.hp<=0){
-                this.player.hp=0;
-                this.gameOver(`${m.name} 的攻擊將你擊倒了……`);
-                return;
-              }
-            }else{
-              this.log(`${m.name} 的攻擊被你擋下了。`);
-            }
-          }
+          this.player.hasCampingKit = true;
+          this.mode = "camp";
+          this.log("你找了塊較為平坦乾燥的地面，搭起簡易營地。");
+          this.renderCampActions();
           this.updateUI();
-          this.renderBattleActions();
         }
-        tryEscape(){
-          const roll=this.rollD20();
-          if(roll>=10){
-            this.log(`你趁亂成功脫離了戰鬥。`);
-            this.mode="field";
-            this.battle=null;
-            this.updateUI();
-            this.renderFieldActions();
-          }else{
-            this.log(`你試圖逃跑，但被攔了下來。`);
-            this.enemyTurn();
+
+        renderCampActions() {
+          if (this.mode !== "camp") return;
+          this.clearActions();
+          this.addButton(
+            "在營地休息",
+            () => this.campRest(),
+            { variant: "primary" }
+          );
+          this.addButton(
+            "營火烹飪／製作",
+            () => this.openCraftingMenu("camp")
+          );
+          this.addButton("查看背包", () => this.showInventory());
+          this.addButton("使用道具", () => this.useItemMenuInCamp());
+          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
+          this.addButton("查看任務", () => this.viewQuestsAnywhere());
+          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+          this.addButton(
+            "收拾營地，繼續上路",
+            () => this.leaveCamp(),
+            { variant: "ghost" }
+          );
+        }
+
+        campRest() {
+          const roll = this.rollD20();
+          const conMod = this.getConMod();
+          const total = roll + conMod;
+          const dc = 9;
+          let hpHeal = 18;
+          let mpHeal = 10;
+          if (total < dc) {
+            hpHeal = 10;
+            mpHeal = 5;
+            this.log("你在營地裡躺了一會，雖然略有不安，但還是稍微恢復了一些精神。");
+          } else {
+            this.log("你靠在營火旁好好休息，身體漸漸暖了起來。");
           }
-        }
-        winBattle(){
-          const m=this.battle.monster;
-          this.log(`你打倒了 ${m.name}！`);
-          this.mode="field";
-          this.dropLoot(m);
-          this.updateQuestKill(m);
-          this.gainXp(m.xp);
+
+          const beforeHp = this.player.hp;
+          const beforeMp = this.player.mp;
+
+          this.player.hp = Math.min(this.player.maxHp, this.player.hp + hpHeal);
+          this.player.mp = Math.min(this.player.maxMp, this.player.mp + mpHeal);
+
+          const realHp = this.player.hp - beforeHp;
+          const realMp = this.player.mp - beforeMp;
+
+          if (realHp > 0) this.log(`HP 回復了 ${realHp} 點。`);
+          if (realMp > 0) this.log(`MP 回復了 ${realMp} 點。`);
+
+          this.player.hunger = Math.max(0, this.player.hunger - 2);
+          this.player.thirst = Math.max(0, this.player.thirst - 2);
+          this.checkHungerThirstDamage("在營地休息");
+          this.applyPoisonDamage("在營地休息");
+
           this.updateUI();
+          this.renderCampActions();
+        }
+
+        leaveCamp() {
+          this.mode = "field";
+          this.log("你收拾好營地，重新踏上樹海的道路。");
           this.renderFieldActions();
-        }
-        dropLoot(m){
-          m.loot.forEach(entry=>{
-            if(Math.random()<entry.rate){
-              this.player.inventory[entry.id]=(this.player.inventory[entry.id]||0)+1;
-              this.log(`你取得了 ${getLootName(entry.id)}。`);
-            }
-          });
-          if(m.humanoid){
-            const coin= m.coin[0] + Math.floor(Math.random()*(m.coin[1]-m.coin[0]+1));
-            this.player.money+=coin;
-            if(coin>0)this.log(`你從 ${m.name} 身上翻出了一些零散的銅幣（+${coin}銅）。`);
-          }
-        }
-
-        // === 公會任務 ===
-        rollGuildQuests(){
-          const list=[];
-          const shuffled=[...GuildTemplates].sort(()=>Math.random()-0.5);
-          for(let i=0;i<Math.min(9,shuffled.length);i++){
-            const t=shuffled[i];
-            list.push({
-              ...t,
-              accepted:false,
-              completed:false,
-              progress:0
-            });
-          }
-          this.guild.quests=list;
-        }
-        openGuildMenu(){
-          this.clearActions();
-          this.log("你走進霧柏村的冒險者公會，裡面聚集了各種打工冒險者。");
-          this.addButton("觀看公告板（任務）",()=>this.openGuildQuestBoard(),{variant:"primary"});
-          this.addButton("申請 / 完成轉職試煉",()=>this.openJobMenu());
-          this.addButton("離開公會",()=>this.renderVillageFacilities(),{variant:"ghost"});
-        }
-        openGuildQuestBoard(){
-          this.clearActions();
-          this.log("你看向掛滿紙張的公告板。");
-          this.guild.quests.forEach(q=>{
-            const status=q.completed?"（已完成）":q.accepted?"（進行中）":"";
-            this.addButton(`${q.name}${status}`,()=>this.showQuestDetail(q));
-          });
-          this.addButton("返回公會大廳",()=>this.openGuildMenu(),{variant:"ghost"});
-        }
-        showQuestDetail(q){
-          this.clearActions();
-          this.log(`【${q.name}】`);
-          if(q.type==="hunt"){
-            const kill=this.player.questKills[q.targetId]||0;
-            this.log(`目標：擊倒 ${q.countRequired} 隻 ${this.getMonsterName(q.targetId)}（目前：${kill}/${q.countRequired}）`);
-          }else{
-            const have=this.player.inventory[q.targetId]||0;
-            this.log(`目標：提交 ${q.countRequired} 個 ${getLootName(q.targetId)}（目前持有：${have}）`);
-          }
-          this.log(`報酬：${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}（建議等級 Lv.${q.recommendedLevel}）`);
-          if(!q.accepted&&!q.completed){
-            this.addButton("接受任務",()=>{q.accepted=true;this.log("你接受了任務。");this.showQuestDetail(q);},{variant:"primary"});
-          }
-          if(q.accepted&&!q.completed){
-            this.addButton("嘗試交付任務",()=>this.turnInQuest(q),{variant:"primary"});
-          }
-          this.addButton("返回公告板",()=>this.openGuildQuestBoard(),{variant:"ghost"});
-        }
-        getMonsterName(id){
-          const m=Monsters.find(x=>x.id===id);
-          return m?m.name:id;
-        }
-        updateQuestKill(m){
-          this.player.questKills[m.id]=(this.player.questKills[m.id]||0)+1;
-        }
-        turnInQuest(q){
-          if(!q.accepted){
-            this.log("你還沒有接受這個任務。");
-            return;
-          }
-          if(q.completed){
-            this.log("這個任務已經完成並領取過報酬了。");
-            return;
-          }
-          if(q.type==="hunt"){
-            const kill=this.player.questKills[q.targetId]||0;
-            if(kill<q.countRequired){
-              this.log(`討伐數量還不夠。（${kill}/${q.countRequired}）`);
-              return;
-            }
-          }else{
-            const have=this.player.inventory[q.targetId]||0;
-            if(have<q.countRequired){
-              this.log(`你身上的素材還不夠。（${have}/${q.countRequired}）`);
-              return;
-            }
-            this.player.inventory[q.targetId]=have-q.countRequired;
-            if(this.player.inventory[q.targetId]<=0)delete this.player.inventory[q.targetId];
-          }
-          q.completed=true;
-          this.player.money+=q.rewardMoney;
-          this.log(`你完成了【${q.name}】，獲得 ${formatMoneyShort(q.rewardMoney)} 與 ${q.rewardXp} 點經驗值。`);
-          this.gainXp(q.rewardXp);
-          this.updateUI();
-        }
-        viewQuestsAnywhere(){
-          this.clearActions();
-          const running=this.guild.quests.filter(q=>q.accepted&&!q.completed);
-          if(!running.length){
-            this.log("目前沒有任何進行中的公會任務。");
-          }else{
-            this.log("【進行中的任務】");
-            running.forEach(q=>{
-              if(q.type==="hunt"){
-                const kill=this.player.questKills[q.targetId]||0;
-                this.log(`· ${q.name}（討伐 ${kill}/${q.countRequired}）`);
-              }else{
-                const have=this.player.inventory[q.targetId]||0;
-                this.log(`· ${q.name}（素材 ${have}/${q.countRequired}）`);
-              }
-            });
-          }
-          this.addButton("關閉任務列表",()=>{
-            if(this.mode==="village")this.renderVillageActions();
-            else if(this.mode==="field")this.renderFieldActions();
-            else if(this.mode==="camp")this.renderCampActions();
-            else if(this.mode==="battle")this.renderBattleActions();
-          },{variant:"ghost"});
-        }
-
-        // === 簡易轉職 ===
-        openJobMenu(){
-          this.clearActions();
-          const jobName=this.player.job==="warrior"?"戰士":this.player.job==="mage"?"法師":this.player.job==="archer"?"弓手":"無職（見習冒險者）";
-          this.log(`目前職業：${jobName}，等級 Lv.${this.player.level}，可用技能點：${this.player.skillPoints}`);
-          if(!this.player.job){
-            if(this.player.level<3){
-              this.log("公會職員：『至少要 Lv.3 才能申請正式職業喔。』");
-            }else if(!this.guild.jobQuest){
-              this.log("公會職員：『你已經符合條件，可以選一種職業試煉。』");
-              this.addButton("申請【戰士】試煉",()=>this.acceptJobQuest("warrior"));
-              this.addButton("申請【法師】試煉",()=>this.acceptJobQuest("mage"));
-              this.addButton("申請【弓手】試煉",()=>this.acceptJobQuest("archer"));
-            }else{
-              this.showJobQuestDetail();
-            }
-          }else{
-            this.log("你已經是正式職業成員，如需進一步進修，之後可以再擴充技能系統。");
-          }
-          this.addButton("返回公會大廳",()=>this.openGuildMenu(),{variant:"ghost"});
-        }
-        acceptJobQuest(job){
-          if(this.guild.jobQuest)return;
-          if(job==="warrior"){
-            this.guild.jobQuest={
-              job:"warrior",
-              name:"戰士轉職試煉：狼與火",
-              requirements:{"wolf-fur":3,"firewood":2}
-            };
-          }else if(job==="mage"){
-            this.guild.jobQuest={
-              job:"mage",
-              name:"法師轉職試煉：史萊姆黏液與藥草",
-              requirements:{"slime-fluid":4,"herb":3}
-            };
-          }else if(job==="archer"){
-            this.guild.jobQuest={
-              job:"archer",
-              name:"弓手轉職試煉：狼毛與哥布林標記",
-              requirements:{"wolf-fur":2,"goblin-tag":2}
-            };
-          }
-          this.log(`你接受了【${this.guild.jobQuest.name}】。`);
-          this.showJobQuestDetail();
-        }
-        showJobQuestDetail(){
-          const q=this.guild.jobQuest;
-          this.clearActions();
-          this.log(`【${q.name}】`);
-          const keys=Object.keys(q.requirements);
-          keys.forEach(id=>{
-            const need=q.requirements[id];
-            const have=this.player.inventory[id]||0;
-            this.log(`· ${getLootName(id)}：${have}/${need}`);
-          });
-          this.addButton("提交轉職素材",()=>this.submitJobQuest(),{variant:"primary"});
-          this.addButton("返回公會大廳",()=>this.openGuildMenu(),{variant:"ghost"});
-        }
-        submitJobQuest(){
-          const q=this.guild.jobQuest;
-          if(!q)return;
-          for(const id in q.requirements){
-            const need=q.requirements[id];
-            const have=this.player.inventory[id]||0;
-            if(have<need){
-              this.log("你的素材還不夠完成試煉。");
-              return;
-            }
-          }
-          for(const id in q.requirements){
-            const need=q.requirements[id];
-            this.player.inventory[id]-=need;
-            if(this.player.inventory[id]<=0)delete this.player.inventory[id];
-          }
-          this.player.job=q.job;
-          this.guild.jobQuest=null;
-          if(this.player.job==="warrior"){
-            this.player.maxHp+=6;
-            this.player.hp=this.player.maxHp;
-            this.log("你成為了【戰士】，身體感覺更為強韌。");
-          }else if(this.player.job==="mage"){
-            this.player.maxMp+=8;
-            this.player.mp=this.player.maxMp;
-            this.log("你成為了【法師】，體內湧出新的魔力。");
-          }else if(this.player.job==="archer"){
-            this.player.baseDef+=1;
-            this.log("你成為了【弓手】，步伐變得更為輕盈。");
-          }
           this.updateUI();
         }
 
+        // ===== 戰鬥 =====
+        renderBattleActions() {
+          if (!this.battle) return;
+          this.clearActions();
+          this.addButton(
+            "攻擊",
+            () => this.playerAttack(),
+            { variant: "primary" }
+          );
+          this.addButton("防禦", () => this.playerDefend());
+          this.addButton("緊急治療", () => this.playerEmergencyHeal(true));
+          this.addButton(
+            "逃跑",
+            () => this.playerRun(),
+            { variant: "danger" }
+          );
+          this.addButton("技能／道具", () => this.openBattleSkillItemMenu());
+          this.updateUI();
+        }
 
-        saveGame(){
-          if(this.mode==="battle"){
-            this.log("戰鬥中無法存檔。");
+        calcPlayerAtkDamage(usePowerStrike = false) {
+          const m = this.battle.monster;
+          const baseAtk =
+            this.player.baseAtk +
+            (this.player.weapon ? this.player.weapon.atkBonus : 0);
+          const atkFactor = this.getAttackFactor();
+          let dmg =
+            Math.floor(baseAtk * atkFactor) -
+            m.def +
+            Math.floor(rand() * 3) -
+            1;
+          if (dmg < 1) dmg = 1;
+
+          if (this.player.weapon && this.player.weapon.type === m.weakTo) {
+            dmg = Math.floor(dmg * 1.1);
+          }
+
+          if (usePowerStrike) {
+            const strMod = this.getStrMod();
+            dmg = Math.floor(dmg * 1.5) + Math.max(1, strMod);
+          }
+
+          if (dmg < 1) dmg = 1;
+          return dmg;
+        }
+
+        playerAttack() {
+          if (!this.battle) return;
+          const m = this.battle.monster;
+
+          if (this.player.weapon && this.player.weapon.ranged) {
+            const arrows = this.player.inventory["arrow"] || 0;
+            if (arrows <= 0) {
+              this.log("你拉開弓弦，卻發現背包裡沒有箭矢了，攻擊只好作罷。");
+              this.monsterTurn();
+              if (!this.isDead()) this.renderBattleActions();
+              return;
+            }
+            this.player.inventory["arrow"] = arrows - 1;
+            if (this.player.inventory["arrow"] <= 0) delete this.player.inventory["arrow"];
+            this.log("你消耗了 1 支箭矢。");
+          }
+
+          const roll = this.rollD20();
+          const atkMod = this.getStrMod();
+          const dc = 10 + this.battle.monster.def;
+          const total = roll + atkMod;
+
+          if (roll === 1 || total < dc) {
+            this.log(`你揮出攻擊，但【${m.name}】輕鬆地避開了。`);
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
             return;
           }
-          try{
-            const data={
-              player:this.player,
-              guild:this.guild,
-              mode:this.mode
-            };
-            localStorage.setItem("mistpine_save_v1",JSON.stringify(data));
-            this.log("已將目前進度存檔。");
-          }catch(e){
-            this.log("存檔時發生錯誤，可能是瀏覽器不支援或空間不足。");
+
+          const dmg = this.calcPlayerAtkDamage(false);
+          this.battle.monsterHp -= dmg;
+          this.log(`你命中了【${m.name}】，造成 ${dmg} 點傷害。`);
+
+          this.lastPowerStrikeUsed = false;
+
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        playerDefend() {
+          if (!this.battle) return;
+          const roll = this.rollD20();
+          const dexMod = this.getDexMod();
+          const dc = 10;
+          const total = roll + dexMod;
+
+          if (total >= dc) {
+            this.log("你成功格擋了來勢，逼得對手收招僵持，這回合牠無法採取行動。");
+            this.applyBattleCost();
+            if (!this.isDead()) this.renderBattleActions();
+          } else {
+            this.log("你抬高武器，全力防禦接下來的攻勢。");
+            this.monsterTurn(true);
+            if (!this.isDead()) this.renderBattleActions();
           }
         }
-        loadGame(){
-          try{
-            const raw=localStorage.getItem("mistpine_save_v1");
-            if(!raw){
-              this.log("目前沒有可讀取的存檔。");
-              return;
+
+        playerEmergencyHeal(inBattle) {
+          const roll = this.rollD20();
+          const dc = 8;
+          if (roll < dc) {
+            if (inBattle) {
+              this.log("你試圖快速包紮傷口，但手忙腳亂，治療沒能奏效。");
+              this.monsterTurn();
+              if (!this.isDead()) this.renderBattleActions();
+            } else {
+              this.log("你勉強處理了傷口，但效果不怎麼樣，沒有真正恢復。");
             }
-            const data=JSON.parse(raw);
-            if(!data.player){
-              this.log("存檔資料不完整，無法讀取。");
-              return;
-            }
-            this.player=data.player;
-            this.guild=data.guild||{quests:[],jobQuest:null};
-            this.mode=data.mode||"village";
-            this.battle=null;
-            this.usedEmergencyHealOnce=false;
-            this.log("已從存檔讀取進度。");
+            return;
+          }
+          const heal = 10;
+          const before = this.player.hp;
+          this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
+          const real = this.player.hp - before;
+          this.log(`你花時間整理傷口並進行緊急處置，恢復了 ${real} 點 HP。`);
+          this.updateUI();
+          if (inBattle) {
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+          }
+        }
+
+        playerRun() {
+          if (!this.battle) return;
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+          const dexMod = this.getDexMod();
+          const dc = 10 + Math.max(0, m.def - 1);
+          const total = roll + dexMod;
+          if (total >= dc) {
+            this.log(`你找準空檔往後狂奔，成功甩開了【${m.name}】。`);
+            this.mode = "field";
+            this.battle = null;
+            this.renderFieldActions();
             this.updateUI();
-            if(this.mode==="village")this.renderVillageActions();
-            else if(this.mode==="field")this.renderFieldActions();
-            else if(this.mode==="camp")this.renderCampActions();
-            else this.enterVillage();
-          }catch(e){
-            this.log("讀取存檔時發生錯誤。");
+          } else {
+            this.log("你試圖逃跑，但立刻被對方攔了下來。");
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
           }
         }
-        gameOver(msg){
-          this.mode="gameover";
+
+        openBattleSkillItemMenu() {
           this.clearActions();
+          this.log("你迅速評估局勢，準備使用技能或道具。");
+
+          this.addButton("蠻力一擊（+50% 傷害）", () =>
+            this.usePowerStrike()
+          );
+
+          const job = this.player.job;
+          if (job === "warrior") {
+            const lv1 = this.player.skills.warriorPowerSlash || 0;
+            const lv2 = this.player.skills.warriorGuard || 0;
+            if (lv1 > 0)
+              this.addButton(`裂地斬（Lv.${lv1}）`, () => this.useWarriorPowerSlash());
+            if (lv2 > 0)
+              this.addButton(`堅守姿態（Lv.${lv2}）`, () => this.useWarriorGuard());
+          } else if (job === "mage") {
+            const lv1 = this.player.skills.mageFireball || 0;
+            const lv2 = this.player.skills.mageFrostBind || 0;
+            if (lv1 > 0)
+              this.addButton(`火球術（Lv.${lv1}）`, () => this.useMageFireball());
+            if (lv2 > 0)
+              this.addButton(`冰霜束縛（Lv.${lv2}）`, () => this.useMageFrostBind());
+          } else if (job === "archer") {
+            const lv1 = this.player.skills.archerSnipe || 0;
+            const lv2 = this.player.skills.archerRapidShot || 0;
+            if (lv1 > 0)
+              this.addButton(`精準狙擊（Lv.${lv1}）`, () => this.useArcherSnipe());
+            if (lv2 > 0)
+              this.addButton(`連射（Lv.${lv2}）`, () => this.useArcherRapidShot());
+          }
+
+          const usable = Object.entries(this.player.inventory).filter(
+            ([id, count]) => count > 0 && UsableItems[id]
+          );
+          usable.forEach(([id]) => {
+            const name = this.getItemName(id);
+            this.addButton(`${name}`, () => this.useItem(id, true));
+          });
+
+          this.addButton(
+            "返回",
+            () => this.renderBattleActions(),
+            { variant: "ghost" }
+          );
+        }
+
+        usePowerStrike() {
+          if (!this.battle) return;
+          if (this.player.mp < 8) {
+            this.log("你的魔力不足以施展蠻力一擊。");
+            this.renderBattleActions();
+            return;
+          }
+          if (this.lastPowerStrikeUsed) {
+            this.log("你剛剛才硬揮過，手臂還在發抖，現在使不出第二下蠻力。");
+            this.renderBattleActions();
+            return;
+          }
+
+          this.player.mp -= 8;
+          const m = this.battle.monster;
+
+          const roll = this.rollD20();
+          const atkMod = this.getStrMod();
+          const dc = 10 + m.def;
+          const total = roll + atkMod;
+          if (roll === 1 || total < dc) {
+            this.log("你使出全力猛揮，卻只打在空氣上。");
+            this.lastPowerStrikeUsed = true;
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+
+          const dmg = this.calcPlayerAtkDamage(true);
+          this.battle.monsterHp -= dmg;
+          this.log(`蠻力一擊重重砸在【${m.name}】身上，造成了 ${dmg} 點傷害！`);
+          this.lastPowerStrikeUsed = true;
+
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useWarriorPowerSlash() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.warriorPowerSlash || 0;
+          const mpCost = Math.max(5, 10 - lvl);
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以施展裂地斬。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+          const atkMod = this.getStrMod();
+          const dc = 10 + m.def;
+          const total = roll + atkMod;
+          if (roll === 1 || total < dc) {
+            this.log("你重重揮下裂地斬，卻只在地面劃出一道深痕。");
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+          let dmg = this.calcPlayerAtkDamage(false);
+          const mult = 1.3 + 0.1 * lvl;
+          dmg = Math.floor(dmg * mult);
+          if (dmg < 1) dmg = 1;
+          this.battle.monsterHp -= dmg;
+          this.log(`裂地斬劈向【${m.name}】，造成 ${dmg} 點傷害！`);
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useWarriorGuard() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.warriorGuard || 0;
+          const mpCost = Math.max(3, 6 - lvl);
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以維持堅守姿態。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          this.battle.tempGuardBonus = lvl;
+          this.log("你穩穩紮好步伐，舉起武器擺出堅守姿態。");
+          this.monsterTurn(true);
+          this.battle.tempGuardBonus = 0;
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useMageFireball() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.mageFireball || 0;
+          const mpCost = 8 + Math.max(0, 2 - lvl);
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以施展火球術。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+          const intMod = this.getIntMod();
+          const dc = 9;
+          const total = roll + intMod;
+          if (roll === 1 || total < dc) {
+            this.log("你聚集的火球在成形前便散逸在空中。");
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+          let dmg = 10 + 3 * lvl + intMod;
+          if (dmg < 1) dmg = 1;
+          this.battle.monsterHp -= dmg;
+          this.log(`火球術在【${m.name}】身上炸裂，造成 ${dmg} 點火焰傷害！`);
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useMageFrostBind() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.mageFrostBind || 0;
+          const mpCost = 7;
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以施展冰霜束縛。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+          const intMod = this.getIntMod();
+          const dc = 9;
+          const total = roll + intMod;
+          if (roll === 1 || total < dc) {
+            this.log("冰霜在空中凝結卻沒能抓住目標。");
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+          let dmg = 6 + 2 * lvl;
+          if (dmg < 1) dmg = 1;
+          this.battle.monsterHp -= dmg;
+          this.battle.monsterWeaken = Math.max(this.battle.monsterWeaken || 0, 1 + lvl);
+          this.log(`寒霜捆住了【${m.name}】，造成 ${dmg} 點冰霜傷害，牠的動作變得遲緩。`);
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useArcherSnipe() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.archerSnipe || 0;
+          if (!this.player.weapon || !this.player.weapon.ranged) {
+            this.log("你現在沒有裝備弓，無法使用精準狙擊。");
+            this.renderBattleActions();
+            return;
+          }
+          const arrows = this.player.inventory["arrow"] || 0;
+          if (arrows <= 0) {
+            this.log("你沒有箭矢了。");
+            this.renderBattleActions();
+            return;
+          }
+          const mpCost = 7;
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以使用精準狙擊。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          this.player.inventory["arrow"] = arrows - 1;
+          if (this.player.inventory["arrow"] <= 0) delete this.player.inventory["arrow"];
+
+          const m = this.battle.monster;
+          const roll = this.rollD20();
+          const dexMod = this.getDexMod();
+          const dc = 8 + m.def;
+          const total = roll + dexMod + Math.floor(lvl / 2);
+          if (roll === 1 || total < dc) {
+            this.log("你屏氣凝神放出一箭，但還是擦肩而過。");
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+          let dmg = this.calcPlayerAtkDamage(false);
+          const mult = 1.2 + 0.1 * lvl;
+          dmg = Math.floor(dmg * mult);
+          if (dmg < 1) dmg = 1;
+          this.battle.monsterHp -= dmg;
+          this.log(`精準狙擊命中【${m.name}】的要害，造成 ${dmg} 點傷害！`);
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        useArcherRapidShot() {
+          if (!this.battle) return;
+          const lvl = this.player.skills.archerRapidShot || 0;
+          if (!this.player.weapon || !this.player.weapon.ranged) {
+            this.log("你現在沒有裝備弓，無法使用連射。");
+            this.renderBattleActions();
+            return;
+          }
+          const arrows = this.player.inventory["arrow"] || 0;
+          if (arrows < 2) {
+            this.log("箭矢不足兩支，無法連射。");
+            this.renderBattleActions();
+            return;
+          }
+          const mpCost = 9;
+          if (this.player.mp < mpCost) {
+            this.log("你的魔力不足以使用連射。");
+            this.renderBattleActions();
+            return;
+          }
+          this.player.mp -= mpCost;
+          this.player.inventory["arrow"] = arrows - 2;
+          if (this.player.inventory["arrow"] <= 0) delete this.player.inventory["arrow"];
+
+          const m = this.battle.monster;
+          this.log("你連續放出兩支箭矢！");
+          let totalDmg = 0;
+          for (let i = 1; i <= 2; i++) {
+            if (this.battle.monsterHp <= 0) break;
+            const roll = this.rollD20();
+            const dexMod = this.getDexMod();
+            const dc = 9 + m.def;
+            const total = roll + dexMod;
+            if (roll === 1 || total < dc) {
+              this.log(`第 ${i} 支箭落空了。`);
+              continue;
+            }
+            let dmg = Math.floor(this.calcPlayerAtkDamage(false) * (0.7 + 0.05 * lvl));
+            if (dmg < 1) dmg = 1;
+            this.battle.monsterHp -= dmg;
+            totalDmg += dmg;
+            this.log(`第 ${i} 支箭命中【${m.name}】，造成 ${dmg} 點傷害。`);
+          }
+          if (totalDmg === 0) {
+            this.monsterTurn();
+            if (!this.isDead()) this.renderBattleActions();
+            return;
+          }
+          if (this.battle.monsterHp <= 0) {
+            this.monsterDefeated();
+            return;
+          }
+          this.monsterTurn();
+          if (!this.isDead()) this.renderBattleActions();
+        }
+
+        monsterTurn(playerDefend = false) {
+          if (!this.battle) return;
+          const m = this.battle.monster;
+
+          const roll = this.rollD20();
+          const dc =
+            10 +
+            (this.player.baseDef +
+              (this.player.armorBody?.defBonus || 0) +
+              (this.player.armorLegs?.defBonus || 0) +
+              (this.player.armorBoots?.defBonus || 0));
+          const total = roll + Math.floor(m.atk / 2);
+
+          if (roll === 1 || total < dc) {
+            this.log(`【${m.name}】的攻擊被你躲過了。`);
+            this.applyBattleCost();
+            return;
+          }
+
+          const baseDmg = Math.max(
+            1,
+            m.atk - Math.floor(this.getDefenseFactor() *
+              (this.player.baseDef +
+                (this.player.armorBody?.defBonus || 0) +
+                (this.player.armorLegs?.defBonus || 0) +
+                (this.player.armorBoots?.defBonus || 0)))
+          );
+          let dmg = baseDmg + Math.floor(rand() * 3);
+
+          if (playerDefend) {
+            dmg = Math.floor(dmg * 0.5);
+            if (this.battle && this.battle.tempGuardBonus) {
+              const reduce = 0.05 * this.battle.tempGuardBonus;
+              dmg = Math.floor(dmg * (1 - reduce));
+            }
+          }
+
+          if (this.battle && this.battle.monsterWeaken && this.battle.monsterWeaken > 0) {
+            dmg = Math.floor(dmg * 0.6);
+            this.battle.monsterWeaken -= 1;
+            this.log("敵人被冰霜束縛影響，攻擊明顯變弱。");
+          }
+
+          if (dmg < 1) dmg = 1;
+
+          this.player.hp -= dmg;
+          this.log(`【${m.name}】的攻擊命中你，造成 ${dmg} 點傷害。`);
+
+          if (this.player.hp <= 0) {
+            this.player.hp = 0;
+            this.gameOver("你倒在樹海濕冷的土地上，視線逐漸模糊……");
+          } else {
+            this.applyBattleCost();
+          }
+        }
+
+        isDead() {
+          return this.mode === "gameover" || this.player.hp <= 0;
+        }
+
+        monsterDefeated() {
+          if (!this.battle) return;
+          const m = this.battle.monster;
+          this.log(`你擊敗了【${m.name}】！`);
+          const drops = [];
+          for (const entry of m.lootTable) {
+            if (rand() <= entry.rate) {
+              const loot = getLootById(entry.itemId);
+              if (loot) {
+                drops.push(loot);
+                this.player.inventory[loot.id] =
+                  (this.player.inventory[loot.id] || 0) + 1;
+              }
+            }
+          }
+          if (drops.length === 0) {
+            this.log("這次似乎沒有撿到什麼值得帶走的東西。");
+          } else {
+            const text = drops.map(l => l.name).join("、");
+            this.log(`你獲得了：${text}`);
+          }
+
+          if (m.humanoid) {
+            const r = rand();
+            if (r < 0.5) {
+            } else if (r < 0.85) {
+              const copper = 20 + Math.floor(rand() * 40);
+              this.player.money += copper;
+              this.log(`你在屍體附近找到了一些散落的硬幣（${formatMoneyShort(copper)}）。`);
+            } else if (r < 0.98) {
+              const copper = 100 + Math.floor(rand() * 200);
+              this.player.money += copper;
+              this.log(`你撿起一個小錢袋，裡面有一些硬幣（${formatMoneyShort(copper)}）。`);
+            } else {
+              const copper = 1000;
+              this.player.money += copper;
+              this.log(`你意外翻出一枚沉甸甸的金幣（${formatMoneyShort(copper)}）。`);
+            }
+          }
+
+          this.onMonsterKilled(m);
+          this.gainXp(m.xpReward || 10);
+
+          this.battle = null;
+          this.mode = "field";
+          this.applyBattleCost();
+          if (!this.isDead()) {
+            this.renderFieldActions();
+          }
+          this.updateUI();
+        }
+
+        // ===== 遊戲結束 =====
+        gameOver(msg) {
+          this.mode = "gameover";
           this.log(msg);
-          this.log("【遊戲結束】");
-          this.addButton("重新開始",()=>{window.location.reload();},{allowGameover:true,variant:"primary"});
+          this.updateUI();
+          this.clearActions();
+          this.addButton(
+            "重新開始",
+            () => {
+              window.currentGame = new Game();
+            },
+            { variant: "primary", allowGameover: true }
+          );
         }
       }
 
-      window.addEventListener("load",()=>{window.game=new Game();});
+      window.addEventListener("DOMContentLoaded", () => {
+        window.currentGame = new Game();
+      });
     </script>
   </body>
 </html>
