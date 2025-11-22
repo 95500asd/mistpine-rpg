@@ -187,7 +187,7 @@
         padding: 6px;
         height: 130px;
         overflow-y: auto;
-        font-size: 11px;
+        font-size: 22px;
         background: radial-gradient(circle at top left, #111222 0, #05060f 65%);
         border: 1px solid rgba(255, 255, 255, 0.05);
         margin-top: 6px;
@@ -315,7 +315,7 @@
               <span class="subtitle">MISTPINE FRONTIER</span>
             </h1>
           </div>
-          <div class="panel-badge">Field Prototype v0.92</div>
+          <div class="panel-badge">Field Prototype v0.93</div>
         </div>
         <div id="info"></div>
 
@@ -557,9 +557,9 @@
 
       const ItemShopRandomPool = [
         { itemId: "herb", basePrice: 14 },
-        { itemId: "wild-meat", basePrice: 30 },
+        { itemId: "wild-meat", basePrice: 22 },
         { itemId: "water-flask", basePrice: 45 },
-        { itemId: "bread", basePrice: 36 }
+        { itemId: "bread", basePrice: 26 }
       ];
 
       const WeaponShopFixed = [
@@ -1090,6 +1090,12 @@
           if (this.player.status.poison && this.player.status.poison > 0) {
             statusText = `狀態：中毒（剩 ${this.player.status.poison} 回合）`;
           }
+
+          if ((this.player.inventory["water-flask"] || 0) > 0 &&
+              this.player.waterFlaskUses > 0) {
+            statusText += ` · 水壺剩 ${this.player.waterFlaskUses} 口`;
+          }
+
           this.statusLineEl.textContent = statusText;
 
           const jobName =
@@ -1199,36 +1205,43 @@
         rollGuildQuests() {
           const quests = [];
 
-          const huntMonster = Monsters[Math.floor(rand() * Monsters.length)];
-          const huntCount = 3 + Math.floor(rand() * 3);
-          const rewardMoney = 80 + Math.floor(rand() * 80);
-          const rewardXp = 20 + (huntMonster.level || 1) * 2;
-          quests.push({
-            id: "hunt-" + huntMonster.id,
-            type: "hunt",
-            targetId: huntMonster.id,
-            name: `討伐：擊倒 ${huntCount} 隻 ${huntMonster.name}`,
-            countRequired: huntCount,
-            progress: 0,
-            rewardMoney,
-            rewardXp,
-            completed: false
-          });
+          // 產生 3 組（每組 1 討伐 + 1 收集），共 6 個任務
+          for (let i = 0; i < 3; i++) {
+            // 討伐任務
+            const huntMonster = Monsters[Math.floor(rand() * Monsters.length)];
+            const huntCount = 3 + Math.floor(rand() * 3);
+            const rewardMoney = 80 + Math.floor(rand() * 80);
+            const rewardXp = 20 + (huntMonster.level || 1) * 2;
+            quests.push({
+              id: `hunt-${huntMonster.id}-${i}`,
+              type: "hunt",
+              targetId: huntMonster.id,
+              name: `討伐：擊倒 ${huntCount} 隻 ${huntMonster.name}`,
+              countRequired: huntCount,
+              progress: 0,
+              rewardMoney,
+              rewardXp,
+              accepted: false,
+              completed: false
+            });
 
-          const itemId = GuildBuyCandidates[Math.floor(rand() * GuildBuyCandidates.length)];
-          const collectCount = 3 + Math.floor(rand() * 4);
-          const rewardMoney2 = 60 + Math.floor(rand() * 80);
-          const rewardXp2 = 15 + collectCount * 2;
-          quests.push({
-            id: "collect-" + itemId,
-            type: "collect",
-            targetId: itemId,
-            name: `收集：提交 ${collectCount} 個 ${this.getItemName(itemId)}`,
-            countRequired: collectCount,
-            rewardMoney: rewardMoney2,
-            rewardXp: rewardXp2,
-            completed: false
-          });
+            // 收集任務
+            const itemId = GuildBuyCandidates[Math.floor(rand() * GuildBuyCandidates.length)];
+            const collectCount = 3 + Math.floor(rand() * 4);
+            const rewardMoney2 = 60 + Math.floor(rand() * 80);
+            const rewardXp2 = 15 + collectCount * 2;
+            quests.push({
+              id: `collect-${itemId}-${i}`,
+              type: "collect",
+              targetId: itemId,
+              name: `收集：提交 ${collectCount} 個 ${this.getItemName(itemId)}`,
+              countRequired: collectCount,
+              rewardMoney: rewardMoney2,
+              rewardXp: rewardXp2,
+              accepted: false,
+              completed: false
+            });
+          }
 
           this.guild.quests = quests;
         }
@@ -1239,7 +1252,7 @@
           this.player.distance = 0;
           this.rollShops();
           this.rollGuild();
-          this.rollGuildQuests();
+          // 公會任務不再每次回村重抽，維持原本的進度與接受狀態
           this.updateUI();
           this.renderVillageActions();
         }
@@ -1302,14 +1315,34 @@
         }
 
         useVillageWell() {
-          const before = this.player.thirst;
-          if (this.player.thirst >= 100) {
-            this.log("你從水井旁經過，現在並不覺得口渴。");
-            return;
+          const beforeThirst = this.player.thirst;
+
+          if (this.player.thirst < 100) {
+            this.player.thirst = 100;
+            const gain = this.player.thirst - beforeThirst;
+            this.log(`你在水井邊痛快地喝了幾口冷水，口渴值回復了 ${gain}。`);
+          } else {
+            this.log("你在水井旁稍作休息，順便檢查了一下自己的水壺。");
           }
-          this.player.thirst = 100;
-          const gain = this.player.thirst - before;
-          this.log(`你在水井邊痛快地喝了幾口冷水，口渴值回復了 ${gain}。`);
+
+          const empties = this.player.inventory["empty-flask"] || 0;
+          if (empties > 0) {
+            const refill = empties;
+            this.player.inventory["empty-flask"] -= refill;
+            if (this.player.inventory["empty-flask"] <= 0) {
+              delete this.player.inventory["empty-flask"];
+            }
+            this.player.inventory["water-flask"] =
+              (this.player.inventory["water-flask"] || 0) + refill;
+
+            this.log(`你把 ${refill} 個空水壺都裝滿了井水。`);
+
+            if (this.player.waterFlaskUses <= 0 &&
+                this.player.inventory["water-flask"] > 0) {
+              this.player.waterFlaskUses = 3;
+            }
+          }
+
           this.updateUI();
         }
 
@@ -1697,7 +1730,7 @@
           this.log("你走進霧柏村的冒險者公會，裡面聚集了各種打工冒險者。");
           this.addButton("今日收購素材", () => this.openGuildBuyMenu(), { variant: "primary" });
           this.addButton("委託公告板（討伐／收集）", () => this.openGuildQuestMenu());
-          this.addButton("職業 / 轉職 / 技能", () => this.openJobAndSkillMenu());
+          this.addButton("職業 / 轉職", () => this.openJobAndSkillMenu());
           this.addButton(
             "離開公會",
             () => this.renderVillageFacilitiesMenu(),
@@ -1765,21 +1798,27 @@
           } else {
             this.log("你查看公會的委託公告板：");
             quests.forEach((q, idx) => {
-              const status = q.completed ? "【已完成】" : "";
+              const statusText = q.completed
+                ? "【已完成】"
+                : (q.accepted ? "【已接受】" : "【未接受】");
+
               let progressText = "";
               if (q.type === "hunt") {
-                progressText = `進度：${q.progress}/${q.countRequired}`;
+                progressText = q.accepted
+                  ? `進度：${q.progress}/${q.countRequired}`
+                  : `目標：${q.countRequired} 隻 ${this.getMonsterName(q.targetId)}`;
               } else {
                 const have = this.player.inventory[q.targetId] || 0;
-                progressText = `持有：${have}/${q.countRequired}`;
+                progressText = q.accepted
+                  ? `持有：${have}/${q.countRequired}`
+                  : `目標：${this.getItemName(q.targetId)} x${q.countRequired}`;
               }
+
               const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
-              const label = `${idx + 1}. ${q.name}${status}`;
-              this.addButton(
-                `${label}`,
-                () => this.showQuestDetail(q, true)
-              );
-              this.log(`${label}（${progressText}，報酬：${rewardText}）${status}`);
+              const label = `${idx + 1}. ${q.name} ${statusText}`;
+
+              this.addButton(label, () => this.showQuestDetail(q));
+              this.log(`${label}（${progressText}，報酬：${rewardText}）`);
             });
           }
           this.addButton(
@@ -1789,31 +1828,59 @@
           );
         }
 
-        showQuestDetail(q, canTurnIn) {
+        showQuestDetail(q) {
           this.clearActions();
           this.log(`【${q.name}】`);
           const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
+
           if (q.type === "hunt") {
-            this.log(`類型：討伐任務`);
+            this.log("類型：討伐任務");
             this.log(`目標：${q.countRequired} 隻 ${this.getMonsterName(q.targetId)}`);
-            this.log(`進度：${q.progress}/${q.countRequired}`);
+            this.log(
+              q.accepted
+                ? `進度：${q.progress}/${q.countRequired}`
+                : "尚未接受，擊倒的怪物不會計入。"
+            );
           } else {
             const have = this.player.inventory[q.targetId] || 0;
-            this.log(`類型：收集任務`);
+            this.log("類型：收集任務");
             this.log(`目標：${this.getItemName(q.targetId)} x${q.countRequired}`);
-            this.log(`持有：${have}/${q.countRequired}`);
-          }
-          this.log(`報酬：${rewardText}`);
-          if (q.completed) {
-            this.log("狀態：已完成並領取報酬。");
-          } else {
-            this.log("狀態：尚未完成。");
+            if (q.accepted) {
+              this.log(`持有：${have}/${q.countRequired}`);
+            } else {
+              this.log("目前尚未接受此任務，你可以先接受再來交付素材。");
+            }
           }
 
-          if (canTurnIn) {
-            this.addButton("嘗試交付任務", () => this.handleQuestTurnIn(q), {
-              variant: "primary"
-            });
+          this.log(`報酬：${rewardText}`);
+
+          if (q.completed) {
+            this.log("狀態：已完成並領取報酬。");
+          } else if (q.accepted) {
+            this.log("狀態：進行中。");
+          } else {
+            this.log("狀態：尚未接受。");
+          }
+
+          if (!q.accepted && !q.completed) {
+            this.addButton(
+              "接受此任務",
+              () => {
+                q.accepted = true;
+                if (typeof q.progress !== "number") q.progress = 0;
+                this.log("你在公會櫃台登記，正式接受了這項委託。");
+                this.showQuestDetail(q);
+              },
+              { variant: "primary" }
+            );
+          }
+
+          if (q.accepted && !q.completed) {
+            this.addButton(
+              "嘗試交付任務",
+              () => this.handleQuestTurnIn(q),
+              { variant: "primary" }
+            );
           }
 
           this.addButton(
@@ -1825,9 +1892,9 @@
 
         viewQuestsAnywhere() {
           this.clearActions();
-          const quests = this.guild.quests || [];
+          const quests = (this.guild.quests || []).filter(q => q.accepted);
           if (!quests.length) {
-            this.log("你現在沒有任何公會委託。");
+            this.log("你現在沒有任何已接受的公會委託。");
           } else {
             this.log("目前進行中的公會任務：");
             quests.forEach((q, idx) => {
@@ -1840,7 +1907,9 @@
                 progressText = `持有：${have}/${q.countRequired}`;
               }
               const rewardText = `${formatMoneyShort(q.rewardMoney)} / EXP ${q.rewardXp}`;
-              this.log(`${idx + 1}. ${q.name}${status}（${progressText}，報酬：${rewardText}）`);
+              this.log(
+                `${idx + 1}. ${q.name}${status}（${progressText}，報酬：${rewardText}）`
+              );
             });
           }
           this.addButton(
@@ -1856,10 +1925,16 @@
         }
 
         handleQuestTurnIn(q) {
+          if (!q.accepted) {
+            this.log("你還沒有在公會正式接受這項委託。");
+            return;
+          }
+
           if (q.completed) {
             this.log("這個委託你已經領過報酬了。");
             return;
           }
+
           if (q.type === "hunt") {
             if (q.progress < q.countRequired) {
               this.log(`討伐任務尚未完成。（目前 ${q.progress}/${q.countRequired}）`);
@@ -1872,12 +1947,20 @@
               return;
             }
             this.player.inventory[q.targetId] = have - q.countRequired;
-            if (this.player.inventory[q.targetId] <= 0) delete this.player.inventory[q.targetId];
+            if (this.player.inventory[q.targetId] <= 0)
+              delete this.player.inventory[q.targetId];
           }
+
           q.completed = true;
           this.player.money += q.rewardMoney;
-          this.log(`你完成了委託【${q.name}】，獲得 ${formatMoneyShort(q.rewardMoney)} 以及 ${q.rewardXp} 點經驗值。`);
+          this.log(
+            `你完成了委託【${q.name}】，獲得 ${formatMoneyShort(q.rewardMoney)} 以及 ${q.rewardXp} 點經驗值。`
+          );
           this.gainXp(q.rewardXp);
+
+          // 完成後從公會委託列表移除
+          this.guild.quests = (this.guild.quests || []).filter(qq => qq !== q);
+
           this.updateUI();
         }
 
@@ -1885,7 +1968,7 @@
           const quests = this.guild.quests || [];
           if (!quests.length) return;
           quests.forEach(q => {
-            if (q.type === "hunt" && !q.completed && q.targetId === monster.id) {
+            if (q.type === "hunt" && q.accepted && !q.completed && q.targetId === monster.id) {
               q.progress = (q.progress || 0) + 1;
               if (q.progress >= q.countRequired) {
                 this.log(`【委託達成】你已經完成了討伐任務：${q.name}，回村後記得回公會領取報酬。`);
@@ -1927,9 +2010,6 @@
             }
           }
 
-          this.addButton("查看技能／升級", () => this.openSkillUpgradeMenu(), {
-            variant: "primary"
-          });
           this.addButton(
             "返回公會大廳",
             () => this.openGuildMenu(),
@@ -2246,17 +2326,17 @@
           if (loot) {
             switch (loot.rarity) {
               case RARITY.COMMON:
-                return 5;
+                return 10;
               case RARITY.UNCOMMON:
-                return 14;
+                return 28;
               case RARITY.RARE:
-                return 35;
+                return 70;
               case RARITY.EPIC:
-                return 80;
+                return 160;
               case RARITY.LEGENDARY:
-                return 200;
+                return 400;
               default:
-                return 3;
+                return 6;
             }
           }
           if (ArmorDefs[id]) {
@@ -2584,6 +2664,7 @@
         }
 
         // ===== 製作 =====
+        // ===== 製作 =====
         openCraftingMenu(mode) {
           let recipes;
           if (mode === "village") recipes = CraftRecipesVillage;
@@ -2603,7 +2684,7 @@
           recipes.forEach(recipe => {
             this.addButton(
               `${recipe.name}`,
-              () => this.craft(recipe, mode)
+              () => this.showCraftRecipe(recipe, mode)
             );
           });
 
@@ -2614,6 +2695,40 @@
               else if (mode === "field") this.renderFieldActions();
               else if (mode === "camp") this.renderCampActions();
             },
+            { variant: "ghost" }
+          );
+        }
+
+        showCraftRecipe(recipe, mode) {
+          this.clearActions();
+          this.log(`【${recipe.name}】`);
+          if (recipe.desc) this.log(recipe.desc);
+
+          this.log("所需素材：");
+          let enough = true;
+          for (const [id, need] of Object.entries(recipe.inputs)) {
+            const have = this.player.inventory[id] || 0;
+            const name = this.getItemName(id);
+            if (have < need) enough = false;
+            this.log(`· ${name} x${need}（持有：${have}）`);
+          }
+
+          const outName = this.getItemName(recipe.outputId);
+          this.log(`完成品：${outName} x${recipe.outputCount}`);
+
+          const craftBtn = this.addButton(
+            "開始製作",
+            () => this.craft(recipe, mode),
+            { variant: "primary" }
+          );
+          if (!enough) {
+            craftBtn.disabled = true;
+            this.log("（素材不足，無法製作）");
+          }
+
+          this.addButton(
+            "返回配方列表",
+            () => this.openCraftingMenu(mode),
             { variant: "ghost" }
           );
         }
@@ -2793,12 +2908,23 @@
 
         waterSourceEvent() {
           this.log("你循著潮濕的氣味，找到了一處小溪。清水在石縫間潺潺流過。");
+
+          // 先喝水，補滿口渴值
+          const beforeThirst = this.player.thirst;
+          if (this.player.thirst < 100) {
+            this.player.thirst = 100;
+            const gain = this.player.thirst - beforeThirst;
+            this.log(`你俯身大口喝了幾口溪水，口渴值回復了 ${gain}。`);
+          }
+
+          // 再處理水壺裝水
           const empties = this.player.inventory["empty-flask"] || 0;
           if (empties > 0) {
             const refill = empties;
             const beforeWater = this.player.inventory["water-flask"] || 0;
             this.player.inventory["empty-flask"] -= refill;
-            if (this.player.inventory["empty-flask"] <= 0) delete this.player.inventory["empty-flask"];
+            if (this.player.inventory["empty-flask"] <= 0)
+              delete this.player.inventory["empty-flask"];
             this.player.inventory["water-flask"] = beforeWater + refill;
             this.log(`你把 ${refill} 個空水壺都裝滿了清水。`);
             if (beforeWater === 0 && this.player.waterFlaskUses <= 0 && refill > 0) {
@@ -3137,23 +3263,30 @@
         playerEmergencyHeal(inBattle) {
           const roll = this.rollD20();
           const dc = 8;
-          if (roll < dc) {
+          const success = roll >= dc;
+
+          if (!success) {
             if (inBattle) {
               this.log("你試圖快速包紮傷口，但手忙腳亂，治療沒能奏效。");
-              this.monsterTurn();
-              if (!this.isDead()) this.renderBattleActions();
             } else {
               this.log("你勉強處理了傷口，但效果不怎麼樣，沒有真正恢復。");
             }
-            return;
+          } else {
+            const heal = 10;
+            const before = this.player.hp;
+            this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
+            const real = this.player.hp - before;
+            this.log(`你花時間整理傷口並進行緊急處置，恢復了 ${real} 點 HP。`);
           }
-          const heal = 10;
-          const before = this.player.hp;
-          this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
-          const real = this.player.hp - before;
-          this.log(`你花時間整理傷口並進行緊急處置，恢復了 ${real} 點 HP。`);
+
+          // 使用緊急治療會消耗少量飽食 / 口渴，並檢查相關傷害
+          this.player.hunger = Math.max(0, this.player.hunger - 1);
+          this.player.thirst = Math.max(0, this.player.thirst - 1);
+          this.checkHungerThirstDamage("施放緊急治療");
+          this.applyPoisonDamage("施放緊急治療");
           this.updateUI();
-          if (inBattle) {
+
+          if (inBattle && !this.isDead()) {
             this.monsterTurn();
             if (!this.isDead()) this.renderBattleActions();
           }
@@ -3288,9 +3421,13 @@
             if (!this.isDead()) this.renderBattleActions();
             return;
           }
+
           let dmg = this.calcPlayerAtkDamage(false);
-          const mult = 1.3 + 0.1 * lvl;
+          // 新倍率：Lv1 1.8 倍 → Lv5 約 2.5 倍
+          let mult = 1.8 + 0.175 * (lvl - 1);
+          if (mult < 1.0) mult = 1.0;
           dmg = Math.floor(dmg * mult);
+
           if (dmg < 1) dmg = 1;
           this.battle.monsterHp -= dmg;
           this.log(`裂地斬劈向【${m.name}】，造成 ${dmg} 點傷害！`);
