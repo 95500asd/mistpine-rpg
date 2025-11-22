@@ -467,7 +467,8 @@
             weapon:{id:"wood-club",name:"木棒",atkBonus:2,type:WEAPON_TYPES.BLUNT},
             armor:{body:1,legs:1,boots:1},
             skills:{
-              emergencyHeal:true
+              emergencyHeal:true,
+              powerStrike:true
             },
             questKills:{}
           };
@@ -866,12 +867,12 @@
           }
           const roll=this.rollD20();
           if(roll<=5){
-            this.log(`你試圖急救自己，但手一滑失敗了。（D20=${roll}）`);
+            this.log(`你試圖急救自己，但手一滑失敗了。`);
           }else{
             const heal=10;
             const before=this.player.hp;
             this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-            this.log(`你花了一點時間處理傷口，回復了 ${this.player.hp-before} 點HP。（D20=${roll}）`);
+            this.log(`你花了一點時間處理傷口，回復了 ${this.player.hp-before} 點HP。`);
           }
           this.updateUI();
         }
@@ -932,9 +933,9 @@
             const roll=this.rollD20();
             if(roll<=6){
               this.player.status.poison=3;
-              this.log(`……肚子一陣翻攪，你似乎中毒了。（D20=${roll}）`);
+              this.log(`……肚子一陣翻攪，你似乎中毒了。`);
             }else{
-              this.log(`幸好這次沒有出事。（D20=${roll}）`);
+              this.log(`幸好這次沒有出事。`);
             }
           }else if(data.type==="return"){
             this.player.inventory[id]--;
@@ -956,7 +957,7 @@
           if(this.mode!=="field")return;
           this.clearActions();
           this.addButton("在樹海遊走（可能遇敵 / 採集）",()=>this.fieldStep(),{variant:"primary"});
-          this.addButton("原地稍作休息",()=>this.fieldRest());
+          this.addButton("原地張望（低機率觸發事件）",()=>this.fieldEvent());
           this.addButton("紮營（需要露營工具）",()=>this.tryCamp());
           this.addButton("使用道具 / 技能 / 任務",()=>this.openCharacterMenu("field"));
           this.addButton("使用回程卷軸返回村莊",()=>{
@@ -966,6 +967,7 @@
               this.log("你沒有回程卷軸。");
             }
           });
+          this.addButton("步行返回霧柏村",()=>this.walkBackToVillage());
         }
         fieldStep(){
           this.player.distance++;
@@ -983,21 +985,36 @@
           this.updateUI();
           if(this.mode==="field")this.renderFieldActions();
         }
-        fieldRest(){
+        fieldEvent(){
           this.loseHungerThirst(1,1);
-          this.applyPoisonTick("短暫休息");
+          this.applyPoisonTick("在原地張望");
           if(this.mode==="gameover")return;
-          const heal=4;
-          const before=this.player.hp;
-          this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-          this.log(`你靠在樹旁稍作歇息，HP 回復 ${this.player.hp-before}。`);
+          const roll=this.rollD20();
+          if(roll<=3){
+            const heal=4;
+            const before=this.player.hp;
+            this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
+            this.log(`你在原地觀察四周，順便調整呼吸，HP 回復 ${this.player.hp-before}。`);
+          }else if(roll>=18){
+            this.player.inventory["herb"]=(this.player.inventory["herb"]||0)+1;
+            this.log("你在腳邊意外發現了一株藥草。");
+          }else{
+            this.log("你在原地張望了一會兒，似乎沒有特別的變化。");
+          }
           this.updateUI();
           this.renderFieldActions();
+        }
+        walkBackToVillage(){
+          this.loseHungerThirst(3,4);
+          this.applyPoisonTick("返回村莊的路上");
+          if(this.mode==="gameover")return;
+          this.log("你沿著原路慢慢走回了霧柏村。");
+          this.enterVillage();
         }
         gatherInField(){
           const roll=this.rollD20();
           if(roll<=5){
-            this.log(`你翻找了一圈，什麼有用的東西也沒找到。（D20=${roll}）`);
+            this.log(`你翻找了一圈，什麼有用的東西也沒找到。`);
             return;
           }
           let id;
@@ -1005,7 +1022,7 @@
           else if(roll<=17)id="firewood";
           else id="wolf-fur";
           this.player.inventory[id]=(this.player.inventory[id]||0)+1;
-          this.log(`你在樹叢裡找到了一點東西：${getLootName(id)}。（D20=${roll}）`);
+          this.log(`你在樹叢裡找到了一點東西：${getLootName(id)}。`);
         }
 
         tryCamp(){
@@ -1062,8 +1079,51 @@
           this.clearActions();
           this.addButton("攻擊",()=>this.playerAttack(),{variant:"primary"});
           this.addButton("防禦",()=>this.playerDefend());
+          this.addButton("技能",()=>this.openBattleSkillMenu());
           this.addButton("使用道具",()=>this.battleUseItem());
           this.addButton("嘗試逃跑",()=>this.tryEscape());
+        }
+        openBattleSkillMenu(){
+          if(this.mode!=="battle"||!this.battle){
+            this.log("現在沒有需要使用戰鬥技能的對象。");
+            return;
+          }
+          this.clearActions();
+          let has=false;
+          if(this.player.skills && this.player.skills.powerStrike){
+            has=true;
+            this.addButton("蠻力一擊",()=>this.powerStrike(),{variant:"primary"});
+          }
+          if(!has){
+            this.log("你目前沒有可以在戰鬥中使用的主動技能。");
+            this.renderBattleActions();
+            return;
+          }
+          this.addButton("取消",()=>this.renderBattleActions(),{variant:"ghost"});
+        }
+        powerStrike(){
+          if(!this.battle||this.mode!=="battle")return;
+          const m=this.battle.monster;
+          const atk=Math.round(this.getAttackValue()*1.2);
+          const roll=this.rollD20();
+          if(roll<=4){
+            this.log("你蓄力揮出蠻力一擊，但敵人敏捷地閃開了。");
+          }else{
+            let dmg=Math.max(1,atk-m.def);
+            if(this.player.weapon&&this.player.weapon.type===m.weakTo){
+              dmg=Math.round(dmg*1.1);
+              this.log("你抓準了對方的弱點，蠻力一擊的傷害更高。");
+            }
+            this.log(`你使出蠻力一擊，造成 ${dmg} 點傷害！`);
+            this.battle.hp-=dmg;
+            if(this.battle.hp<=0){
+              this.battle.hp=0;
+              this.winBattle();
+              return;
+            }
+          }
+          this.applyPoisonTick("激烈戰鬥");
+          if(this.mode!=="gameover")this.enemyTurn();
         }
         battleUseItem(){
           const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&UsableItems[id]);
@@ -1090,7 +1150,7 @@
           const m=this.battle.monster;
           const roll=this.rollD20();
           if(roll===1){
-            this.log(`你揮出一擊，但完全落空了！（D20=${roll}）`);
+            this.log(`你揮出一擊，但完全落空了！`);
           }else{
             let dmg=0;
             const hit=roll+2>=m.def;
@@ -1100,7 +1160,7 @@
                 dmg=Math.round(dmg*1.1);
                 this.log("你抓準了對方的弱點，傷害提升！");
               }
-              this.log(`你對 ${m.name} 造成了 ${dmg} 點傷害。（D20=${roll}）`);
+              this.log(`你對 ${m.name} 造成了 ${dmg} 點傷害。`);
               this.battle.hp-=dmg;
               if(this.battle.hp<=0){
                 this.battle.hp=0;
@@ -1108,7 +1168,7 @@
                 return;
               }
             }else{
-              this.log(`你的攻擊被 ${m.name} 輕鬆躲開。（D20=${roll}）`);
+              this.log(`你的攻擊被 ${m.name} 輕鬆躲開。`);
             }
           }
           this.applyPoisonTick("激烈戰鬥");
@@ -1118,10 +1178,10 @@
           const roll=this.rollD20();
           const defVal=this.getDefenseValue();
           if(roll+defVal>=12){
-            this.log(`你穩住步伐防禦成功，這一回合 ${this.battle.monster.name} 將無法行動。（D20=${roll}）`);
+            this.log(`你穩住步伐防禦成功，這一回合 ${this.battle.monster.name} 將無法行動。`);
             this.battle.enemySkip=true;
           }else{
-            this.log(`你試圖架起防禦姿態，但仍然有破綻。（D20=${roll}）`);
+            this.log(`你試圖架起防禦姿態，但仍然有破綻。`);
             this.battle.enemySkip=false;
           }
           this.applyPoisonTick("緊張防禦");
@@ -1138,20 +1198,20 @@
           }
           const roll=this.rollD20();
           if(roll===1){
-            this.log(`${m.name} 試圖攻擊，但反而自己絆了一下腳。（D20=${roll}）`);
+            this.log(`${m.name} 試圖攻擊，但反而自己絆了一下腳。`);
           }else{
             const def=this.getDefenseValue();
             if(roll+ m.atk/2 > def+5){
               let dmg=Math.max(1,m.atk-def);
               this.player.hp-=dmg;
-              this.log(`${m.name} 攻擊命中，你受到 ${dmg} 點傷害。（D20=${roll}）`);
+              this.log(`${m.name} 攻擊命中，你受到 ${dmg} 點傷害。`);
               if(this.player.hp<=0){
                 this.player.hp=0;
                 this.gameOver(`${m.name} 的攻擊將你擊倒了……`);
                 return;
               }
             }else{
-              this.log(`${m.name} 的攻擊被你擋下了。（D20=${roll}）`);
+              this.log(`${m.name} 的攻擊被你擋下了。`);
             }
           }
           this.updateUI();
@@ -1160,13 +1220,13 @@
         tryEscape(){
           const roll=this.rollD20();
           if(roll>=10){
-            this.log(`你趁亂成功脫離了戰鬥。（D20=${roll}）`);
+            this.log(`你趁亂成功脫離了戰鬥。`);
             this.mode="field";
             this.battle=null;
             this.updateUI();
             this.renderFieldActions();
           }else{
-            this.log(`你試圖逃跑，但被攔了下來。（D20=${roll}）`);
+            this.log(`你試圖逃跑，但被攔了下來。`);
             this.enemyTurn();
           }
         }
