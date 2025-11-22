@@ -142,7 +142,7 @@
         padding:6px;
         height:130px;
         overflow-y:auto;
-        font-size:11px;
+        font-size:13px;
         background:radial-gradient(circle at top left,#111222 0,#05060f 65%);
         border:1px solid rgba(255,255,255,.05);
         margin-top:6px;
@@ -316,12 +316,6 @@
 
       const WEAPON_TYPES={BLUNT:"打",PIERCE:"刺",SLASH:"砍"};
 
-      function getWeaponData(id){
-        if(id==="wood-club")return {id:"wood-club",name:"木棒",type:WEAPON_TYPES.BLUNT,atk:3,price:60};
-        if(id==="short-sword")return {id:"short-sword",name:"短劍",type:WEAPON_TYPES.SLASH,atk:3,price:80};
-        return null;
-      }
-
       const UsableItems={
         "small-potion":{type:"heal",amount:25,name:"小型治療藥水",desc:"回復25HP。"},
         "medium-potion":{type:"heal",amount:45,name:"中型治療藥水",desc:"回復45HP。"},
@@ -380,42 +374,12 @@
 
       const GuildTemplates=[
         {
-          id:"hunt-slime-basic",
-          type:"hunt",
-          targetId:"green-slime",
-          name:"【★☆☆】討伐：綠史萊姆",
-          countRequired:5,
-          rewardMoney:60,
-          rewardXp:28,
-          recommendedLevel:1
-        },
-        {
-          id:"collect-slime-fluid",
-          type:"collect",
-          targetId:"slime-fluid",
-          name:"【★☆☆】收集：史萊姆黏液",
-          countRequired:5,
-          rewardMoney:80,
-          rewardXp:35,
-          recommendedLevel:1
-        },
-        {
           id:"hunt-wolf",
           type:"hunt",
           targetId:"forest-wolf",
           name:"【★☆☆】討伐：森林狼",
           countRequired:3,
           rewardMoney:90,
-          rewardXp:40,
-          recommendedLevel:2
-        },
-        {
-          id:"collect-wolf-fur",
-          type:"collect",
-          targetId:"wolf-fur",
-          name:"【★☆☆】收集：狼毛",
-          countRequired:4,
-          rewardMoney:85,
           rewardXp:40,
           recommendedLevel:2
         },
@@ -430,44 +394,24 @@
           recommendedLevel:3
         },
         {
-          id:"collect-firewood",
+          id:"collect-slime",
           type:"collect",
-          targetId:"firewood",
-          name:"【★☆☆】收集：柴薪",
-          countRequired:8,
-          rewardMoney:70,
-          rewardXp:30,
+          targetId:"slime-fluid",
+          name:"【★☆☆】收集：史萊姆黏液",
+          countRequired:5,
+          rewardMoney:80,
+          rewardXp:35,
           recommendedLevel:1
         },
         {
-          id:"collect-herb",
+          id:"collect-wolf-fur",
           type:"collect",
-          targetId:"herb",
-          name:"【★☆☆】收集：藥草",
-          countRequired:6,
-          rewardMoney:90,
-          rewardXp:36,
+          targetId:"wolf-fur",
+          name:"【★☆☆】收集：狼毛",
+          countRequired:4,
+          rewardMoney:85,
+          rewardXp:40,
           recommendedLevel:2
-        },
-        {
-          id:"hunt-wolf-pack",
-          type:"hunt",
-          targetId:"forest-wolf",
-          name:"【★★☆】討伐：狼群威脅",
-          countRequired:6,
-          rewardMoney:170,
-          rewardXp:80,
-          recommendedLevel:3
-        },
-        {
-          id:"hunt-goblin-raid",
-          type:"hunt",
-          targetId:"goblin-warrior",
-          name:"【★★★】討伐：哥布林小隊",
-          countRequired:6,
-          rewardMoney:220,
-          rewardXp:110,
-          recommendedLevel:4
         }
       ];
 
@@ -520,11 +464,10 @@
             },
             waterFlaskUses:3,
             status:{poison:0},
-            weapon:{id:"wood-club",name:"木棒",atk:2,type:WEAPON_TYPES.BLUNT},
+            weapon:{id:"wood-club",name:"木棒",atkBonus:2,type:WEAPON_TYPES.BLUNT},
             armor:{body:1,legs:1,boots:1},
             skills:{
-              emergencyHeal:true,
-              powerStrike:true
+              emergencyHeal:true
             },
             questKills:{}
           };
@@ -560,7 +503,7 @@
         rollD20(){return 1+Math.floor(Math.random()*20);}
 
         getAttackValue(){
-          const atk=this.player.baseAtk+(this.player.weapon?this.player.weapon.atk:0);
+          const atk=this.player.baseAtk+(this.player.weapon?this.player.weapon.atkBonus:0);
           let factor=1;
           if(this.player.hunger<60||this.player.thirst<60)factor*=0.95;
           if(this.player.hunger<30||this.player.thirst<30)factor*=0.85;
@@ -706,7 +649,6 @@
           this.log("你來到村莊中央，周圍有水井與簡單的店鋪、公會。");
           this.addButton("道具店（買賣道具）",()=>this.openItemShop());
           this.addButton("武器店（基本武器）",()=>this.openWeaponShop());
-          this.addButton("防具店（基本防具）",()=>this.openArmorShop());
           this.addButton("冒險者公會",()=>this.openGuildMenu());
           this.addButton("村莊水井",()=>this.useVillageWell());
           this.addButton("返回村莊廣場",()=>this.renderVillageActions(),{variant:"ghost"});
@@ -732,7 +674,7 @@
           this.updateUI();
         }
 
-        // === 商店（強化）===
+        // === 商店 ===
         openItemShop(){
           this.clearActions();
           this.log("你走進了村裡的道具店。");
@@ -815,22 +757,17 @@
           this.clearActions();
           this.log("武器店老闆把幾把簡單的武器擺在你面前。");
           const list=[
-            {id:"wood-club",name:"木棒",type:WEAPON_TYPES.BLUNT,atk:3,price:60},
+            {id:"wood-club",name:"粗製棍棒",type:WEAPON_TYPES.BLUNT,atk:3,price:60},
             {id:"short-sword",name:"短劍",type:WEAPON_TYPES.SLASH,atk:3,price:80}
           ];
           list.forEach(w=>{
             this.addButton(`${w.name}（${w.type} · Atk+${w.atk}，${formatMoneyShort(w.price)}）`,()=>{
-              this.buyWeapon(w.id);
+              this.buyWeapon(w);
             });
           });
           this.addButton("離開武器店",()=>this.renderVillageFacilities(),{variant:"ghost"});
         }
-        buyWeapon(id){
-          const w=getWeaponData(id);
-          if(!w){
-            this.log("這件武器的資料有點怪怪的，無法購買。");
-            return;
-          }
+        buyWeapon(w){
           if(this.player.money<w.price){
             this.log("你的錢不夠。");
             return;
@@ -841,38 +778,8 @@
             const key="weap-"+old.id;
             this.player.inventory[key]=(this.player.inventory[key]||0)+1;
           }
-          this.player.weapon={id:w.id,name:w.name,atk:w.atk,type:w.type};
+          this.player.weapon={id:w.id,name:w.name,atkBonus:w.atk,type:w.type};
           this.log(`你購買並裝備了【${w.name}】。`);
-          this.updateUI();
-        }
-        openArmorShop(){
-          this.clearActions();
-          this.log("防具店老闆抬起頭來打量了你一眼，指了指牆上的護具。");
-          const slotLabel={body:"上衣",legs:"下裝",boots:"鞋子"};
-          const pieces=[
-            {slot:"body",name:"皮甲上衣",newDef:3,price:80},
-            {slot:"legs",name:"皮甲長褲",newDef:3,price:75},
-            {slot:"boots",name:"皮靴",newDef:2,price:60}
-          ];
-          pieces.forEach(p=>{
-            const label=`${p.name}（${slotLabel[p.slot]} · Def=${p.newDef}，${formatMoneyShort(p.price)}）`;
-            this.addButton(label,()=>this.buyArmorPiece(p));
-          });
-          this.addButton("離開防具店",()=>this.renderVillageFacilities(),{variant:"ghost"});
-        }
-        buyArmorPiece(piece){
-          if(this.player.money<piece.price){
-            this.log("你的錢不太夠，還是再考慮一下吧。");
-            return;
-          }
-          const current=this.player.armor[piece.slot]||0;
-          if(current>=piece.newDef){
-            this.log("你現在穿的防具並不比這件差，沒有必要更換。");
-            return;
-          }
-          this.player.money-=piece.price;
-          this.player.armor[piece.slot]=piece.newDef;
-          this.log(`你購買並換上了【${piece.name}】，防禦力有所提升。`);
           this.updateUI();
         }
 
@@ -880,12 +787,10 @@
         openCharacterMenu(ctx){
           this.clearActions();
           this.log("你停下腳步，檢查自己的狀態與行囊。");
-          this.addButton("查看狀態",()=>this.showStatus());
           this.addButton("查看背包",()=>this.showInventory());
           this.addButton("使用道具",()=>{
             this.openUseItemMenu(ctx);
           });
-          this.addButton("裝備 / 換裝",()=>this.openEquipMenu(ctx));
           this.addButton("技能 / 緊急治療",()=>this.openSkillMenu(ctx),{variant:"primary"});
           this.addButton("查看任務",()=>this.viewQuestsAnywhere());
           this.addButton("返回",()=>{
@@ -904,57 +809,6 @@
               this.log(`· ${getLootName(id)} x${c}`);
             });
           }
-        }
-
-        showStatus(){
-          const atk=this.getAttackValue();
-          const def=this.getDefenseValue();
-          this.log(`【狀態】Lv.${this.player.level} HP ${this.player.hp}/${this.player.maxHp} MP ${this.player.mp}/${this.player.maxMp}`);
-          this.log(`攻擊力：${atk}　防禦力：${def}`);
-          this.log(`飽食：${this.player.hunger}　口渴：${this.player.thirst}`);
-        }
-        openEquipMenu(ctx){
-          this.clearActions();
-          this.log("你整理了一下自己的裝備。");
-          this.addButton("切換武器",()=>this.openEquipWeaponMenu(ctx));
-          this.addButton("返回角色選單",()=>this.openCharacterMenu(ctx),{variant:"ghost"});
-        }
-        openEquipWeaponMenu(ctx){
-          const entries=Object.entries(this.player.inventory).filter(([id,c])=>id.startsWith("weap-")&&c>0);
-          if(!entries.length){
-            this.log("背包裡沒有可以更換的武器。");
-            this.openEquipMenu(ctx);
-            return;
-          }
-          this.clearActions();
-          this.log("選擇要裝備的武器：");
-          entries.forEach(([key,count])=>{
-            const wid=key.slice(5);
-            const data=getWeaponData(wid);
-            if(!data)return;
-            this.addButton(`${data.name}（Atk+${data.atk}）x${count}`,()=>{
-              this.equipWeaponFromInventory(key,wid);
-              this.openEquipMenu(ctx);
-            });
-          });
-          this.addButton("返回",()=>this.openEquipMenu(ctx),{variant:"ghost"});
-        }
-        equipWeaponFromInventory(invKey,wid){
-          const data=getWeaponData(wid);
-          if(!data){
-            this.log("這把武器的資料似乎有問題，無法裝備。");
-            return;
-          }
-          const old=this.player.weapon;
-          if(old){
-            const oldKey="weap-"+old.id;
-            this.player.inventory[oldKey]=(this.player.inventory[oldKey]||0)+1;
-          }
-          this.player.weapon={id:data.id,name:data.name,atk:data.atk,type:data.type};
-          this.player.inventory[invKey]--;
-          if(this.player.inventory[invKey]<=0)delete this.player.inventory[invKey];
-          this.log(`你裝備了【${data.name}】。`);
-          this.updateUI();
         }
         openUseItemMenu(ctx){
           const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&UsableItems[id]);
@@ -1012,12 +866,12 @@
           }
           const roll=this.rollD20();
           if(roll<=5){
-            this.log(`你試圖急救自己，但手一滑失敗了。`);
+            this.log(`你試圖急救自己，但手一滑失敗了。（D20=${roll}）`);
           }else{
             const heal=10;
             const before=this.player.hp;
             this.player.hp=Math.min(this.player.maxHp,this.player.hp+heal);
-            this.log(`你花了一點時間處理傷口，回復了 ${this.player.hp-before} 點HP。`);
+            this.log(`你花了一點時間處理傷口，回復了 ${this.player.hp-before} 點HP。（D20=${roll}）`);
           }
           this.updateUI();
         }
@@ -1078,9 +932,9 @@
             const roll=this.rollD20();
             if(roll<=6){
               this.player.status.poison=3;
-              this.log(`……肚子一陣翻攪，你似乎中毒了。`);
+              this.log(`……肚子一陣翻攪，你似乎中毒了。（D20=${roll}）`);
             }else{
-              this.log(`幸好這次沒有出事。`);
+              this.log(`幸好這次沒有出事。（D20=${roll}）`);
             }
           }else if(data.type==="return"){
             this.player.inventory[id]--;
@@ -1102,6 +956,7 @@
           if(this.mode!=="field")return;
           this.clearActions();
           this.addButton("在樹海遊走（可能遇敵 / 採集）",()=>this.fieldStep(),{variant:"primary"});
+          this.addButton("原地稍作休息",()=>this.fieldRest());
           this.addButton("紮營（需要露營工具）",()=>this.tryCamp());
           this.addButton("使用道具 / 技能 / 任務",()=>this.openCharacterMenu("field"));
           this.addButton("使用回程卷軸返回村莊",()=>{
@@ -1111,7 +966,6 @@
               this.log("你沒有回程卷軸。");
             }
           });
-          this.addButton("步行返回霧柏村",()=>this.walkBackToVillage());
         }
         fieldStep(){
           this.player.distance++;
@@ -1140,18 +994,10 @@
           this.updateUI();
           this.renderFieldActions();
         }
-
-        walkBackToVillage(){
-          this.loseHungerThirst(3,4);
-          this.applyPoisonTick("返回村莊的路上");
-          if(this.mode==="gameover")return;
-          this.log("你沿著原路慢慢走回了霧柏村。");
-          this.enterVillage();
-        }
         gatherInField(){
           const roll=this.rollD20();
           if(roll<=5){
-            this.log(`你翻找了一圈，什麼有用的東西也沒找到。`);
+            this.log(`你翻找了一圈，什麼有用的東西也沒找到。（D20=${roll}）`);
             return;
           }
           let id;
@@ -1159,7 +1005,7 @@
           else if(roll<=17)id="firewood";
           else id="wolf-fur";
           this.player.inventory[id]=(this.player.inventory[id]||0)+1;
-          this.log(`你在樹叢裡找到了一點東西：${getLootName(id)}。`);
+          this.log(`你在樹叢裡找到了一點東西：${getLootName(id)}。（D20=${roll}）`);
         }
 
         tryCamp(){
@@ -1216,51 +1062,8 @@
           this.clearActions();
           this.addButton("攻擊",()=>this.playerAttack(),{variant:"primary"});
           this.addButton("防禦",()=>this.playerDefend());
-          this.addButton("技能",()=>this.openBattleSkillMenu());
           this.addButton("使用道具",()=>this.battleUseItem());
           this.addButton("嘗試逃跑",()=>this.tryEscape());
-        }
-        openBattleSkillMenu(){
-          if(this.mode!=="battle"||!this.battle){
-            this.log("現在沒有需要使用戰鬥技能的對象。");
-            return;
-          }
-          this.clearActions();
-          let has=false;
-          if(this.player.skills && this.player.skills.powerStrike){
-            has=true;
-            this.addButton("蠻力一擊",()=>this.powerStrike(),{variant:"primary"});
-          }
-          if(!has){
-            this.log("你目前沒有可以在戰鬥中使用的主動技能。");
-            this.renderBattleActions();
-            return;
-          }
-          this.addButton("取消",()=>this.renderBattleActions(),{variant:"ghost"});
-        }
-        powerStrike(){
-          if(!this.battle||this.mode!=="battle")return;
-          const m=this.battle.monster;
-          const atk=Math.round(this.getAttackValue()*1.2);
-          const roll=this.rollD20();
-          if(roll<=4){
-            this.log("你蓄力揮出蠻力一擊，但敵人敏捷地閃開了。");
-          }else{
-            let dmg=Math.max(1,atk-m.def);
-            if(this.player.weapon&&this.player.weapon.type===m.weakTo){
-              dmg=Math.round(dmg*1.1);
-              this.log("你抓準了對方的弱點，蠻力一擊的傷害更高。");
-            }
-            this.log(`你使出蠻力一擊，造成 ${dmg} 點傷害！`);
-            this.battle.hp-=dmg;
-            if(this.battle.hp<=0){
-              this.battle.hp=0;
-              this.winBattle();
-              return;
-            }
-          }
-          this.applyPoisonTick("激烈戰鬥");
-          if(this.mode!=="gameover")this.enemyTurn();
         }
         battleUseItem(){
           const entries=Object.entries(this.player.inventory).filter(([id,c])=>c>0&&UsableItems[id]);
@@ -1287,7 +1090,7 @@
           const m=this.battle.monster;
           const roll=this.rollD20();
           if(roll===1){
-            this.log(`你揮出一擊，但完全落空了！`);
+            this.log(`你揮出一擊，但完全落空了！（D20=${roll}）`);
           }else{
             let dmg=0;
             const hit=roll+2>=m.def;
@@ -1297,7 +1100,7 @@
                 dmg=Math.round(dmg*1.1);
                 this.log("你抓準了對方的弱點，傷害提升！");
               }
-              this.log(`你對 ${m.name} 造成了 ${dmg} 點傷害。`);
+              this.log(`你對 ${m.name} 造成了 ${dmg} 點傷害。（D20=${roll}）`);
               this.battle.hp-=dmg;
               if(this.battle.hp<=0){
                 this.battle.hp=0;
@@ -1305,7 +1108,7 @@
                 return;
               }
             }else{
-              this.log(`你的攻擊被 ${m.name} 輕鬆躲開。`);
+              this.log(`你的攻擊被 ${m.name} 輕鬆躲開。（D20=${roll}）`);
             }
           }
           this.applyPoisonTick("激烈戰鬥");
@@ -1315,10 +1118,10 @@
           const roll=this.rollD20();
           const defVal=this.getDefenseValue();
           if(roll+defVal>=12){
-            this.log(`你穩住步伐防禦成功，這一回合 ${this.battle.monster.name} 將無法行動。`);
+            this.log(`你穩住步伐防禦成功，這一回合 ${this.battle.monster.name} 將無法行動。（D20=${roll}）`);
             this.battle.enemySkip=true;
           }else{
-            this.log(`你試圖架起防禦姿態，但仍然有破綻。`);
+            this.log(`你試圖架起防禦姿態，但仍然有破綻。（D20=${roll}）`);
             this.battle.enemySkip=false;
           }
           this.applyPoisonTick("緊張防禦");
@@ -1335,20 +1138,20 @@
           }
           const roll=this.rollD20();
           if(roll===1){
-            this.log(`${m.name} 試圖攻擊，但反而自己絆了一下腳。`);
+            this.log(`${m.name} 試圖攻擊，但反而自己絆了一下腳。（D20=${roll}）`);
           }else{
             const def=this.getDefenseValue();
             if(roll+ m.atk/2 > def+5){
               let dmg=Math.max(1,m.atk-def);
               this.player.hp-=dmg;
-              this.log(`${m.name} 攻擊命中，你受到 ${dmg} 點傷害。`);
+              this.log(`${m.name} 攻擊命中，你受到 ${dmg} 點傷害。（D20=${roll}）`);
               if(this.player.hp<=0){
                 this.player.hp=0;
                 this.gameOver(`${m.name} 的攻擊將你擊倒了……`);
                 return;
               }
             }else{
-              this.log(`${m.name} 的攻擊被你擋下了。`);
+              this.log(`${m.name} 的攻擊被你擋下了。（D20=${roll}）`);
             }
           }
           this.updateUI();
@@ -1357,13 +1160,13 @@
         tryEscape(){
           const roll=this.rollD20();
           if(roll>=10){
-            this.log(`你趁亂成功脫離了戰鬥。`);
+            this.log(`你趁亂成功脫離了戰鬥。（D20=${roll}）`);
             this.mode="field";
             this.battle=null;
             this.updateUI();
             this.renderFieldActions();
           }else{
-            this.log(`你試圖逃跑，但被攔了下來。`);
+            this.log(`你試圖逃跑，但被攔了下來。（D20=${roll}）`);
             this.enemyTurn();
           }
         }
@@ -1393,9 +1196,10 @@
 
         // === 公會任務 ===
         rollGuildQuests(){
+          // 重新抽兩個可接受任務
           const list=[];
           const shuffled=[...GuildTemplates].sort(()=>Math.random()-0.5);
-          for(let i=0;i<Math.min(9,shuffled.length);i++){
+          for(let i=0;i<Math.min(4,shuffled.length);i++){
             const t=shuffled[i];
             list.push({
               ...t,
