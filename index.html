@@ -198,7 +198,7 @@
         padding: 6px;
         height: 130px;
         overflow-y: auto;
-        font-size: 22px;
+        font-size: 16px;
         background: radial-gradient(circle at top left, #111222 0, #05060f 65%);
         border: 1px solid rgba(255, 255, 255, 0.05);
         margin-top: 6px;
@@ -1343,37 +1343,29 @@
             },
             { variant: "primary" }
           );
-          this.addButton(
-            "在旅館休息（30銅，HP/MP 全滿）",
-            () => {
-              const cost = 30;
-              if (this.player.money < cost) {
-                this.log("你摸了摸口袋，發現錢不太夠今晚住旅館。");
-                return;
-              }
-              this.player.money -= cost;
-              this.player.hp = this.player.maxHp;
-              this.player.mp = this.player.maxMp;
-              this.player.hunger = 100;
-              this.player.thirst = 100;
-              this.player.status.poison = 0;
-              this.log("你在村莊旅館好好睡了一晚，精神飽滿地醒來。");
-              this.updateUI();
-            }
-          );
           this.addButton("村內設施", () => this.renderVillageFacilitiesMenu());
-          this.addButton("查看背包", () => this.showInventory());
-          this.addButton("使用道具", () => this.useItemMenuInVillage());
-          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
-          this.addButton("製作物品", () => this.openCraftingMenu("village"));
-          this.addButton("狀態／裝備", () => this.showStatusMenu());
-          this.addButton("查看任務", () => this.viewQuestsAnywhere());
-          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+          this.addButton("人物資訊", () => this.openCharacterMenu());
           this.addButton(
             "與村長交談（提示）",
             () => this.talkToElder(),
             { variant: "ghost" }
           );
+        }
+
+        restAtInn() {
+          const cost = 30;
+          if (this.player.money < cost) {
+            this.log("你摸了摸口袋，發現錢不太夠今晚住旅館。");
+            return;
+          }
+          this.player.money -= cost;
+          this.player.hp = this.player.maxHp;
+          this.player.mp = this.player.maxMp;
+          this.player.hunger = 100;
+          this.player.thirst = 100;
+          this.player.status.poison = 0;
+          this.log("你在村莊旅館好好睡了一晚，精神飽滿地醒來。");
+          this.updateUI();
         }
 
         renderVillageFacilitiesMenu() {
@@ -1383,6 +1375,7 @@
           this.addButton("武器店", () => this.openWeaponShop());
           this.addButton("防具店", () => this.openArmorShop());
           this.addButton("冒險者公會", () => this.openGuildMenu());
+          this.addButton("村莊旅館（30銅，HP/MP 全滿）", () => this.restAtInn());
           this.addButton("村莊水井（回滿口渴）", () => this.useVillageWell());
           this.addButton(
             "返回村莊廣場",
@@ -2823,6 +2816,58 @@
           this.renderFieldActions();
         }
 
+        openCharacterMenu() {
+          this.clearActions();
+          this.log("你稍微停下腳步，檢視自己的狀態與隨身裝備。");
+
+          // 查看背包
+          this.addButton("查看背包", () => {
+            this.showInventory();
+          });
+
+          // 任務列表
+          this.addButton("查看任務", () => {
+            this.viewQuestsAnywhere();
+          });
+
+          // 使用技能（含緊急治療）
+          this.addButton("使用技能（含緊急治療）", () => {
+            this.useSkillMenuOutside();
+          });
+
+          // 使用道具（依照所在場景，叫對應的選單）
+          this.addButton("使用道具", () => {
+            if (this.mode === "village") this.useItemMenuInVillage();
+            else if (this.mode === "field") this.useItemMenuInField();
+            else if (this.mode === "camp") this.useItemMenuInCamp();
+          });
+
+          // 製作物品（依場景使用不同配方）
+          this.addButton("製作物品", () => {
+            if (this.mode === "village") this.openCraftingMenu("village");
+            else if (this.mode === "field") this.openCraftingMenu("field");
+            else if (this.mode === "camp") this.openCraftingMenu("camp");
+          });
+
+          // 狀態／裝備
+          this.addButton("狀態／裝備", () => {
+            this.showStatusMenu();
+          });
+
+          // 技能列表／升級
+          this.addButton("技能列表／升級", () => {
+            this.openSkillUpgradeMenu();
+          });
+
+          // 返回當前場景主選單
+          this.addButton("返回", () => {
+            if (this.mode === "village") this.renderVillageActions();
+            else if (this.mode === "field") this.renderFieldActions();
+            else if (this.mode === "camp") this.renderCampActions();
+            else if (this.mode === "battle") this.renderBattleActions();
+          }, { variant: "ghost" });
+        }
+
         renderFieldActions() {
           this.clearActions();
           this.addButton(
@@ -2834,14 +2879,8 @@
             "往回走",
             () => this.stepBackward()
           );
-          this.addButton("查看背包", () => this.showInventory());
-          this.addButton("使用道具", () => this.useItemMenuInField());
-          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
-          this.addButton("製作物品", () => this.openCraftingMenu("field"));
           this.addButton("紮營（需要露營工具）", () => this.startCamp());
-          this.addButton("狀態／裝備", () => this.showStatusMenu());
-          this.addButton("查看任務", () => this.viewQuestsAnywhere());
-          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+          this.addButton("人物資訊", () => this.openCharacterMenu());
         }
 
         stepForward() {
@@ -3100,15 +3139,7 @@
             () => this.campRest(),
             { variant: "primary" }
           );
-          this.addButton(
-            "營火烹飪／製作",
-            () => this.openCraftingMenu("camp")
-          );
-          this.addButton("查看背包", () => this.showInventory());
-          this.addButton("使用道具", () => this.useItemMenuInCamp());
-          this.addButton("使用技能（含緊急治療）", () => this.useSkillMenuOutside());
-          this.addButton("查看任務", () => this.viewQuestsAnywhere());
-          this.addButton("技能列表／升級", () => this.openSkillUpgradeMenu());
+          this.addButton("人物資訊", () => this.openCharacterMenu());
           this.addButton(
             "收拾營地，繼續上路",
             () => this.leaveCamp(),
