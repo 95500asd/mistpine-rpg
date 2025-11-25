@@ -60,6 +60,17 @@
         justify-content: space-between;
         margin-bottom: 8px;
       }
+      .panel-header-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .panel-header-right button {
+        padding: 5px 8px;
+        font-size: 11px;
+      }
+
 
       .panel-title {
         font-size: 14px;
@@ -389,7 +400,11 @@
       <div class="panel actions-panel">
         <div class="panel-header">
           <div class="panel-title">行動選單</div>
-          <div class="panel-badge" id="actionModeLabel">村莊</div>
+          <div class="panel-header-right">
+            <button id="saveBtn">存檔</button>
+            <button id="loadBtn">讀檔</button>
+            <div class="panel-badge" id="actionModeLabel">村莊</div>
+          </div>
         </div>
         <div id="actions" class="actions-grid"></div>
       </div>
@@ -557,9 +572,9 @@
 
       const ItemShopRandomPool = [
         { itemId: "herb", basePrice: 14 },
-        { itemId: "wild-meat", basePrice: 22 },
+        { itemId: "wild-meat", basePrice: 30 },
         { itemId: "water-flask", basePrice: 45 },
-        { itemId: "bread", basePrice: 26 }
+        { itemId: "bread", basePrice: 36 }
       ];
 
       const WeaponShopFixed = [
@@ -982,6 +997,74 @@
           return btn;
         }
 
+
+        saveGame() {
+          try {
+            const data = {
+              version: 1,
+              mode: this.mode,
+              player: this.player,
+              shop: this.shop,
+              guild: this.guild,
+              battle: this.battle,
+              lastPowerStrikeUsed: this.lastPowerStrikeUsed
+            };
+            localStorage.setItem("fogRPG_save", JSON.stringify(data));
+            this.log("【系統】遊戲進度已存檔。");
+          } catch (e) {
+            this.log("【系統】存檔失敗：瀏覽器可能不支援本地存儲。");
+          }
+        }
+
+        loadGame() {
+          let raw;
+          try {
+            raw = localStorage.getItem("fogRPG_save");
+          } catch (e) {
+            this.log("【系統】讀檔失敗：瀏覽器可能不支援本地存儲。");
+            return;
+          }
+          if (!raw) {
+            this.log("【系統】目前沒有任何存檔。");
+            return;
+          }
+          let data;
+          try {
+            data = JSON.parse(raw);
+          } catch (e) {
+            this.log("【系統】存檔資料已損壞，無法讀取。");
+            return;
+          }
+          if (data.game) data = data.game;
+
+          this.mode = data.mode || "village";
+          this.player = data.player || this.player;
+          this.shop = data.shop || this.shop;
+          this.guild = data.guild || this.guild;
+          this.battle = data.battle || null;
+          this.lastPowerStrikeUsed = !!data.lastPowerStrikeUsed;
+
+          this.logEl.innerHTML = "";
+          this.log("【系統】已讀取存檔。");
+
+          this.updateUI();
+
+          if (this.mode === "village") {
+            this.renderVillageActions();
+          } else if (this.mode === "field") {
+            this.renderFieldActions();
+          } else if (this.mode === "camp") {
+            this.renderCampActions();
+          } else if (this.mode === "battle" && this.battle) {
+            this.renderBattleActions();
+          } else if (this.mode === "gameover") {
+            this.gameOver("你讀取的進度已經倒下，只能重新開始新的旅程……");
+          } else {
+            this.mode = "village";
+            this.enterVillage();
+          }
+        }
+
         getAttackFactor() {
           const h = this.player.hunger;
           const t = this.player.thirst;
@@ -1090,12 +1173,6 @@
           if (this.player.status.poison && this.player.status.poison > 0) {
             statusText = `狀態：中毒（剩 ${this.player.status.poison} 回合）`;
           }
-
-          if ((this.player.inventory["water-flask"] || 0) > 0 &&
-              this.player.waterFlaskUses > 0) {
-            statusText += ` · 水壺剩 ${this.player.waterFlaskUses} 口`;
-          }
-
           this.statusLineEl.textContent = statusText;
 
           const jobName =
@@ -1315,34 +1392,14 @@
         }
 
         useVillageWell() {
-          const beforeThirst = this.player.thirst;
-
-          if (this.player.thirst < 100) {
-            this.player.thirst = 100;
-            const gain = this.player.thirst - beforeThirst;
-            this.log(`你在水井邊痛快地喝了幾口冷水，口渴值回復了 ${gain}。`);
-          } else {
-            this.log("你在水井旁稍作休息，順便檢查了一下自己的水壺。");
+          const before = this.player.thirst;
+          if (this.player.thirst >= 100) {
+            this.log("你從水井旁經過，現在並不覺得口渴。");
+            return;
           }
-
-          const empties = this.player.inventory["empty-flask"] || 0;
-          if (empties > 0) {
-            const refill = empties;
-            this.player.inventory["empty-flask"] -= refill;
-            if (this.player.inventory["empty-flask"] <= 0) {
-              delete this.player.inventory["empty-flask"];
-            }
-            this.player.inventory["water-flask"] =
-              (this.player.inventory["water-flask"] || 0) + refill;
-
-            this.log(`你把 ${refill} 個空水壺都裝滿了井水。`);
-
-            if (this.player.waterFlaskUses <= 0 &&
-                this.player.inventory["water-flask"] > 0) {
-              this.player.waterFlaskUses = 3;
-            }
-          }
-
+          this.player.thirst = 100;
+          const gain = this.player.thirst - before;
+          this.log(`你在水井邊痛快地喝了幾口冷水，口渴值回復了 ${gain}。`);
           this.updateUI();
         }
 
@@ -1947,8 +2004,7 @@
               return;
             }
             this.player.inventory[q.targetId] = have - q.countRequired;
-            if (this.player.inventory[q.targetId] <= 0)
-              delete this.player.inventory[q.targetId];
+            if (this.player.inventory[q.targetId] <= 0) delete this.player.inventory[q.targetId];
           }
 
           q.completed = true;
@@ -1957,10 +2013,6 @@
             `你完成了委託【${q.name}】，獲得 ${formatMoneyShort(q.rewardMoney)} 以及 ${q.rewardXp} 點經驗值。`
           );
           this.gainXp(q.rewardXp);
-
-          // 完成後從公會委託列表移除
-          this.guild.quests = (this.guild.quests || []).filter(qq => qq !== q);
-
           this.updateUI();
         }
 
@@ -2326,17 +2378,17 @@
           if (loot) {
             switch (loot.rarity) {
               case RARITY.COMMON:
-                return 10;
+                return 5;
               case RARITY.UNCOMMON:
-                return 28;
+                return 14;
               case RARITY.RARE:
-                return 70;
+                return 35;
               case RARITY.EPIC:
-                return 160;
+                return 80;
               case RARITY.LEGENDARY:
-                return 400;
+                return 200;
               default:
-                return 6;
+                return 3;
             }
           }
           if (ArmorDefs[id]) {
@@ -2664,7 +2716,6 @@
         }
 
         // ===== 製作 =====
-        // ===== 製作 =====
         openCraftingMenu(mode) {
           let recipes;
           if (mode === "village") recipes = CraftRecipesVillage;
@@ -2684,7 +2735,7 @@
           recipes.forEach(recipe => {
             this.addButton(
               `${recipe.name}`,
-              () => this.showCraftRecipe(recipe, mode)
+              () => this.craft(recipe, mode)
             );
           });
 
@@ -2695,40 +2746,6 @@
               else if (mode === "field") this.renderFieldActions();
               else if (mode === "camp") this.renderCampActions();
             },
-            { variant: "ghost" }
-          );
-        }
-
-        showCraftRecipe(recipe, mode) {
-          this.clearActions();
-          this.log(`【${recipe.name}】`);
-          if (recipe.desc) this.log(recipe.desc);
-
-          this.log("所需素材：");
-          let enough = true;
-          for (const [id, need] of Object.entries(recipe.inputs)) {
-            const have = this.player.inventory[id] || 0;
-            const name = this.getItemName(id);
-            if (have < need) enough = false;
-            this.log(`· ${name} x${need}（持有：${have}）`);
-          }
-
-          const outName = this.getItemName(recipe.outputId);
-          this.log(`完成品：${outName} x${recipe.outputCount}`);
-
-          const craftBtn = this.addButton(
-            "開始製作",
-            () => this.craft(recipe, mode),
-            { variant: "primary" }
-          );
-          if (!enough) {
-            craftBtn.disabled = true;
-            this.log("（素材不足，無法製作）");
-          }
-
-          this.addButton(
-            "返回配方列表",
-            () => this.openCraftingMenu(mode),
             { variant: "ghost" }
           );
         }
@@ -2908,23 +2925,12 @@
 
         waterSourceEvent() {
           this.log("你循著潮濕的氣味，找到了一處小溪。清水在石縫間潺潺流過。");
-
-          // 先喝水，補滿口渴值
-          const beforeThirst = this.player.thirst;
-          if (this.player.thirst < 100) {
-            this.player.thirst = 100;
-            const gain = this.player.thirst - beforeThirst;
-            this.log(`你俯身大口喝了幾口溪水，口渴值回復了 ${gain}。`);
-          }
-
-          // 再處理水壺裝水
           const empties = this.player.inventory["empty-flask"] || 0;
           if (empties > 0) {
             const refill = empties;
             const beforeWater = this.player.inventory["water-flask"] || 0;
             this.player.inventory["empty-flask"] -= refill;
-            if (this.player.inventory["empty-flask"] <= 0)
-              delete this.player.inventory["empty-flask"];
+            if (this.player.inventory["empty-flask"] <= 0) delete this.player.inventory["empty-flask"];
             this.player.inventory["water-flask"] = beforeWater + refill;
             this.log(`你把 ${refill} 個空水壺都裝滿了清水。`);
             if (beforeWater === 0 && this.player.waterFlaskUses <= 0 && refill > 0) {
@@ -3263,30 +3269,23 @@
         playerEmergencyHeal(inBattle) {
           const roll = this.rollD20();
           const dc = 8;
-          const success = roll >= dc;
-
-          if (!success) {
+          if (roll < dc) {
             if (inBattle) {
               this.log("你試圖快速包紮傷口，但手忙腳亂，治療沒能奏效。");
+              this.monsterTurn();
+              if (!this.isDead()) this.renderBattleActions();
             } else {
               this.log("你勉強處理了傷口，但效果不怎麼樣，沒有真正恢復。");
             }
-          } else {
-            const heal = 10;
-            const before = this.player.hp;
-            this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
-            const real = this.player.hp - before;
-            this.log(`你花時間整理傷口並進行緊急處置，恢復了 ${real} 點 HP。`);
+            return;
           }
-
-          // 使用緊急治療會消耗少量飽食 / 口渴，並檢查相關傷害
-          this.player.hunger = Math.max(0, this.player.hunger - 1);
-          this.player.thirst = Math.max(0, this.player.thirst - 1);
-          this.checkHungerThirstDamage("施放緊急治療");
-          this.applyPoisonDamage("施放緊急治療");
+          const heal = 10;
+          const before = this.player.hp;
+          this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
+          const real = this.player.hp - before;
+          this.log(`你花時間整理傷口並進行緊急處置，恢復了 ${real} 點 HP。`);
           this.updateUI();
-
-          if (inBattle && !this.isDead()) {
+          if (inBattle) {
             this.monsterTurn();
             if (!this.isDead()) this.renderBattleActions();
           }
@@ -3421,13 +3420,9 @@
             if (!this.isDead()) this.renderBattleActions();
             return;
           }
-
           let dmg = this.calcPlayerAtkDamage(false);
-          // 新倍率：Lv1 1.8 倍 → Lv5 約 2.5 倍
-          let mult = 1.8 + 0.175 * (lvl - 1);
-          if (mult < 1.0) mult = 1.0;
+          const mult = 1.3 + 0.1 * lvl;
           dmg = Math.floor(dmg * mult);
-
           if (dmg < 1) dmg = 1;
           this.battle.monsterHp -= dmg;
           this.log(`裂地斬劈向【${m.name}】，造成 ${dmg} 點傷害！`);
@@ -3758,6 +3753,18 @@
 
       window.addEventListener("DOMContentLoaded", () => {
         window.currentGame = new Game();
+        const saveBtn = document.getElementById("saveBtn");
+        const loadBtn = document.getElementById("loadBtn");
+        if (saveBtn) {
+          saveBtn.addEventListener("click", () => {
+            if (window.currentGame) window.currentGame.saveGame();
+          });
+        }
+        if (loadBtn) {
+          loadBtn.addEventListener("click", () => {
+            if (window.currentGame) window.currentGame.loadGame();
+          });
+        }
       });
     </script>
   </body>
