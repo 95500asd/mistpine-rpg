@@ -1821,6 +1821,16 @@
           const name = this.getItemName(entry.itemId);
           const have = this.player.inventory[entry.itemId] || 0;
           this.log(`【公會收購：${name}】`);
+
+          // 顯示素材的簡單說明，方便決定是否出售
+          const loot = getLootById(entry.itemId);
+          const usable = UsableItems[entry.itemId];
+          if (loot && loot.desc) {
+            this.log(`物品說明：${loot.desc}`);
+          } else if (usable && usable.desc) {
+            this.log(`物品說明：${usable.desc}`);
+          }
+
           this.log(`需求剩餘數量：${entry.remaining}`);
           this.log(`單價：${formatMoneyShort(entry.price)}（只收購指定數量）`);
           this.log(`你目前持有：${have}`);
@@ -2185,6 +2195,12 @@
           this.log(`【${def.name}】`);
           this.log(`類型：${typeText}，目前等級 Lv.${lv}/5`);
           this.log(def.desc);
+          if (def.type === "active") {
+            const mpCost = this.getSkillMpCost(def.id);
+            if (mpCost > 0) {
+              this.log(`目前等級在戰鬥中施放時，預估消耗 MP：約 ${mpCost} 點。`);
+            }
+          }
           this.log("升級需要 1 點技能點，最高 Lv.5。");
 
           const canLevel = this.player.skillPoints > 0 && lv < 5;
@@ -2200,6 +2216,32 @@
             () => this.openSkillUpgradeMenu(),
             { variant: "ghost" }
           );
+        }
+
+        getSkillMpCost(id) {
+          const s = this.player.skills || {};
+          switch (id) {
+            case "warriorPowerSlash": {
+              const lvl = s.warriorPowerSlash || 0;
+              return Math.max(5, 10 - lvl);
+            }
+            case "warriorGuard": {
+              const lvl = s.warriorGuard || 0;
+              return Math.max(3, 6 - lvl);
+            }
+            case "mageFireball": {
+              const lvl = s.mageFireball || 0;
+              return 8 + Math.max(0, 2 - lvl);
+            }
+            case "mageFrostBind":
+              return 7;
+            case "archerSnipe":
+              return 7;
+            case "archerRapidShot":
+              return 9;
+            default:
+              return 0;
+          }
         }
 
         upgradeSkill(def) {
@@ -2692,10 +2734,38 @@
 
         useSkillMenuOutside() {
           this.clearActions();
-          this.log("你準備使用一項技能。");
-          this.addButton("緊急治療", () => {
-            this.playerEmergencyHeal(false);
-          }, { variant: "primary" });
+          this.log("你準備檢視並使用技能。");
+
+          // 通用技能：緊急治療
+          this.addButton(
+            "緊急治療（通用技能）",
+            () => {
+              this.showOutsideEmergencyHealDetail();
+            },
+            { variant: "primary" }
+          );
+
+          // 職業技能（僅顯示已習得等級 > 0）
+          const job = this.player.job;
+          if (job) {
+            const skillsDef = JobSkills[job] || [];
+            let hasAny = false;
+            skillsDef.forEach(def => {
+              const lv = this.player.skills[def.id] || 0;
+              if (lv <= 0) return;
+              hasAny = true;
+              const typeText = def.type === "passive" ? "被動" : "主動";
+              this.addButton(
+                `${def.name}（${typeText}，Lv.${lv}）`,
+                () => this.showOutsideSkillDetail(def)
+              );
+            });
+            if (!hasAny) {
+              this.log("你尚未習得任何職業技能。");
+            }
+          } else {
+            this.log("你尚未轉職，目前只有通用技能可以使用。");
+          }
 
           this.addButton(
             "返回",
@@ -2703,7 +2773,59 @@
               if (this.mode === "village") this.renderVillageActions();
               else if (this.mode === "field") this.renderFieldActions();
               else if (this.mode === "camp") this.renderCampActions();
+              else if (this.mode === "battle") this.renderBattleActions();
+              else this.renderVillageActions();
             },
+            { variant: "ghost" }
+          );
+        }
+
+        showOutsideEmergencyHealDetail() {
+          this.clearActions();
+          this.log("【緊急治療】");
+          this.log("類型：主動技能（可在村莊／野外／營地使用）");
+          this.log("效果：進行一次檢定，成功時回復少量生命值，失敗則沒有恢復效果。");
+          this.log("MP 消耗：0（不消耗魔力）。");
+
+          this.addButton(
+            "施展緊急治療",
+            () => {
+              this.playerEmergencyHeal(false);
+              if (!this.isDead()) {
+                this.useSkillMenuOutside();
+              }
+            },
+            { variant: "primary" }
+          );
+
+          this.addButton(
+            "返回技能列表",
+            () => this.useSkillMenuOutside(),
+            { variant: "ghost" }
+          );
+        }
+
+        showOutsideSkillDetail(def) {
+          this.clearActions();
+          const lv = this.player.skills[def.id] || 0;
+          const typeText = def.type === "passive" ? "被動技能" : "主動技能";
+          this.log(`【${def.name}】`);
+          this.log(`類型：${typeText}，目前等級 Lv.${lv}/5`);
+          this.log(def.desc);
+
+          if (def.type === "active") {
+            const mpCost = this.getSkillMpCost(def.id);
+            if (mpCost > 0) {
+              this.log(`推估在戰鬥中施放時，消耗 MP：約 ${mpCost} 點。`);
+            }
+            this.log("此技能為戰鬥用技能，請在戰鬥中透過「技能／道具」選單施放。");
+          } else {
+            this.log("此為被動技能，效果會自動生效，無法直接在村莊／野外施放。");
+          }
+
+          this.addButton(
+            "返回技能列表",
+            () => this.useSkillMenuOutside(),
             { variant: "ghost" }
           );
         }
@@ -2825,7 +2947,7 @@
             this.showInventory();
           });
 
-          // 任務列表
+          // 查看任務
           this.addButton("查看任務", () => {
             this.viewQuestsAnywhere();
           });
@@ -2835,14 +2957,14 @@
             this.useSkillMenuOutside();
           });
 
-          // 使用道具（依照所在場景，叫對應的選單）
+          // 使用道具（依所在場景叫對選單）
           this.addButton("使用道具", () => {
             if (this.mode === "village") this.useItemMenuInVillage();
             else if (this.mode === "field") this.useItemMenuInField();
             else if (this.mode === "camp") this.useItemMenuInCamp();
           });
 
-          // 製作物品（依場景使用不同配方）
+          // 製作物品（依場景帶入對應配方群組）
           this.addButton("製作物品", () => {
             if (this.mode === "village") this.openCraftingMenu("village");
             else if (this.mode === "field") this.openCraftingMenu("field");
@@ -2859,13 +2981,18 @@
             this.openSkillUpgradeMenu();
           });
 
-          // 返回當前場景主選單
-          this.addButton("返回", () => {
-            if (this.mode === "village") this.renderVillageActions();
-            else if (this.mode === "field") this.renderFieldActions();
-            else if (this.mode === "camp") this.renderCampActions();
-            else if (this.mode === "battle") this.renderBattleActions();
-          }, { variant: "ghost" });
+          // 返回原本場景主選單
+          this.addButton(
+            "返回",
+            () => {
+              if (this.mode === "village") this.renderVillageActions();
+              else if (this.mode === "field") this.renderFieldActions();
+              else if (this.mode === "camp") this.renderCampActions();
+              else if (this.mode === "battle") this.renderBattleActions();
+              else this.renderVillageActions();
+            },
+            { variant: "ghost" }
+          );
         }
 
         renderFieldActions() {
